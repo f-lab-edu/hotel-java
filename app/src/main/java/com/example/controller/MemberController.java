@@ -1,22 +1,42 @@
 package com.example.controller;
 
+import com.example.dto.MemberResponseDto;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/members")
 public class MemberController {
 
     @GetMapping
-    public String getAllMember() {
+    public List<MemberResponseDto> findAll() {
 
         // memberService 에게 모든 가입회원 정보를 가져오라고 메시지 전달
         // allMember = memberService.findAll();
 
         // allMember 를 반환
-        return "{{'id':'1L', 'name':'userA', 'password': 'userA12345!', 'phoneNumber':'010-1111-2222', 'email':'userA@gmail.com'}," +
-                "{'id':'2L', 'name':'userB', 'password': 'userB223P5!', 'phoneNumber':'010-3333-4444', 'email': 'userB@gmail.com'}," +
-                "{'id':'3L', 'name': 'userC', 'password': 'userC333!', 'phoneNumber':'010-4444-5555', 'email': 'userC@gmail.com'}," +
-                "{'id':'4L', 'name': 'userD', 'password': 'userD444@', 'phoneNumber': '010-5555-6666', 'email': 'userD@gmail.com'}}";
+        MemberResponseDto memberA = MemberResponseDto.builder()
+                .id(1L)
+                .email("userA@gmail.com")
+                .name("userA")
+                .password("userA12345!")
+                .phoneNumber("010-1111-2222").build();
+
+        MemberResponseDto memberB = MemberResponseDto.builder()
+                .id(2L)
+                .email("userB@gmail.com")
+                .name("userB")
+                .password("userB12345!")
+                .phoneNumber("010-2222-3333").build();
+
+        MemberResponseDto memberC = MemberResponseDto.builder()
+                .id(3L)
+                .email("userC@gmail.com")
+                .name("userC")
+                .password("userC12345!")
+                .phoneNumber("010-3333-4444").build();
+
+        return List.of(memberA, memberB, memberC);
     }
 
     @GetMapping("/{id}")
