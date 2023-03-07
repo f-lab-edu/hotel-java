@@ -3,7 +3,7 @@ package com.example.controller;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/users")
+@RequestMapping("/api/members")
 public class MemberController {
 
     @GetMapping
