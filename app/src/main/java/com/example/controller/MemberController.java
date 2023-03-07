@@ -2,6 +2,7 @@ package com.example.controller;
 
 import com.example.dto.MemberResponseDto;
 import org.springframework.web.bind.annotation.*;
+
 import java.util.List;
 
 @RestController
@@ -40,17 +41,17 @@ public class MemberController {
     }
 
     @GetMapping("/{id}")
-    public String getMember(@PathVariable String id) {
+    public MemberResponseDto findById(@PathVariable String id) {
 
         // memberService 에게 db.id == Parameter.id 를 만족하는 회원 정보를 가져오라고 메시지 전달
         // member = memberService.find(id);
 
         // member 를 반환
-        return "{'id':'1L'," +
-                "'name':'userA'," +
-                "'password': 'userA12345!'," +
-                "'phoneNumber':'010-1111-2222'," +
-                "'email':'userA@gmail.com'}";
+        return MemberResponseDto.builder()
+                .id(1L)
+                .email("userA@gmail.com")
+                .password("userA12345!")
+                .phoneNumber("010-1111-2222").build();
     }
 
     @PostMapping
