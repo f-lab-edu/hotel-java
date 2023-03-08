@@ -1,5 +1,6 @@
 package com.example.controller;
 
+import com.example.dto.DeleteMemberResponse;
 import com.example.dto.MemberResponseDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -62,34 +63,30 @@ public class MemberController {
     }
 
     @PostMapping
-    public String signUp(String memberSignUpForm) {
+    public void signUp(String memberSignUpForm) {
         // String memberSignUpForm: 회원가입 화면에서 Form 방식으로 서버에 보내온 정보
 
         // memberService 에게 회원가입 메시지 전달
         // memberService.signUp(memberSignUpForm)
-
-        // 회원가입 결과를 반환
-        return "200 ok";
     }
 
     @PutMapping
-    public String updateUser(@SessionAttribute String memberId, String memberUpdateForm) {
+    public void update(@SessionAttribute String memberId, String memberUpdateForm) {
         // String memberId: Session 저장소에 저장되어있는 회원 id
         // String memberUpdateForm: 회원정보수정 화면에서 Form 방식으로 서버에 보내온 정보
         // memberService 에게 회원정보를 수정하라고 메시지 전달
         // memberService.update(memberId, memberUpdateForm);
-
-        //회원정보수정 결과를 반환
-        return "200 ok";
     }
 
     @DeleteMapping
-    public String deleteUser(@SessionAttribute String memberId) {
+    public DeleteMemberResponse delete(@SessionAttribute String memberId) {
         // String memberId: Session 저장소에 저장되어있는 회원 id
         // memberService 에게 회원정보를 삭제하라고 메시지 전달
         // memberService.delete(memberId);
 
         //회원탈퇴 결과를 반환
-        return "200 ok";
+        return DeleteMemberResponse.builder()
+                .email("deletedUser@gmail.com")
+                .name("deletedUserName").build();
     }
 }
