@@ -10,8 +10,9 @@ repositories {
 }
 
 dependencies {
+    implementation 'junit:junit:4.13.1'
     implementation 'org.springframework.boot:spring-boot-starter-web'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
