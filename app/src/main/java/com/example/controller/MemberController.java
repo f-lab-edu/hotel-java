@@ -2,7 +2,6 @@ package com.example.controller;
 
 import com.example.dto.DeleteMemberResponseDto;
 import com.example.dto.MemberDto;
-import com.example.dto.MemberResponseDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,14 +17,13 @@ import org.springframework.web.bind.annotation.SessionAttribute;
 public class MemberController {
 
     @GetMapping("/{id}")
-    public MemberResponseDto findById(@PathVariable String id) {
+    public MemberDto findById(@PathVariable String id) {
 
         // memberService 에게 db.id == Parameter.id 를 만족하는 회원 정보를 가져오라고 메시지 전달
         // member = memberService.find(id);
 
         // member 를 반환
-        return MemberResponseDto.builder()
-                .id(1L)
+        return MemberDto.builder()
                 .email("userA@gmail.com")
                 .name("userA")
                 .password("userA12345!")
