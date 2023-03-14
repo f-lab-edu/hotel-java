@@ -6,6 +6,6 @@ import lombok.Getter;
 @Builder
 @Getter
 public class DeleteMemberResponseDto {
-    private String email;
-    private String name;
+  private String email;
+  private String name;
 }
