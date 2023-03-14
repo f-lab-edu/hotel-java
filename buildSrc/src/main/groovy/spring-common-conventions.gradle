@@ -2,6 +2,7 @@ plugins {
     id 'java'
     id 'org.springframework.boot'
     id 'io.spring.dependency-management'
+    id 'io.freefair.lombok'
 }
 
 repositories {
@@ -9,8 +10,9 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    implementation 'junit:junit:4.13.1'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-test'
 }
 
 tasks.named('test') {
