@@ -1,4 +1,3 @@
 package com.hotelJava.accommodation.repository;
 
-public class AccommodationRepository {
-}
+public class AccommodationRepository {}

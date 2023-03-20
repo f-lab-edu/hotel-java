@@ -1,4 +1,3 @@
 package com.hotelJava;
 
-public class HotelJavaApplicationTest {
-}
+public class HotelJavaApplicationTest {}

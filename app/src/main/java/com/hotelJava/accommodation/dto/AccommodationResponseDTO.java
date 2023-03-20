@@ -14,24 +14,23 @@ import org.springframework.web.multipart.MultipartFile;
 @Getter
 public class AccommodationResponseDto {
 
-    private String name;
+  private String name;
 
-    private String address;
+  private String address;
 
-    private String location;
+  private String location;
 
-    private AccommodationType type;
+  private AccommodationType type;
 
-    private int shortPrice;
+  private int shortPrice;
 
-    private int longPrice;
+  private int longPrice;
 
-    private double rating;
+  private double rating;
 
-    private String phoneNumber;
+  private String phoneNumber;
 
-    private MultipartFile picture;
+  private MultipartFile picture;
 
-    private String description;
-
+  private String description;
 }
