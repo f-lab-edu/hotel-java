@@ -1,3 +1,3 @@
-package com.hotelJava;
+package com.example;
 
 public class HotelJavaApplicationTest {}
