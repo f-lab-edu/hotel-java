@@ -1,4 +1,4 @@
-package com.example;
+package com.hotelJava.member;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
