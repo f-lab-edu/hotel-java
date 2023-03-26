@@ -1,7 +1,7 @@
-package com.example.controller;
+package com.hotelJava.controller;
 
-import com.example.dto.DeleteMemberResponseDto;
-import com.example.dto.MemberDto;
+import com.hotelJava.dto.DeleteMemberResponseDto;
+import com.hotelJava.dto.MemberDto;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
