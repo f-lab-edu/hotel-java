@@ -1,6 +1,5 @@
 package com.hotelJava.member.controller;
 
-import com.hotelJava.common.dto.ApiResponse;
 import com.hotelJava.member.dto.SignUpRequestDto;
 import com.hotelJava.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
@@ -19,12 +18,7 @@ public class MemberController {
   private final MemberService memberService;
 
   @PostMapping
-  public ApiResponse<String> signUp(@RequestBody SignUpRequestDto signUpDto) {
-    if (memberService.isDuplicatedEmail(signUpDto.getEmail())) {
-      return ApiResponse.error("Duplicated Email");
-    }
-
+  public void signUp(@RequestBody SignUpRequestDto signUpDto) {
     memberService.signUp(signUpDto.toEntity());
-    return ApiResponse.success();
   }
 }
