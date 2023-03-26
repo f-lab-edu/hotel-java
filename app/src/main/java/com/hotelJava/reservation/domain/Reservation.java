@@ -1,6 +1,6 @@
 package com.hotelJava.reservation.domain;
 
-import com.hotelJava.common.uril.BaseTimeEntity;
+import com.hotelJava.common.util.BaseTimeEntity;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

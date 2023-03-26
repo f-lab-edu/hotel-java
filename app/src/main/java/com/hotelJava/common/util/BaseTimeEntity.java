@@ -1,4 +1,4 @@
-package com.hotelJava.common.uril;
+package com.hotelJava.common.util;
 
 import jakarta.persistence.EntityListeners;
 import jakarta.persistence.MappedSuperclass;

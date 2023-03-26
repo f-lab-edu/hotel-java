@@ -1,6 +1,6 @@
 package com.hotelJava.accommodation.domain;
 
-import com.hotelJava.common.uril.BaseTimeEntity;
+import com.hotelJava.common.util.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
