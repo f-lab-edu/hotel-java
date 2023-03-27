@@ -1,5 +1,4 @@
-package com.hotelJava.member.exception;
+package com.hotelJava.member.error.exception;
 
 public class DuplicatedEmailException extends RuntimeException {
-
 }

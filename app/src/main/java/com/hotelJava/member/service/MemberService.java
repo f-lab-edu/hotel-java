@@ -1,7 +1,7 @@
 package com.hotelJava.member.service;
 
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.member.exception.DuplicatedEmailException;
+import com.hotelJava.member.error.exception.DuplicatedEmailException;
 import com.hotelJava.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
