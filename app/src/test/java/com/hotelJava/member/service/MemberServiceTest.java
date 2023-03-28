@@ -5,6 +5,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.Role;
+import com.hotelJava.member.repository.MemberRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -19,6 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 class MemberServiceTest {
 
   @Autowired private MemberService memberService;
+  @Autowired private MemberRepository memberRepository;
 
   @Test
   @DisplayName("회원가입 기능을 테스트한다.")
@@ -28,7 +30,7 @@ class MemberServiceTest {
 
     // when
     memberService.signUp(member);
-    Member findMember = memberService.find(member);
+    Member findMember = memberRepository.findById(member.getId()).orElse(null);
 
     // then
     assertThat(member).isEqualTo(findMember);
@@ -39,7 +41,7 @@ class MemberServiceTest {
   void isDuplicated() {
     // given
     Member member = testMember();
-    memberService.signUp(member);
+    memberRepository.save(member);
 
     // when
     boolean result = memberService.isDuplicatedEmail(member.getEmail());
