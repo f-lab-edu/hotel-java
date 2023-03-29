@@ -1,6 +1,10 @@
 package com.hotelJava.member.service;
 
+import static com.hotelJava.member.util.MemberMapper.MAPPER;
+
 import com.hotelJava.member.domain.Member;
+import com.hotelJava.member.domain.ProfileInfo;
+import com.hotelJava.member.dto.SignUpRequestDto;
 import com.hotelJava.member.error.exception.DuplicatedEmailException;
 import com.hotelJava.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -12,10 +16,11 @@ public class MemberService {
 
   private final MemberRepository memberRepository;
 
-  public void signUp(Member member) {
-    if (isDuplicatedEmail(member.getEmail())) {
+  public void signUp(ProfileInfo profileInfo) {
+    if (isDuplicatedEmail(profileInfo.getEmail())) {
       throw new DuplicatedEmailException();
     }
+    Member member = MAPPER.toEntity((SignUpRequestDto) profileInfo);
     memberRepository.save(member);
   }
 

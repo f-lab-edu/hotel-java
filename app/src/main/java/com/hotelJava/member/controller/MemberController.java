@@ -19,6 +19,6 @@ public class MemberController {
 
   @PostMapping
   public void signUp(@RequestBody SignUpRequestDto signUpDto) {
-    memberService.signUp(signUpDto.toEntity());
+    memberService.signUp(signUpDto);
   }
 }
