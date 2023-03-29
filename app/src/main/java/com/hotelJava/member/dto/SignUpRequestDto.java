@@ -1,6 +1,5 @@
 package com.hotelJava.member.dto;
 
-import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.ProfileInfo;
 import lombok.Builder;
 import lombok.Data;
@@ -12,8 +11,4 @@ public class SignUpRequestDto implements ProfileInfo {
   private String name;
   private String password;
   private String phone;
-
-  public Member toEntity() {
-    return Member.builder().email(email).name(name).password(password).phone(phone).build();
-  }
 }
