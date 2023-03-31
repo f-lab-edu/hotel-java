@@ -1,6 +1,6 @@
 package com.hotelJava.member.service;
 
-import static com.hotelJava.member.util.MemberMapper.MAPPER;
+import static com.hotelJava.member.util.MemberMapper.MEMBER_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hotelJava.member.domain.Member;
@@ -33,7 +33,7 @@ class MemberServiceTest {
     Member findMember = memberRepository.findByEmail(signUpDto.getEmail()).orElse(null);
 
     // then
-    assertThat(MAPPER.toSignUpRequestDto(findMember)).isEqualTo(signUpDto);
+    assertThat(MEMBER_MAPPER.toSignUpRequestDto(findMember)).isEqualTo(signUpDto);
   }
 
   @Test

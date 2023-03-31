@@ -1,6 +1,6 @@
 package com.hotelJava.member.service;
 
-import static com.hotelJava.member.util.MemberMapper.MAPPER;
+import static com.hotelJava.member.util.MemberMapper.MEMBER_MAPPER;
 
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.ProfileInfo;
@@ -20,7 +20,7 @@ public class MemberService {
     if (isDuplicatedEmail(profileInfo.getEmail())) {
       throw new DuplicatedEmailException();
     }
-    Member member = MAPPER.toEntity((SignUpRequestDto) profileInfo);
+    Member member = MEMBER_MAPPER.toEntity((SignUpRequestDto) profileInfo);
     memberRepository.save(member);
   }
 
