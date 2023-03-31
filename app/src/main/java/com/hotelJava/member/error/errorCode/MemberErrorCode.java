@@ -8,7 +8,7 @@ import lombok.Getter;
 @JsonFormat(shape = OBJECT)
 @Getter
 public enum MemberErrorCode {
-  DuplicateEmailFound(409, "Email already exists");
+  DUPLICATED_EMAIL_FOUND(409, "Email already exists");
   private final int code;
   private final String description;
 
