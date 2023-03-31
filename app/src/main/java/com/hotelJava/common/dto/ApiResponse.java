@@ -17,7 +17,23 @@ public class ApiResponse<T> {
   private String responseMessage;
   private T data;
 
-  public static <T2> ApiResponse<T2> success(T2 data) {
+  public ApiResponse(String responseMessage) {
+    this.responseMessage = responseMessage;
+  }
+
+  public static <T> ApiResponse<T> success() {
+    return new ApiResponse<>(SUCCESS_STATUS);
+  }
+
+  public static <T> ApiResponse<T> success(T data) {
     return new ApiResponse<>(SUCCESS_STATUS, data);
+  }
+
+  public static <T> ApiResponse<T> fail(T data) {
+    return new ApiResponse<>(FAIL_STATUS, data);
+  }
+
+  public static <T> ApiResponse<T> error(T data) {
+    return new ApiResponse<>(ERROR_STATUS, data);
   }
 }
