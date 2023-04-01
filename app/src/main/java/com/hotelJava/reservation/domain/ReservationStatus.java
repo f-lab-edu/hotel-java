@@ -2,7 +2,7 @@ package com.hotelJava.reservation.domain;
 
 public enum ReservationStatus {
 
-    RESERVATION("예약"), CANCEL("취소");
+    RESERVATION_AVAILABLE("예약가능"), SALES_COMPLETED("판매완료");
 
     private final String value;
 

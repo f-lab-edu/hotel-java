@@ -42,7 +42,7 @@ public class AccommodationController {
 
     Address address = Address.builder()
             .firstLocation(firstLocation)
-            .secoundLocation(secondLocation)
+            .secondLocation(secondLocation)
             .build();
 
     List<Accommodation> accommodations = accommodationService.findByTypeAndAddressFirstLocation(AccommodationType.valueOf(type), address);
