@@ -3,6 +3,9 @@ package com.hotelJava.accommodation.dto;
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationPicture;
 import com.hotelJava.accommodation.domain.Address;
+import com.hotelJava.reservation.domain.ReservationStatus;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import lombok.*;
 
 @Builder
@@ -27,6 +30,9 @@ public class AccommodationResponseDto {
 
   private String description;
 
+  @Enumerated(EnumType.STRING)
+  private ReservationStatus status;
+
   // TODO: [Entity => dto] ModelMapper와 생성자 장단점
   public static AccommodationResponseDto of(Accommodation accommodation) {
     return AccommodationResponseDto.builder()
@@ -38,6 +44,7 @@ public class AccommodationResponseDto {
             .phoneNumber(accommodation.getPhoneNumber())
             .picture(accommodation.getAccommodationPicture())
             .description(accommodation.getDescription())
+            .status(accommodation.getStatus())
             .build();
   }
 }

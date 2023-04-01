@@ -16,7 +16,7 @@ public class Address {
 
     private String firstLocation;
 
-    private String secoundLocation;
+    private String secondLocation;
 
-    private String address;
+    private String fullAddress;
 }

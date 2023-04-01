@@ -1,4 +1,4 @@
-package com.hotelJava.accommodation.domain;
+package com.hotelJava.room.domain;
 
 import com.hotelJava.common.util.BaseTimeEntity;
 import jakarta.persistence.*;
@@ -13,7 +13,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class AccommodationPicture extends BaseTimeEntity {
+public class RoomPicture extends BaseTimeEntity {
 
     @Id
     @GeneratedValue
@@ -31,6 +31,7 @@ public class AccommodationPicture extends BaseTimeEntity {
 
     private long fileSize;
 
-    @OneToOne(mappedBy = "accommodationPicture")
-    private Accommodation accommodation;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 }
