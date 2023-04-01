@@ -5,7 +5,6 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.domain.Address;
 import com.hotelJava.accommodation.dto.AccommodationResponseDto;
 import com.hotelJava.accommodation.service.AccommodationService;
-import com.hotelJava.common.dto.ApiResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -27,7 +26,7 @@ public class AccommodationController {
   }
 
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
-  public ApiResponse<List<AccommodationResponseDto>> findAccommodations(
+  public List<AccommodationResponseDto> findAccommodations(
       @PathVariable("type") String type,
       @PathVariable("firstLocation") String firstLocation,
       @PathVariable("secondLocation") String secondLocation,
@@ -48,7 +47,7 @@ public class AccommodationController {
 
     List<Accommodation> accommodations = accommodationService.findByTypeAndAddressFirstLocation(AccommodationType.valueOf(type), address);
 
-    return ApiResponse.success(accommodations.stream().map(AccommodationResponseDto::of).toList());
+    return accommodations.stream().map(AccommodationResponseDto::of).toList();
   }
 
 //  @PostMapping()
