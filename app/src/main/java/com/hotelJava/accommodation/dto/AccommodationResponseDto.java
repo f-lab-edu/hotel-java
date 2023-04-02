@@ -1,12 +1,16 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.Accommodation;
-import com.hotelJava.accommodation.domain.AccommodationPicture;
+import com.hotelJava.common.domain.Picture;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
@@ -26,7 +30,7 @@ public class AccommodationResponseDto {
 
   private String phoneNumber;
 
-  private AccommodationPicture picture;
+  private Picture picture;
 
   private String description;
 
@@ -42,7 +46,7 @@ public class AccommodationResponseDto {
             .price(0) // TODO: 숙소의 가장 싼 룸의 가격을 가져와야함
             .rating(accommodation.getRating())
             .phoneNumber(accommodation.getPhoneNumber())
-            .picture(accommodation.getAccommodationPicture())
+            .picture(accommodation.getPicture())
             .description(accommodation.getDescription())
             .status(accommodation.getStatus())
             .build();

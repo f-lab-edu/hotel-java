@@ -1,5 +1,6 @@
 package com.hotelJava.accommodation.domain;
 
+import com.hotelJava.common.domain.Picture;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.ReservationStatus;
@@ -46,8 +47,8 @@ public class Accommodation extends BaseTimeEntity {
     private List<Room> rooms = new ArrayList<>();
 
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinColumn(name = "AccommodationPicture_id") // 주 테이블에 외래키
-    private AccommodationPicture accommodationPicture;
+    @JoinColumn(name = "picture_id") // 주 테이블에 외래키
+    private Picture picture;
 
     @Lob
     private String description;

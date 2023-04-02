@@ -1,6 +1,7 @@
 package com.hotelJava.room.domain;
 
 import com.hotelJava.accommodation.domain.Accommodation;
+import com.hotelJava.common.domain.Picture;
 import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.ReservationStatus;
@@ -33,7 +34,7 @@ public class Room extends BaseTimeEntity {
     private Accommodation accommodation;
 
     @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private List<RoomPicture> roomPictures = new ArrayList<>();
+    private List<Picture> pictures = new ArrayList<>();
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
