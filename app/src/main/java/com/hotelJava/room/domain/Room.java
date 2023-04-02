@@ -1,6 +1,7 @@
 package com.hotelJava.room.domain;
 
 import com.hotelJava.accommodation.domain.Accommodation;
+import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import jakarta.persistence.*;
@@ -36,4 +37,7 @@ public class Room extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
+
+    @Embedded
+    private CheckTime checkTime;
 }

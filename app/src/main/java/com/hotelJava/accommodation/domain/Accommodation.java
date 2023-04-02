@@ -6,9 +6,7 @@ import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.format.annotation.DateTimeFormat;
 
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -27,12 +25,6 @@ public class Accommodation extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private AccommodationType type;
-
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalDateTime checkInTime;
-
-    @DateTimeFormat(pattern = "HH:mm")
-    private LocalDateTime checkOutTime;
 
     private double rating;
 

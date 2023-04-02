@@ -2,7 +2,11 @@ package com.hotelJava.accommodation.domain;
 
 import com.hotelJava.common.embeddable.PictureInfo;
 import com.hotelJava.common.util.BaseTimeEntity;
-import jakarta.persistence.*;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.Id;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
