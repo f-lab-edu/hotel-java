@@ -2,7 +2,7 @@ package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationPicture;
-import com.hotelJava.accommodation.domain.Address;
+import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;

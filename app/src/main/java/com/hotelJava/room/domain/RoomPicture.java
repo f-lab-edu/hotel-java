@@ -1,5 +1,6 @@
 package com.hotelJava.room.domain;
 
+import com.hotelJava.common.embeddable.PictureInfo;
 import com.hotelJava.common.util.BaseTimeEntity;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -19,17 +20,8 @@ public class RoomPicture extends BaseTimeEntity {
     @GeneratedValue
     private Long id;
 
-    private String name;
-
-    private String originFileName;
-
-    private String saveFileName;
-
-    private String extension;
-
-    private String fullPath;
-
-    private long fileSize;
+    @Embedded
+    private PictureInfo pictureInfo;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "room_id")

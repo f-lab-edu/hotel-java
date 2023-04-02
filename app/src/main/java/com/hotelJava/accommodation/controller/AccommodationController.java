@@ -2,7 +2,7 @@ package com.hotelJava.accommodation.controller;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.domain.Address;
+import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.accommodation.dto.AccommodationResponseDto;
 import com.hotelJava.accommodation.service.AccommodationService;
 import lombok.RequiredArgsConstructor;

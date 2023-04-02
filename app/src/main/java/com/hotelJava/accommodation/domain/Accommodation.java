@@ -1,5 +1,6 @@
 package com.hotelJava.accommodation.domain;
 
+import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;

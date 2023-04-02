@@ -1,4 +1,4 @@
-package com.hotelJava.accommodation.domain;
+package com.hotelJava.common.embeddable;
 
 import jakarta.persistence.Embeddable;
 import lombok.AccessLevel;
