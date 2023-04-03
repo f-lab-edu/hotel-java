@@ -4,6 +4,7 @@ import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.common.domain.Picture;
 import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
+import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import jakarta.persistence.*;
 import lombok.*;
@@ -41,4 +42,7 @@ public class Room extends BaseTimeEntity {
 
     @Embedded
     private CheckTime checkTime;
+
+    @OneToMany(mappedBy = "room")
+    private List<Reservation> reservations = new ArrayList<>();
 }

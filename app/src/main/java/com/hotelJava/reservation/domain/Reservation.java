@@ -4,6 +4,7 @@ import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.domain.PaymentType;
+import com.hotelJava.room.domain.Room;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -42,4 +43,8 @@ public class Reservation extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "room_id")
+    private Room room;
 }
