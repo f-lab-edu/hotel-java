@@ -11,5 +11,5 @@ public enum ReservationStatus {
     SALES_COMPLETED("판매완료"),
     RESERVATION_COMPLETED("예약완료");
 
-    private final String value;
+    private final String label;
 }

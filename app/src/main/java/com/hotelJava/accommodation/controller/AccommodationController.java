@@ -20,14 +20,9 @@ public class AccommodationController {
 
   private final AccommodationService accommodationService;
 
-  @GetMapping
-  public String test() {
-    return "test";
-  }
-
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
   public List<AccommodationResponseDto> findAccommodations(
-      @PathVariable("type") String type,
+      @PathVariable("type") AccommodationType type,
       @PathVariable("firstLocation") String firstLocation,
       @PathVariable("secondLocation") String secondLocation,
       @RequestParam(required = false) String name,
@@ -49,24 +44,4 @@ public class AccommodationController {
 
     return accommodations.stream().map(AccommodationResponseDto::of).toList();
   }
-
-//  @PostMapping()
-//  public ApiResponse<AccommodationResponseDto> create(
-//      @Valid @RequestBody final AccommodationRequestDto accommodationRequestDto) {
-//
-//    // 비즈니스 로직 처리
-//
-//    // AccommodationResponseDto에 담기
-//    AccommodationResponseDto accommodationResponseDto =
-//        AccommodationResponseDto.builder()
-//            .name("가평 V10 풀빌라")
-//            .address("경기 가평군 청평면 고성리 278-4")
-//            .location("가평/양평/포천")
-//            .type(AccommodationType.PENSION.getValue())
-//            .phoneNumber("1677-0000")
-//            .description("가평 풀빌라입니다.")
-//            .build();
-//
-//    return ApiResponse.success(accommodationResponseDto);
-//  }
 }

@@ -1,6 +1,7 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.Accommodation;
+import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.domain.Picture;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.reservation.domain.ReservationStatus;
@@ -22,7 +23,7 @@ public class AccommodationResponseDto {
 
   private Address address;
 
-  private String type;
+  private AccommodationType type;
 
   private int price;
 
@@ -42,7 +43,7 @@ public class AccommodationResponseDto {
     return AccommodationResponseDto.builder()
             .name(accommodation.getName())
             .address(accommodation.getAddress())
-            .type(accommodation.getType().getValue())
+            .type(accommodation.getType())
             .price(0) // TODO: 숙소의 가장 싼 룸의 가격을 가져와야함
             .rating(accommodation.getRating())
             .phoneNumber(accommodation.getPhoneNumber())

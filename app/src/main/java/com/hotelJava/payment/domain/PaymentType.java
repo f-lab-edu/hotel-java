@@ -14,5 +14,5 @@ public enum PaymentType {
     CARD("신용/체크카트"),
     PHONE("휴대폰결제");
 
-    private final String value;
+    private final String label;
 }
