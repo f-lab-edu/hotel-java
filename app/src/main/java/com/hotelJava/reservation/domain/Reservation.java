@@ -37,25 +37,7 @@ public class Reservation extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PaymentType paymentType;
 
-    @Transient
-    private String firstPhoneNumber;
-
-    @Transient
-    private String secondPhoneNumber;
-
-    @Transient
-    private String thirdPhoneNumber;
-
     private String phoneNumber;
-
-    @Access(AccessType.PROPERTY)
-    public String getPhoneNumber() {
-        return firstPhoneNumber + "-" + secondPhoneNumber + "-" + thirdPhoneNumber;
-    }
-
-    private void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;

@@ -29,15 +29,6 @@ public class Accommodation extends BaseTimeEntity {
 
     private double rating;
 
-    @Transient
-    private String firstPhoneNumber;
-
-    @Transient
-    private String secondPhoneNumber;
-
-    @Transient
-    private String thirdPhoneNumber;
-
     private String phoneNumber;
 
     @Embedded
@@ -55,15 +46,6 @@ public class Accommodation extends BaseTimeEntity {
 
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
-
-    @Access(AccessType.PROPERTY)
-    public String getPhoneNumber() {
-        return firstPhoneNumber + "-" + secondPhoneNumber + "-" + thirdPhoneNumber;
-    }
-
-    private void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
 
     //== 연관관계 편의 메소드 ==//
     public void addRooms(Room room) {
