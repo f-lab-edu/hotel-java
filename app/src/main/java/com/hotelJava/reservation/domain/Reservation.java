@@ -7,9 +7,6 @@ import com.hotelJava.payment.domain.PaymentType;
 import jakarta.persistence.*;
 import lombok.*;
 
-import java.time.LocalDateTime;
-import java.util.UUID;
-
 @Entity
 @Getter
 @Builder
@@ -45,9 +42,4 @@ public class Reservation extends BaseTimeEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
-
-    //== 예약 번호 생성 ==//
-    public void generateReservationNumber() {
-        this.reservationNo = UUID.randomUUID().toString() + LocalDateTime.now();
-    }
 }
