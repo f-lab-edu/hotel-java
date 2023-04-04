@@ -1,5 +1,7 @@
 package com.hotelJava.security.provider;
 
+import com.hotelJava.common.error.ErrorCode;
+import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.EmailPasswordAuthenticationToken;
@@ -39,16 +41,16 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
       throw new RuntimeException();
     }
     if (!memberDetails.isEnabled()) {
-      throw new RuntimeException();
+      throw new BadRequestException(ErrorCode.DISABLED_ACCOUNT);
     }
     if (!memberDetails.isAccountNonLocked()) {
-      throw new RuntimeException();
+      throw new BadRequestException(ErrorCode.LOCKED_ACCOUNT);
     }
     if (!memberDetails.isCredentialsNonExpired()) {
-      throw new RuntimeException();
+      throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
     if (!isCorrectedPassword(password, memberDetails.getPassword())) {
-      throw new RuntimeException();
+      throw new BadRequestException(ErrorCode.LOGIN_FAIL);
     }
 
     return EmailPasswordAuthenticationToken.getPostAuthenticationToken(memberDetails);
