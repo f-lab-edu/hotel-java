@@ -1,4 +1,4 @@
-package com.hotelJava.accommodation.util;
+package com.hotelJava.reservation.util;
 
 public interface ReservationNumberGenerator {
 
