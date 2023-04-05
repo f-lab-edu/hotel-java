@@ -2,6 +2,7 @@ package com.hotelJava.security.provider;
 
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
+import com.hotelJava.member.util.MemberPasswordEncoder;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.EmailPasswordAuthenticationToken;
@@ -9,7 +10,6 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -17,7 +17,7 @@ import org.springframework.stereotype.Component;
 public class MemberDetailsAuthenticationProvider implements AuthenticationProvider {
 
   private final MemberDetailsService memberDetailsService;
-  private final PasswordEncoder passwordEncoder;
+  private final MemberPasswordEncoder passwordEncoder;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -49,7 +49,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     if (!memberDetails.isCredentialsNonExpired()) {
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
-    if (!isCorrectedPassword(password, memberDetails.getPassword())) {
+    if (!passwordEncoder.matches(password, memberDetails.getPassword())) {
       throw new BadRequestException(ErrorCode.LOGIN_FAIL);
     }
 
@@ -59,9 +59,5 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
   @Override
   public boolean supports(Class<?> authentication) {
     return EmailPasswordAuthenticationToken.class.isAssignableFrom(authentication);
-  }
-
-  private boolean isCorrectedPassword(String requestPassWord, String password) {
-    return passwordEncoder.matches(requestPassWord, password);
   }
 }
