@@ -16,7 +16,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableWebSecurity(debug = true)
 public class SecurityConfig {
 
   private static final String API_URL = "/api/*";
@@ -29,6 +29,7 @@ public class SecurityConfig {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     AuthenticationManager authenticationManager = http.getSharedObject(AuthenticationManager.class);
+    http.csrf().disable(); // 프로덕션이 아니므로 csrf 필터를 꺼둔다.
     http.sessionManagement()
         .sessionCreationPolicy(SessionCreationPolicy.STATELESS)
         .and()
