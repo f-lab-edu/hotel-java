@@ -37,9 +37,6 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
 
     MemberDetails memberDetails = (MemberDetails) memberDetailsService.loadUserByUsername(email);
 
-    if (memberDetails == null) {
-      throw new RuntimeException();
-    }
     if (!memberDetails.isEnabled()) {
       throw new BadRequestException(ErrorCode.DISABLED_ACCOUNT);
     }
@@ -50,7 +47,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
     if (!passwordEncoder.matches(password, memberDetails.getPassword())) {
-      throw new BadRequestException(ErrorCode.LOGIN_FAIL);
+      throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 
     return EmailPasswordAuthenticationToken.getPostAuthenticationToken(memberDetails);

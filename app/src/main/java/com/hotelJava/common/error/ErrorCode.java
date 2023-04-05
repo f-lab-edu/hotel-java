@@ -9,11 +9,12 @@ import lombok.Getter;
 @Getter
 public enum ErrorCode {
   // 회원 관련 에러
-  LOGIN_FAIL(401, "로그인 실패. 이메일 또는 아이디를 확인하세요"),
-  DUPLICATED_EMAIL_FOUND(401, "중복된 이메일입니다"),
   DISABLED_ACCOUNT(401, "이미 탈퇴한 회원입니다"),
   LOCKED_ACCOUNT(401, "휴면 계정입니다. 비밀번호 재설정이 완료되면 휴면상태가 해제됩니다"),
   EXPIRED_PASSWORD(401, "비밀번호 재설정 기간이 지났습니다. 비밀번호를 재설정하세요"),
+  WRONG_PASSWORD(401, "로그인 실패. 비밀번호를 확인하세요"),
+  DUPLICATED_EMAIL_FOUND(401, "중복된 이메일입니다"),
+  EMAIL_NOT_FOUND(404, "존재하지 않는 회원입니다. 이메일을 확인하세요"),
 
   // 숙소 관련 에러,
   DUPLICATED_NAME_FOUND(409, "Name already exists"),
