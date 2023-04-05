@@ -32,6 +32,7 @@ public class Member implements ProfileInfo {
   private String phone;
 
   @OneToMany(mappedBy = "member")
+  @Builder.Default
   private List<Reservation> reservations = new ArrayList<>();
 
   @Default

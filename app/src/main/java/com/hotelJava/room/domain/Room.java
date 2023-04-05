@@ -1,16 +1,13 @@
 package com.hotelJava.room.domain;
 
 import com.hotelJava.accommodation.domain.Accommodation;
-import com.hotelJava.common.domain.Picture;
+import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.Reservation;
-import com.hotelJava.reservation.domain.ReservationStatus;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,15 +15,9 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
-
 import java.util.ArrayList;
 import java.util.List;
+import lombok.*;
 
 @Entity
 @Getter
@@ -36,29 +27,42 @@ import java.util.List;
 @AllArgsConstructor
 public class Room extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.IDENTITY)
+  private Long id;
 
-    private String name;
+  private String name;
 
-    private int price;
+  private int price;
 
-    private int maxOccupancy;
+  private int maxOccupancy;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "accommodation_id") // accommodation_id 외래 키로 연관관계를 맺는다.
-    private Accommodation accommodation;
+  @ManyToOne(fetch = FetchType.LAZY)
+  @JoinColumn(name = "accommodation_id") // accommodation_id 외래 키로 연관관계를 맺는다.
+  private Accommodation accommodation;
 
-    @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
-    private List<Picture> pictures = new ArrayList<>();
+  @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+  @Builder.Default
+  private List<Picture> pictures = new ArrayList<>();
 
-    @Enumerated(EnumType.STRING)
-    private ReservationStatus status;
+  @Embedded private CheckTime checkTime;
 
-    @Embedded
-    private CheckTime checkTime;
+  @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+  @Builder.Default
+  private List<Reservation> reservations = new ArrayList<>();
 
-    @OneToMany(mappedBy = "room")
-    private List<Reservation> reservations = new ArrayList<>();
+  @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
+  @Builder.Default
+  private List<RoomAvailability> roomAvailabilities = new ArrayList<>();
+
+  // == 연관관계 편의 메소드 ==//
+  public void addReservation(Reservation reservation) {
+    this.reservations.add(reservation);
+    reservation.setRoom(this);
+  }
+
+  public void addRoomAvailability(RoomAvailability roomAvailability) {
+    this.roomAvailabilities.add(roomAvailability);
+    roomAvailability.setRoom(this);
+  }
 }

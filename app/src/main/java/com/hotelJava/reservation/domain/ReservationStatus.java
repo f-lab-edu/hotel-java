@@ -8,8 +8,9 @@ import lombok.Getter;
 public enum ReservationStatus {
 
     RESERVATION_AVAILABLE("예약가능"),
-    SALES_COMPLETED("판매완료"),
-    RESERVATION_COMPLETED("예약완료");
+    RESERVATION_COMPLETED("예약완료"),
+    RESERVATION_CANCEL("예약취소"),
+    SALES_COMPLETED("판매완료");
 
     private final String label;
 }

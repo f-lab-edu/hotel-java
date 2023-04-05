@@ -1,22 +1,28 @@
-package com.hotelJava.common.embeddable;
+package com.hotelJava.accommodation.picture.domain;
 
 import jakarta.persistence.Embeddable;
-import java.time.LocalTime;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
 
 @Embeddable
 @Getter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class CheckTime {
+public class PictureInfo {
 
-    private LocalTime checkInTime;
+    private String name;
 
-    private LocalTime checkOutTime;
+    private String originFileName;
+
+    private String saveFileName;
+
+    private String extension;
+
+    private String fullPath;
+
+    private long fileSize;
 }
