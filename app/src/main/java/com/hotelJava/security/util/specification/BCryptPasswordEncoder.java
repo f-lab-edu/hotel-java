@@ -1,6 +1,7 @@
-package com.hotelJava.member.util;
+package com.hotelJava.security.util.specification;
 
 import com.hotelJava.member.dto.SignUpRequestDto;
+import com.hotelJava.security.util.impl.MemberPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;

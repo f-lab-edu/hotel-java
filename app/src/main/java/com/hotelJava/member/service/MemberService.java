@@ -8,7 +8,7 @@ import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.ProfileInfo;
 import com.hotelJava.member.dto.SignUpRequestDto;
 import com.hotelJava.member.repository.MemberRepository;
-import com.hotelJava.member.util.MemberPasswordEncoder;
+import com.hotelJava.security.util.impl.MemberPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

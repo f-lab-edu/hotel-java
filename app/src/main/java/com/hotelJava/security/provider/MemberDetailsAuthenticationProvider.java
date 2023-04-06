@@ -2,7 +2,7 @@ package com.hotelJava.security.provider;
 
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
-import com.hotelJava.member.util.MemberPasswordEncoder;
+import com.hotelJava.security.util.impl.MemberPasswordEncoder;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.EmailPasswordAuthenticationToken;

@@ -1,4 +1,4 @@
-package com.hotelJava.member.util;
+package com.hotelJava.security.util.impl;
 
 import com.hotelJava.member.dto.SignUpRequestDto;
 
