@@ -16,6 +16,9 @@ public enum ErrorCode {
   DUPLICATED_EMAIL_FOUND(401, "중복된 이메일입니다"),
   EMAIL_NOT_FOUND(404, "존재하지 않는 회원입니다. 이메일을 확인하세요"),
 
+  // 서버 내부 관련 에러
+  LOGIN_TOKEN_ERROR(500, "로그인 토큰 생성 과정에서 문제가 발생하였습니다. 잠시 후 다시 시도해주세요"),
+
   // 숙소 관련 에러,
   DUPLICATED_NAME_FOUND(409, "Name already exists"),
   NO_MINIMUM_PRICE_FOUND(500, "No minimum price found for the given accommodation");
