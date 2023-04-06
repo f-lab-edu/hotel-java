@@ -17,7 +17,12 @@ import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import java.util.ArrayList;
 import java.util.List;
-import lombok.*;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -41,11 +46,11 @@ public class Room extends BaseTimeEntity {
   @JoinColumn(name = "accommodation_id") // accommodation_id 외래 키로 연관관계를 맺는다.
   private Accommodation accommodation;
 
+  @Embedded private CheckTime checkTime;
+
   @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
   @Builder.Default
   private List<Picture> pictures = new ArrayList<>();
-
-  @Embedded private CheckTime checkTime;
 
   @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
   @Builder.Default
@@ -56,6 +61,11 @@ public class Room extends BaseTimeEntity {
   private List<RoomAvailability> roomAvailabilities = new ArrayList<>();
 
   // == 연관관계 편의 메소드 ==//
+  public void addPicture(Picture picture) {
+    this.pictures.add(picture);
+    picture.setRoom(this);
+  }
+
   public void addReservation(Reservation reservation) {
     this.reservations.add(reservation);
     reservation.setRoom(this);

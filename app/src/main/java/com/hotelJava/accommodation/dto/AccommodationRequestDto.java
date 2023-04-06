@@ -1,27 +1,34 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.AccommodationType;
+import com.hotelJava.common.embeddable.Address;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
+import java.time.LocalDate;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
-import java.time.LocalDateTime;
-
 @Getter
+@Builder
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class AccommodationRequestDto {
 
   @NotBlank(message = "숙소 이름을 입력해주세요.")
   @Length(max = 20, message = "숙소 이름은 20자 이내로 입력해주세요.")
   private String name;
 
+  @Enumerated(EnumType.STRING)
   private AccommodationType accommodationType;
 
-  @Future
-  private LocalDateTime checkInDate;
+  @Embedded private Address address;
 
-  @Future
-  private LocalDateTime checkOutDate;
+  @Future private LocalDate checkInDate;
 
-  private String guestCount;
+  @Future private LocalDate checkOutDate;
+
+  private int guestCount;
 }
