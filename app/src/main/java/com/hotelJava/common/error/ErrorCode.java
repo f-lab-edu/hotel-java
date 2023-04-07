@@ -18,8 +18,11 @@ public enum ErrorCode {
 
   // 서버 내부 관련 에러
   LOGIN_TOKEN_ERROR(500, "로그인 토큰 생성 과정에서 문제가 발생하였습니다. 잠시 후 다시 시도해주세요"),
+  AUTHENTICATION_FAIL(401, "로그인에 실패하였습니다. 로그인을 다시 시도하세요"),
+  BAD_CREDENTIAL(401, "비정상 로그인 요청입니다. 로그인 정보를 확인해주세요"),
+  ACCESS_DENIED(403, "접근할 수 없는 경로입니다"),
 
-  // 숙소 관련 에러,
+  // 숙소 관련 에러
   DUPLICATED_NAME_FOUND(409, "Name already exists"),
   NO_MINIMUM_PRICE_FOUND(500, "No minimum price found for the given accommodation");
 
