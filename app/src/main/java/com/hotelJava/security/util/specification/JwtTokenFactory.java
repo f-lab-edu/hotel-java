@@ -1,33 +1,40 @@
 package com.hotelJava.security.util.specification;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTCreator;
 import com.auth0.jwt.algorithms.Algorithm;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.security.util.impl.WebTokenFactory;
-import java.util.Date;
-import java.util.List;
-import org.springframework.security.core.userdetails.UserDetails;
+import java.util.Map;
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.stereotype.Component;
 
-public class JwtTokenFactory implements WebTokenFactory {
+@Slf4j
+@RequiredArgsConstructor
+@Component
+public class JwtTokenFactory {
 
-  private static final String AUTHORITY_KEY = "ROLE";
-  private static final String PRINCIPAL_KEY = "EMAIL";
-  private static final String TOKEN_ISSUER = "hotelJava";
-  private static final String SECRET_KEY = "hotelJava-jwt-secret";
-  private static final long TOKEN_VALID_DURATION = 1000 * 60 * 10; // 10분
+  private final ObjectMapper objectMapper;
 
-  @Override
-  public String generate(UserDetails userDetails) {
+  public String generate(JwtPayload payload, Algorithm algorithm) {
+    JWTCreator.Builder builder = JWT.create();
+
     try {
-      return JWT.create()
-          .withIssuer(TOKEN_ISSUER)
-          .withExpiresAt(new Date(System.currentTimeMillis() + TOKEN_VALID_DURATION))
-          .withClaim(PRINCIPAL_KEY, userDetails.getUsername())
-          .withClaim(AUTHORITY_KEY, List.of(userDetails.getAuthorities()))
-          .sign(Algorithm.HMAC512(SECRET_KEY));
-    } catch (Exception e) {
-      throw new InternalServerException(ErrorCode.LOGIN_TOKEN_ERROR);
+      for (Map.Entry<String, Object> claim : payload.getClaims().entrySet()) {
+        builder.withClaim(claim.getKey(), objectMapper.writeValueAsString(claim.getValue()));
+      }
+    } catch (JsonProcessingException e) {
+      log.error("토큰 생성 과정에서 예외 발생");
+      throw new InternalServerException(ErrorCode.BAD_CREDENTIAL);
     }
+
+    return builder
+        .withIssuer(payload.getIssuer())
+        .withExpiresAt(payload.getExpired())
+        .withSubject(payload.getSubject())
+        .sign(algorithm);
   }
 }
