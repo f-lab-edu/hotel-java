@@ -1,11 +1,8 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.picture.domain.Picture;
+import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
 import com.hotelJava.common.embeddable.Address;
-import jakarta.persistence.Embedded;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,9 +19,8 @@ public class AccommodationResponseDto {
 
   private String name;
 
-  @Embedded private Address address;
+  private Address address;
 
-  @Enumerated(EnumType.STRING)
   private AccommodationType type;
 
   private double rating;
@@ -33,7 +29,7 @@ public class AccommodationResponseDto {
 
   private String phoneNumber;
 
-  private Picture picture;
+  private PictureResponseDto pictureResponseDto;
 
   private String description;
 }

@@ -6,8 +6,10 @@ import com.hotelJava.accommodation.dto.AccommodationResponseDto;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
 import com.hotelJava.accommodation.util.AccommodationMapper;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
+import com.hotelJava.common.error.ErrorCode;
+import com.hotelJava.common.error.exception.InternalServerException;
 import com.hotelJava.room.domain.Room;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,21 +37,18 @@ public class AccommodationService {
     List<Accommodation> accommodations =
         accommodationRepository.findAccommodations(
             type, firstLocation, secondLocation, name, checkInDate, checkOutDate, guestCount);
-
-    List<AccommodationResponseDto> accommodationResponseDtos = new ArrayList<>();
-
-    for (Accommodation accommodation : accommodations) {
-      int minimumRoomPrice = Integer.MAX_VALUE;
-
-      for (Room room : accommodation.getRooms()) {
-        minimumRoomPrice = Math.min(minimumRoomPrice, room.getPrice());
-      }
-      AccommodationResponseDto accommodationResponseDto =
-          accommodationMapper.toAccommodationResponseDto(accommodation);
-      accommodationResponseDto.setMinimumRoomPrice(minimumRoomPrice);
-      accommodationResponseDtos.add(accommodationResponseDto);
-    }
-
-    return accommodationResponseDtos;
+    return accommodations.stream()
+        .map(
+            accommodation -> {
+              int minimumRoomPrice =
+                  accommodation.getRooms().stream()
+                      .mapToInt(Room::getPrice)
+                      .min()
+                      .orElseThrow(
+                          () -> new InternalServerException(ErrorCode.NO_MINIMUM_PRICE_FOUND));
+              return accommodationMapper.toAccommodationResponseDto(
+                  minimumRoomPrice, accommodation);
+            })
+        .collect(Collectors.toList());
   }
 }

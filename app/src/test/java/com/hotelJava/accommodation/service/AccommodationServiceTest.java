@@ -167,6 +167,7 @@ public class AccommodationServiceTest {
     accommodation1.setPicture(accommodationPicture);
 
     accommodation2.addRooms(room3);
+    accommodation2.setPicture(accommodationPicture);
 
     accommodationRepository.save(accommodation1);
     accommodationRepository.save(accommodation2);
@@ -180,8 +181,8 @@ public class AccommodationServiceTest {
     String firstLocation = "서울";
     String secondLocation = "강남";
     String name = "";
-    LocalDate checkInDate = LocalDate.of(2023, 4, 6);
-    LocalDate checkOutDate = LocalDate.of(2023, 4, 7);
+    LocalDate checkInDate = LocalDate.of(2023, 5, 6);
+    LocalDate checkOutDate = LocalDate.of(2023, 5, 7);
 
     // when
     List<AccommodationResponseDto> accommodations =
