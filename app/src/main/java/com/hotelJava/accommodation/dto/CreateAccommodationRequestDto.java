@@ -3,8 +3,10 @@ package com.hotelJava.accommodation.dto;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
 import com.hotelJava.common.embeddable.Address;
+import com.hotelJava.room.dto.CreateRoomRequestDto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
+import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -30,9 +32,14 @@ public class CreateAccommodationRequestDto {
   @NotBlank(message = "숙소 타입을 선택해주세요.")
   private AccommodationType accommodationType;
 
+  @NotBlank(message = "주소를 입력해주세요.")
   private Address address;
 
-  private List<PictureResponseDto> pictureResponseDtos;
-  
+  @NotBlank(message = "숙소 사진 정보가 없습니다.")
+  private PictureResponseDto pictureResponseDto;
+
+  @NotBlank(message = "룸 정보가 없습니다.")
+  private List<CreateRoomRequestDto> createRoomRequestDtos = new ArrayList<>();
+
   private String description;
 }
