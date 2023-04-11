@@ -4,6 +4,7 @@ import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
 import com.hotelJava.common.embeddable.CheckTime;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -26,9 +27,10 @@ public class CreateRoomRequestDto {
   @NotBlank(message = "룸 최대 인원을 입력해주세요.")
   private int maxOccupancy;
 
-  @NotBlank(message = "룸 사진 정보가 없습니다.")
+  @NotNull(message = "룸 사진 정보가 없습니다.")
+  @Builder.Default
   private List<PictureResponseDto> pictureResponseDtos = new ArrayList<>();
 
-  @NotBlank(message = "체크인, 체크아웃 시간을 선택해주세요.")
+  @NotNull(message = "체크인, 체크아웃 시간을 선택해주세요.")
   @Future private CheckTime checkTime;
 }
