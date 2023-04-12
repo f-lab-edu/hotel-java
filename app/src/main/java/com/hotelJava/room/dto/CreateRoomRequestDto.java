@@ -1,6 +1,6 @@
 package com.hotelJava.room.dto;
 
-import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
+import com.hotelJava.accommodation.picture.dto.PictureDto;
 import com.hotelJava.common.embeddable.CheckTime;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -24,13 +24,19 @@ public class CreateRoomRequestDto {
   @Length(max = 20, message = "룸 이름은 20자 이내로 입력해주세요.")
   private String name;
 
+  @NotNull(message = "룸의 가격을 입력해주세요.")
+  private int price;
+  
   @NotBlank(message = "룸 최대 인원을 입력해주세요.")
   private int maxOccupancy;
 
+  @NotNull(message = "체크인, 체크아웃 시간을 선택해주세요.")
+  @Future
+  private CheckTime checkTime;
+  
   @NotNull(message = "룸 사진 정보가 없습니다.")
   @Builder.Default
-  private List<PictureResponseDto> pictureResponseDtos = new ArrayList<>();
+  private List<PictureDto> pictureDtos = new ArrayList<>();
 
-  @NotNull(message = "체크인, 체크아웃 시간을 선택해주세요.")
-  @Future private CheckTime checkTime;
+
 }

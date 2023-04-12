@@ -1,7 +1,7 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
+import com.hotelJava.accommodation.picture.dto.PictureDto;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.room.dto.CreateRoomRequestDto;
 import jakarta.validation.constraints.NotBlank;
@@ -31,13 +31,13 @@ public class CreateAccommodationRequestDto {
   private String phoneNumber;
 
   @NotNull(message = "숙소 타입을 선택해주세요.")
-  private AccommodationType accommodationType;
+  private AccommodationType type;
 
   @NotNull(message = "주소를 입력해주세요.")
   private Address address;
 
   @NotNull(message = "숙소 사진 정보가 없습니다.")
-  private PictureResponseDto pictureResponseDto;
+  private PictureDto pictureDto;
 
   @NotNull(message = "룸 정보가 없습니다.")
   @Builder.Default

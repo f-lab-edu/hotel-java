@@ -1,7 +1,7 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.picture.dto.PictureResponseDto;
+import com.hotelJava.accommodation.picture.dto.PictureDto;
 import com.hotelJava.common.embeddable.Address;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -15,21 +15,23 @@ import lombok.Setter;
 @AllArgsConstructor
 @Getter
 @Setter
-public class AccommodationResponseDto {
+public class FindAccommodationResponseDto {
+
+  private Long id;
 
   private String name;
+
+  private double rating;
+
+  private String phoneNumber;
 
   private Address address;
 
   private AccommodationType type;
 
-  private double rating;
-
-  private int minimumRoomPrice;
-
-  private String phoneNumber;
-
-  private PictureResponseDto pictureResponseDto;
+  private PictureDto pictureDto;
 
   private String description;
+
+  private int minimumRoomPrice;
 }
