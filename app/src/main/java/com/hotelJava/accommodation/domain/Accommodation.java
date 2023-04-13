@@ -44,8 +44,7 @@ public class Accommodation extends BaseTimeEntity {
   @Enumerated(EnumType.STRING)
   private AccommodationType type;
 
-  @Builder.Default
-  private double rating = 0.0;
+  private double rating;
 
   private String phoneNumber;
 
