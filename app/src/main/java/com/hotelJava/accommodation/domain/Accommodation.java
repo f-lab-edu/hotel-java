@@ -65,13 +65,14 @@ public class Accommodation extends BaseTimeEntity {
   private ReservationStatus status = ReservationStatus.RESERVATION_AVAILABLE;
 
   // == 연관관계 편의 메소드 ==//
-  public void addRooms(Room room) {
-    this.rooms.add(room);
-    room.setAccommodation(this);
-  }
-
   public void setPicture(Picture picture) {
     this.picture = picture;
     picture.setAccommodation(this);
+  }
+  
+  public void createAccommodation(List<Room> rooms, Picture accommodationPicture) {
+    this.picture = accommodationPicture;
+    this.rooms.addAll(rooms);
+    rooms.forEach(room -> room.setAccommodation(this));
   }
 }

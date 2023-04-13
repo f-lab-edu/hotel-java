@@ -70,23 +70,22 @@ public class AccommodationService {
     Accommodation accommodation = accommodationMapper.toEntity(createAccommodationRequestDto);
     Picture accommodationPicture =
         pictureMapper.toEntity(createAccommodationRequestDto.getPictureDto());
-    accommodation.setPicture(accommodationPicture);
 
-    createAccommodationRequestDto
-        .getCreateRoomRequestDtos()
-        .forEach(
-            createRoomRequestDto -> {
-              Room room = roomMapper.toEntity(createRoomRequestDto);
+    List<Room> rooms =
+        createAccommodationRequestDto.getCreateRoomRequestDtos().stream()
+            .map(
+                createRoomRequestDto -> {
+                  Room room = roomMapper.toEntity(createRoomRequestDto);
 
-              createRoomRequestDto
-                  .getPictureDtos()
-                  .forEach(
-                      pictureDto -> {
-                        Picture picture = pictureMapper.toEntity(pictureDto);
-                        room.addPicture(picture);
-                      });
-              accommodation.addRooms(room);
-            });
+                  createRoomRequestDto.getPictureDtos().stream()
+                      .map(pictureMapper::toEntity)
+                      .forEach(room::addPicture);
+
+                  return room;
+                })
+            .toList();
+
+    accommodation.createAccommodation(rooms, accommodationPicture);
 
     return accommodationMapper.toCreateAccommodationResponseDto(
         accommodationRepository.save(accommodation));
