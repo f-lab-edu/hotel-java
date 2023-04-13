@@ -5,6 +5,7 @@ import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -35,7 +36,7 @@ public class Picture extends BaseTimeEntity {
     @Embedded
     private PictureInfo pictureInfo;
 
-    @Enumerated
+    @Enumerated(EnumType.STRING)
     private PictureType pictureType;
 
     @OneToOne(mappedBy = "picture", fetch = FetchType.LAZY)

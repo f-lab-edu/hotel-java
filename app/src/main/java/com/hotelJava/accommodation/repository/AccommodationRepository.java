@@ -12,10 +12,17 @@ import org.springframework.stereotype.Repository;
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
 
   @Query(
-      "select a from Accommodation a join a.rooms r join r.reservations res "
-          + "where a.address.firstLocation = :firstLocation AND a.address.secondLocation = :secondLocation AND "
-          + "a.type = :type AND r.maxOccupancy >= :guestCount AND (:name = '' OR a.name LIKE %:name%) AND "
-          + "res.status <> 'RESERVATION_COMPLETED' AND :checkInDate >= CURRENT_DATE AND :checkOutDate > CURRENT_DATE AND "
+      "select a from Accommodation a "
+          + "left join a.rooms r "
+          + "left join r.reservations res "
+          + "where a.address.firstLocation = :firstLocation "
+          + "AND a.address.secondLocation = :secondLocation "
+          + "AND a.type = :type "
+          + "AND r.maxOccupancy >= :guestCount "
+          + "AND (:name = '' OR a.name LIKE %:name%) "
+          + "AND (res.id is null OR res.status <> 'RESERVATION_COMPLETED') "
+          + "AND :checkInDate >= CURRENT_DATE "
+          + "AND :checkOutDate > CURRENT_DATE AND "
           + "NOT EXISTS (SELECT res from Reservation res "
           + "where res.checkDate.checkInDate < :checkOutDate AND res.checkDate.checkOutDate > :checkInDate)")
   List<Accommodation> findAccommodations(
@@ -26,4 +33,6 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
       LocalDate checkInDate,
       LocalDate checkOutDate,
       int guestCount);
+
+  boolean existsByName(String name);
 }
