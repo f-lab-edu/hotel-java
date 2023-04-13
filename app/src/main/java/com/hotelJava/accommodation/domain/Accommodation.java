@@ -5,8 +5,6 @@ import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;
-import java.util.ArrayList;
-import java.util.List;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -20,6 +18,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.Lob;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.OneToOne;
+import java.util.ArrayList;
+import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -44,7 +44,8 @@ public class Accommodation extends BaseTimeEntity {
   @Enumerated(EnumType.STRING)
   private AccommodationType type;
 
-  private double rating;
+  @Builder.Default
+  private double rating = 0.0;
 
   private String phoneNumber;
 
@@ -61,7 +62,8 @@ public class Accommodation extends BaseTimeEntity {
   @Lob private String description;
 
   @Enumerated(EnumType.STRING)
-  private ReservationStatus status;
+  @Builder.Default
+  private ReservationStatus status = ReservationStatus.RESERVATION_AVAILABLE;
 
   // == 연관관계 편의 메소드 ==//
   public void addRooms(Room room) {

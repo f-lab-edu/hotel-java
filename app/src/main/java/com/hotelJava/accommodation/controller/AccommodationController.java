@@ -1,10 +1,11 @@
 package com.hotelJava.accommodation.controller;
 
-import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.dto.AccommodationResponseDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.service.AccommodationService;
-import com.hotelJava.accommodation.util.AccommodationMapper;
+import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,7 @@ public class AccommodationController {
   private final AccommodationService accommodationService;
 
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
-  public List<AccommodationResponseDto> findAccommodations(
+  public List<FindAccommodationResponseDto> findAccommodations(
       @PathVariable(name = "type", required = true) AccommodationType type,
       @PathVariable(name = "firstLocation", required = true) String firstLocation,
       @PathVariable(name = "secondLocation", required = true) String secondLocation,
@@ -32,5 +33,11 @@ public class AccommodationController {
       @RequestParam(required = false, defaultValue = "2") int guestCount) {
     return accommodationService.findAccommodations(
         type, firstLocation, secondLocation, name, checkInDate, checkOutDate, guestCount);
+  }
+
+  @PostMapping
+  public CreateAccommodationResponseDto createAccommodation(
+      @Valid @RequestBody CreateAccommodationRequestDto createAccommodationRequestDto) {
+        return accommodationService.saveAccommodation(createAccommodationRequestDto);
   }
 }
