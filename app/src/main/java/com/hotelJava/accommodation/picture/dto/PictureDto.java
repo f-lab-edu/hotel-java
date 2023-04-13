@@ -13,7 +13,9 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class PictureResponseDto {
+public class PictureDto {
+
+  private Long id;
 
   @Embedded private PictureInfo pictureInfo;
 
