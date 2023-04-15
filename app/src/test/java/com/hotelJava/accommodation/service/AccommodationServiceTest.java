@@ -4,14 +4,14 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.dto.AccommodationResponseDto;
+import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.picture.domain.Picture;
+import com.hotelJava.accommodation.picture.domain.PictureInfo;
 import com.hotelJava.accommodation.picture.domain.PictureType;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.embeddable.CheckTime;
-import com.hotelJava.accommodation.picture.domain.PictureInfo;
 import com.hotelJava.payment.domain.PaymentType;
 import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationStatus;
@@ -162,12 +162,8 @@ public class AccommodationServiceTest {
     room3.addRoomAvailability(roomAvailability2);
     room3.addReservation(reservation2);
 
-    accommodation1.addRooms(room1);
-    accommodation1.addRooms(room2);
-    accommodation1.setPicture(accommodationPicture);
-
-    accommodation2.addRooms(room3);
-    accommodation2.setPicture(accommodationPicture);
+    accommodation1.createAccommodation(List.of(room1, room2), accommodationPicture);
+    accommodation2.createAccommodation(List.of(room3), accommodationPicture);
 
     accommodationRepository.save(accommodation1);
     accommodationRepository.save(accommodation2);
@@ -185,7 +181,7 @@ public class AccommodationServiceTest {
     LocalDate checkOutDate = LocalDate.of(2023, 5, 7);
 
     // when
-    List<AccommodationResponseDto> accommodations =
+    List<FindAccommodationResponseDto> accommodations =
         accommodationService.findAccommodations(
             type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2);
 

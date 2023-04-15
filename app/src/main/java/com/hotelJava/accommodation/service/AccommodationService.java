@@ -2,15 +2,21 @@ package com.hotelJava.accommodation.service;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.dto.AccommodationResponseDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.picture.domain.Picture;
+import com.hotelJava.accommodation.picture.util.PictureMapper;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
 import com.hotelJava.accommodation.util.AccommodationMapper;
+import com.hotelJava.common.error.ErrorCode;
+import com.hotelJava.common.error.exception.BadRequestException;
+import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.room.domain.Room;
+import com.hotelJava.room.util.RoomMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.hotelJava.common.error.ErrorCode;
-import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.room.domain.Room;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -26,7 +32,11 @@ public class AccommodationService {
 
   private final AccommodationMapper accommodationMapper;
 
-  public List<AccommodationResponseDto> findAccommodations(
+  private final RoomMapper roomMapper;
+
+  private final PictureMapper pictureMapper;
+
+  public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
       String firstLocation,
       String secondLocation,
@@ -46,9 +56,45 @@ public class AccommodationService {
                       .min()
                       .orElseThrow(
                           () -> new InternalServerException(ErrorCode.NO_MINIMUM_PRICE_FOUND));
-              return accommodationMapper.toAccommodationResponseDto(
+              return accommodationMapper.toFindAccommodationResponseDto(
                   minimumRoomPrice, accommodation);
             })
         .collect(Collectors.toList());
+  }
+
+  @Transactional
+  public CreateAccommodationResponseDto saveAccommodation(
+      CreateAccommodationRequestDto createAccommodationRequestDto) {
+    validateDuplicatedAccommodation(createAccommodationRequestDto);
+
+    Accommodation accommodation = accommodationMapper.toEntity(createAccommodationRequestDto);
+    Picture accommodationPicture =
+        pictureMapper.toEntity(createAccommodationRequestDto.getPictureDto());
+
+    List<Room> rooms =
+        createAccommodationRequestDto.getCreateRoomRequestDtos().stream()
+            .map(
+                createRoomRequestDto -> {
+                  Room room = roomMapper.toEntity(createRoomRequestDto);
+
+                  createRoomRequestDto.getPictureDtos().stream()
+                      .map(pictureMapper::toEntity)
+                      .forEach(room::addPicture);
+
+                  return room;
+                })
+            .toList();
+
+    accommodation.createAccommodation(rooms, accommodationPicture);
+
+    return accommodationMapper.toCreateAccommodationResponseDto(
+        accommodationRepository.save(accommodation));
+  }
+
+  private void validateDuplicatedAccommodation(
+      CreateAccommodationRequestDto createAccommodationRequestDto) {
+    if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
+      throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
+    }
   }
 }
