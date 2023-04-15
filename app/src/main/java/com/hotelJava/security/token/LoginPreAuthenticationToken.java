@@ -3,14 +3,9 @@ package com.hotelJava.security.token;
 import com.hotelJava.security.dto.LoginDto;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 
-public class PreAuthenticationToken extends UsernamePasswordAuthenticationToken {
-
-  public PreAuthenticationToken(Object principal, Object credentials) {
-    super(principal, credentials);
-  }
-
-  public static PreAuthenticationToken generate(LoginDto dto) {
-    return new PreAuthenticationToken(dto.email(), dto.password());
+public class LoginPreAuthenticationToken extends UsernamePasswordAuthenticationToken {
+  public LoginPreAuthenticationToken(LoginDto dto) {
+    super(dto.email(), dto.password());
   }
 
   public String getEmail() {

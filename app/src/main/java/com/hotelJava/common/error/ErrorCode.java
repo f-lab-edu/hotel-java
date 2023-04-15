@@ -16,7 +16,7 @@ public enum ErrorCode {
   DUPLICATED_EMAIL_FOUND(401, "중복된 이메일입니다"),
   EMAIL_NOT_FOUND(404, "존재하지 않는 회원입니다. 이메일을 확인하세요"),
 
-  // 서버 내부 관련 에러
+  // 로그인 관련 에러
   LOGIN_TOKEN_ERROR(500, "로그인 토큰 생성 과정에서 문제가 발생하였습니다. 잠시 후 다시 시도해주세요"),
   AUTHENTICATION_FAIL(401, "로그인에 실패하였습니다. 로그인을 다시 시도하세요"),
   BAD_CREDENTIAL(401, "비정상 로그인 요청입니다. 로그인 정보를 확인해주세요"),

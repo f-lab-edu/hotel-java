@@ -5,8 +5,8 @@ import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
-import com.hotelJava.security.token.PostAuthenticationToken;
-import com.hotelJava.security.token.PreAuthenticationToken;
+import com.hotelJava.security.token.LoginPostAuthenticationToken;
+import com.hotelJava.security.token.LoginPreAuthenticationToken;
 import com.hotelJava.security.util.impl.MemberPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -30,7 +30,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
       throw new InternalServerException(ErrorCode.BAD_CREDENTIAL);
     }
 
-    PreAuthenticationToken preAuthToken = (PreAuthenticationToken) authentication;
+    LoginPreAuthenticationToken preAuthToken = (LoginPreAuthenticationToken) authentication;
 
     String email = preAuthToken.getEmail();
     String password = preAuthToken.getPassword();
@@ -55,11 +55,11 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
       throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 
-    return PostAuthenticationToken.generate(memberDetails);
+    return new LoginPostAuthenticationToken(memberDetails);
   }
 
   @Override
   public boolean supports(Class<?> authentication) {
-    return PreAuthenticationToken.class.isAssignableFrom(authentication);
+    return LoginPreAuthenticationToken.class.isAssignableFrom(authentication);
   }
 }
