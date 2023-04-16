@@ -8,6 +8,7 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
 import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.accommodation.picture.domain.PictureInfo;
 import com.hotelJava.accommodation.picture.domain.PictureType;
@@ -224,32 +225,28 @@ public class AccommodationServiceTest {
             .build();
 
     PictureInfo roomPictureInfo =
-            PictureInfo.builder()
-                    .name("1번방 사진")
-                    .originFileName("origin 파일명")
-                    .saveFileName("save 파일명")
-                    .extension("확장자")
-                    .fullPath("전체 경로")
-                    .fileSize(5000)
-                    .build();
+        PictureInfo.builder()
+            .name("1번방 사진")
+            .originFileName("origin 파일명")
+            .saveFileName("save 파일명")
+            .extension("확장자")
+            .fullPath("전체 경로")
+            .fileSize(5000)
+            .build();
     PictureInfo roomPictureInfo2 =
-            PictureInfo.builder()
-                    .name("2번방 사진")
-                    .originFileName("origin 파일명")
-                    .saveFileName("save 파일명")
-                    .extension("확장자")
-                    .fullPath("전체 경로")
-                    .fileSize(5000)
-                    .build();
+        PictureInfo.builder()
+            .name("2번방 사진")
+            .originFileName("origin 파일명")
+            .saveFileName("save 파일명")
+            .extension("확장자")
+            .fullPath("전체 경로")
+            .fileSize(5000)
+            .build();
 
-    PictureDto pictureDto = PictureDto.builder()
-            .pictureInfo(roomPictureInfo)
-            .pictureType(PictureType.ROOM)
-            .build();
-    PictureDto pictureDto2 = PictureDto.builder()
-            .pictureInfo(roomPictureInfo2)
-            .pictureType(PictureType.ROOM)
-            .build();
+    PictureDto pictureDto =
+        PictureDto.builder().pictureInfo(roomPictureInfo).pictureType(PictureType.ROOM).build();
+    PictureDto pictureDto2 =
+        PictureDto.builder().pictureInfo(roomPictureInfo2).pictureType(PictureType.ROOM).build();
 
     CreateRoomRequestDto room =
         CreateRoomRequestDto.builder()
@@ -264,18 +261,18 @@ public class AccommodationServiceTest {
             .pictureDtos(List.of(pictureDto))
             .build();
     CreateRoomRequestDto room2 =
-            CreateRoomRequestDto.builder()
-                    .name("자바 게스트하우스 2번방")
-                    .price(3000)
-                    .maxOccupancy(4)
-                    .checkTime(
-                            CheckTime.builder()
-                                    .checkInTime(LocalTime.of(12, 0))
-                                    .checkOutTime(LocalTime.of(12, 0))
-                                    .build())
-                    .pictureDtos(List.of(pictureDto2))
-                    .build();
-    
+        CreateRoomRequestDto.builder()
+            .name("자바 게스트하우스 2번방")
+            .price(3000)
+            .maxOccupancy(4)
+            .checkTime(
+                CheckTime.builder()
+                    .checkInTime(LocalTime.of(12, 0))
+                    .checkOutTime(LocalTime.of(12, 0))
+                    .build())
+            .pictureDtos(List.of(pictureDto2))
+            .build();
+
     CreateAccommodationRequestDto createAccommodationRequestDto =
         CreateAccommodationRequestDto.builder()
             .name("test accommodation2")
@@ -297,12 +294,57 @@ public class AccommodationServiceTest {
             .build();
 
     // when
-    CreateAccommodationResponseDto createAccommodationResponseDto = accommodationService.saveAccommodation(createAccommodationRequestDto);
-    
+    CreateAccommodationResponseDto createAccommodationResponseDto =
+        accommodationService.saveAccommodation(createAccommodationRequestDto);
+
     // then
-    assertThat(createAccommodationResponseDto.getName()).isEqualTo(createAccommodationRequestDto.getName());
-    assertThat(createAccommodationResponseDto.getAddress()).isEqualTo(createAccommodationRequestDto.getAddress());
-    assertThat(createAccommodationResponseDto.getCreateRoomResponseDtos().get(0).getName()).isEqualTo("자바 게스트하우스 1번방");
+    assertThat(createAccommodationResponseDto.getName())
+        .isEqualTo(createAccommodationRequestDto.getName());
+    assertThat(createAccommodationResponseDto.getAddress())
+        .isEqualTo(createAccommodationRequestDto.getAddress());
+    assertThat(createAccommodationResponseDto.getCreateRoomResponseDtos().get(0).getName())
+        .isEqualTo("자바 게스트하우스 1번방");
     assertThat(createAccommodationResponseDto.getDescription()).isEqualTo("숙소에 대한 설명~");
+  }
+
+  @DisplayName("숙소 정보 수정")
+  @Test
+  void 숙소_수정() {
+    // given
+    PictureInfo accommodationPictureInfo =
+        PictureInfo.builder()
+            .name("자바 게스트 하우스 전체 사진")
+            .originFileName("origin 파일명")
+            .saveFileName("save 파일명")
+            .extension("확장자")
+            .fullPath("전체 경로")
+            .fileSize(5000)
+            .build();
+
+    UpdateAccommodationRequestDto updateAccommodationRequestDto =
+        UpdateAccommodationRequestDto.builder()
+            .name("숙소 이름 변경")
+            .phoneNumber("010-0000-0000")
+            .type(AccommodationType.GUESTHOUSE)
+            .address(
+                Address.builder()
+                    .firstLocation("경기도")
+                    .secondLocation("수원")
+                    .fullAddress("경기도 수원시 팔달구")
+                    .build())
+            .pictureDto(
+                PictureDto.builder()
+                    .pictureInfo(accommodationPictureInfo)
+                    .pictureType(PictureType.ACCOMMODATION)
+                    .build())
+            .description("숙소 설명 변경")
+            .build();
+
+    // when
+    accommodationService.updateAccommodation(accommodation1.getId(), updateAccommodationRequestDto);
+
+    // then
+    assertThat(accommodation1.getName()).isEqualTo("숙소 이름 변경");
+    assertThat(accommodation1.getAddress().getSecondLocation()).isEqualTo("수원");
   }
 }

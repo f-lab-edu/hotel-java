@@ -5,6 +5,7 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
 import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.accommodation.picture.util.PictureMapper;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
@@ -96,5 +97,22 @@ public class AccommodationService {
     if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
       throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
     }
+  }
+
+  @Transactional
+  public void updateAccommodation(
+      long accommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+    Accommodation accommodation =
+        accommodationRepository
+            .findById(accommodationId)
+            .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
+
+    accommodation.updateAccommodation(
+        updateAccommodationRequestDto.getName(),
+        updateAccommodationRequestDto.getType(),
+        updateAccommodationRequestDto.getPhoneNumber(),
+        updateAccommodationRequestDto.getAddress(),
+        pictureMapper.toEntity(updateAccommodationRequestDto.getPictureDto()),
+        updateAccommodationRequestDto.getDescription());
   }
 }

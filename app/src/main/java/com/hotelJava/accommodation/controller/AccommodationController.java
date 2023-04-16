@@ -4,12 +4,14 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
 import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.accommodation.service.AccommodationService;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 @Slf4j
@@ -38,6 +40,14 @@ public class AccommodationController {
   @PostMapping
   public CreateAccommodationResponseDto createAccommodation(
       @Valid @RequestBody CreateAccommodationRequestDto createAccommodationRequestDto) {
-        return accommodationService.saveAccommodation(createAccommodationRequestDto);
+    return accommodationService.saveAccommodation(createAccommodationRequestDto);
+  }
+
+  @PutMapping("/{accommodationId}")
+  public HttpStatus updateAccommodation(@PathVariable long accommodationId,
+      @Valid @RequestBody UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+    accommodationService.updateAccommodation(accommodationId, updateAccommodationRequestDto);
+    
+    return HttpStatus.OK;
   }
 }

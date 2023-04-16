@@ -11,7 +11,8 @@ public enum ErrorCode {
   // 회원 관련 에러
   DUPLICATED_EMAIL_FOUND(409, "Member Email already exists"),
 
-  // 숙소 관련 에러,
+  // 숙소 관련 에러
+  ACCOMMODATION_NOT_FOUND(404, "Accommodation not found"),
   DUPLICATED_NAME_FOUND(409, "Name already exists"),
   NO_MINIMUM_PRICE_FOUND(500, "No minimum price found for the given accommodation");
 

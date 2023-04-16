@@ -6,6 +6,7 @@ import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 @Repository
@@ -26,13 +27,13 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
           + "NOT EXISTS (SELECT res from Reservation res "
           + "where res.checkDate.checkInDate < :checkOutDate AND res.checkDate.checkOutDate > :checkInDate)")
   List<Accommodation> findAccommodations(
-      AccommodationType type,
-      String firstLocation,
-      String secondLocation,
-      String name,
-      LocalDate checkInDate,
-      LocalDate checkOutDate,
-      int guestCount);
+      @Param("type") AccommodationType type,
+      @Param("firstLocation") String firstLocation,
+      @Param("secondLocation") String secondLocation,
+      @Param("name") String name,
+      @Param("checkInDate") LocalDate checkInDate,
+      @Param("checkOutDate") LocalDate checkOutDate,
+      @Param("guestCount") int guestCount);
 
   boolean existsByName(String name);
 }
