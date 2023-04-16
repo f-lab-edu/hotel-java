@@ -1,26 +1,31 @@
 package com.hotelJava.accommodation.service;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
+import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.accommodation.picture.domain.PictureInfo;
 import com.hotelJava.accommodation.picture.domain.PictureType;
+import com.hotelJava.accommodation.picture.dto.PictureDto;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.embeddable.CheckTime;
+import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.payment.domain.PaymentType;
 import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.domain.RoomAvailability;
+import com.hotelJava.room.dto.CreateRoomRequestDto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
-import lombok.extern.slf4j.Slf4j;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -30,7 +35,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
 @Transactional
-@Slf4j
 public class AccommodationServiceTest {
 
   @Autowired AccommodationService accommodationService;
@@ -41,7 +45,7 @@ public class AccommodationServiceTest {
 
   @BeforeEach
   public void init() {
-    // 숙소/룸 정보
+    // 숙소/룸 사진 정보
     PictureInfo pictureInfo =
         PictureInfo.builder()
             .name("picture name")
@@ -189,5 +193,116 @@ public class AccommodationServiceTest {
     assertThat(accommodations.size()).isEqualTo(2);
     assertThat(accommodations.get(0).getName()).isEqualTo("test accommodation");
     assertThat(accommodations.get(0).getMinimumRoomPrice()).isEqualTo(1000);
+  }
+
+  @DisplayName("숙소명 중복 확인")
+  @Test
+  void 숙소명_중복_확인() {
+    // given
+    CreateAccommodationRequestDto createAccommodationRequestDto =
+        CreateAccommodationRequestDto.builder().name("test accommodation").build();
+
+    // when
+
+    // then
+    assertThatThrownBy(() -> accommodationService.saveAccommodation(createAccommodationRequestDto))
+        .isInstanceOf(BadRequestException.class);
+  }
+
+  @DisplayName("숙소와 룸을 등록")
+  @Test
+  void 숙소_등록() {
+    // given
+    PictureInfo accommodationPictureInfo =
+        PictureInfo.builder()
+            .name("자바 게스트 하우스 전체 사진")
+            .originFileName("origin 파일명")
+            .saveFileName("save 파일명")
+            .extension("확장자")
+            .fullPath("전체 경로")
+            .fileSize(5000)
+            .build();
+
+    PictureInfo roomPictureInfo =
+            PictureInfo.builder()
+                    .name("1번방 사진")
+                    .originFileName("origin 파일명")
+                    .saveFileName("save 파일명")
+                    .extension("확장자")
+                    .fullPath("전체 경로")
+                    .fileSize(5000)
+                    .build();
+    PictureInfo roomPictureInfo2 =
+            PictureInfo.builder()
+                    .name("2번방 사진")
+                    .originFileName("origin 파일명")
+                    .saveFileName("save 파일명")
+                    .extension("확장자")
+                    .fullPath("전체 경로")
+                    .fileSize(5000)
+                    .build();
+
+    PictureDto pictureDto = PictureDto.builder()
+            .pictureInfo(roomPictureInfo)
+            .pictureType(PictureType.ROOM)
+            .build();
+    PictureDto pictureDto2 = PictureDto.builder()
+            .pictureInfo(roomPictureInfo2)
+            .pictureType(PictureType.ROOM)
+            .build();
+
+    CreateRoomRequestDto room =
+        CreateRoomRequestDto.builder()
+            .name("자바 게스트하우스 1번방")
+            .price(20000)
+            .maxOccupancy(6)
+            .checkTime(
+                CheckTime.builder()
+                    .checkInTime(LocalTime.of(12, 0))
+                    .checkOutTime(LocalTime.of(12, 0))
+                    .build())
+            .pictureDtos(List.of(pictureDto))
+            .build();
+    CreateRoomRequestDto room2 =
+            CreateRoomRequestDto.builder()
+                    .name("자바 게스트하우스 2번방")
+                    .price(3000)
+                    .maxOccupancy(4)
+                    .checkTime(
+                            CheckTime.builder()
+                                    .checkInTime(LocalTime.of(12, 0))
+                                    .checkOutTime(LocalTime.of(12, 0))
+                                    .build())
+                    .pictureDtos(List.of(pictureDto2))
+                    .build();
+    
+    CreateAccommodationRequestDto createAccommodationRequestDto =
+        CreateAccommodationRequestDto.builder()
+            .name("test accommodation2")
+            .phoneNumber("01012341124")
+            .type(AccommodationType.GUESTHOUSE)
+            .address(
+                Address.builder()
+                    .firstLocation("서울")
+                    .secondLocation("장안")
+                    .fullAddress("서울시 동대문구 장안동 77")
+                    .build())
+            .pictureDto(
+                PictureDto.builder()
+                    .pictureInfo(accommodationPictureInfo)
+                    .pictureType(PictureType.ACCOMMODATION)
+                    .build())
+            .createRoomRequestDtos(List.of(room, room2))
+            .description("숙소에 대한 설명~")
+            .build();
+
+    // when
+    CreateAccommodationResponseDto createAccommodationResponseDto = accommodationService.saveAccommodation(createAccommodationRequestDto);
+    
+    // then
+    assertThat(createAccommodationResponseDto.getName()).isEqualTo(createAccommodationRequestDto.getName());
+    assertThat(createAccommodationResponseDto.getAddress()).isEqualTo(createAccommodationRequestDto.getAddress());
+    assertThat(createAccommodationResponseDto.getCreateRoomResponseDtos().get(0).getName()).isEqualTo("자바 게스트하우스 1번방");
+    assertThat(createAccommodationResponseDto.getDescription()).isEqualTo("숙소에 대한 설명~");
   }
 }
