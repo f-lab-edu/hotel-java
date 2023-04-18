@@ -1,11 +1,12 @@
 package com.hotelJava.security;
 
-import static com.hotelJava.member.MemberTestFixture.getTestMember;
+import static com.hotelJava.member.MemberTestFixture.getMember;
 import static com.hotelJava.security.MemberDetails.parseAuthorities;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
+import com.github.javafaker.Faker;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.CommonException;
@@ -30,7 +31,7 @@ class MemberDetailsServiceTest {
   @DisplayName("이메일을 바탕으로 사용자를 올바르게 인식하는지 테스트한다")
   void loadUserByUsername_MemberDetails_ValidMember() {
     // given
-    Member member = getTestMember();
+    Member member = getMember();
     memberRepository.save(member);
 
     // when
@@ -52,7 +53,7 @@ class MemberDetailsServiceTest {
   @DisplayName("등록되지 않은 이메일로 사용자를 조회하면 예외가 발생하는지 테스트한다")
   void loadUserByUsername_BadRequestException_NonExistMember() {
     // given
-    String email = "example@test.com";
+    String email = Faker.instance().internet().emailAddress();
 
     // when, then
     CommonException exception =
