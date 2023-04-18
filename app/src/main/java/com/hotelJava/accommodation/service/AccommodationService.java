@@ -106,7 +106,6 @@ public class AccommodationService {
   public void updateAccommodation(
       String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
     String accommodationId = base32Util.decode(encodedAccommodationId);
-
     Accommodation accommodation =
         accommodationRepository
             .findById(Long.parseLong(accommodationId))
