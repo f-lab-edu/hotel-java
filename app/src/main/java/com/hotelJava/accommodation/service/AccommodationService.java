@@ -13,6 +13,7 @@ import com.hotelJava.accommodation.util.AccommodationMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.common.util.Base32Util;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.util.RoomMapper;
 import java.time.LocalDate;
@@ -36,6 +37,8 @@ public class AccommodationService {
   private final RoomMapper roomMapper;
 
   private final PictureMapper pictureMapper;
+
+  private final Base32Util base32Util;
 
   public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
@@ -101,10 +104,12 @@ public class AccommodationService {
 
   @Transactional
   public void updateAccommodation(
-      long accommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+      String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+    String accommodationId = base32Util.decode(encodedAccommodationId);
+
     Accommodation accommodation =
         accommodationRepository
-            .findById(accommodationId)
+            .findById(Long.parseLong(accommodationId))
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(

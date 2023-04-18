@@ -18,6 +18,7 @@ import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.error.exception.BadRequestException;
+import com.hotelJava.common.util.Base32Util;
 import com.hotelJava.payment.domain.PaymentType;
 import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationStatus;
@@ -41,6 +42,8 @@ public class AccommodationServiceTest {
   @Autowired AccommodationService accommodationService;
 
   @Autowired AccommodationRepository accommodationRepository;
+
+  @Autowired Base32Util base32Util;
 
   private Accommodation accommodation1, accommodation2;
 
@@ -341,7 +344,8 @@ public class AccommodationServiceTest {
             .build();
 
     // when
-    accommodationService.updateAccommodation(accommodation1.getId(), updateAccommodationRequestDto);
+    accommodationService.updateAccommodation(
+        base32Util.encode(String.valueOf(accommodation1.getId())), updateAccommodationRequestDto);
 
     // then
     assertThat(accommodation1.getName()).isEqualTo("숙소 이름 변경");
