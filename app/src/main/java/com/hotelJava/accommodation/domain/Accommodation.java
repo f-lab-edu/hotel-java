@@ -64,12 +64,29 @@ public class Accommodation extends BaseTimeEntity {
   @Builder.Default
   private ReservationStatus status = ReservationStatus.RESERVATION_AVAILABLE;
 
+  public Accommodation updateAccommodation(
+      String name,
+      AccommodationType type,
+      String phoneNumber,
+      Address address,
+      Picture picture,
+      String description) {
+    this.name = name;
+    this.type = type;
+    this.phoneNumber = phoneNumber;
+    this.address = address;
+    this.picture = picture;
+    this.description = description;
+
+    return this;
+  }
+
   // == 연관관계 편의 메소드 ==//
   public void setPicture(Picture picture) {
     this.picture = picture;
     picture.setAccommodation(this);
   }
-  
+
   public void createAccommodation(List<Room> rooms, Picture accommodationPicture) {
     this.picture = accommodationPicture;
     this.rooms.addAll(rooms);

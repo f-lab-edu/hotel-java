@@ -23,8 +23,9 @@ public enum ErrorCode {
   ACCESS_DENIED(403, "접근할 수 없는 경로입니다"),
 
   // 숙소 관련 에러
-  DUPLICATED_NAME_FOUND(409, "Name already exists"),
-  NO_MINIMUM_PRICE_FOUND(500, "No minimum price found for the given accommodation");
+  ACCOMMODATION_NOT_FOUND(404, "해당 숙소가 존재하지 않습니다."),
+  DUPLICATED_NAME_FOUND(409, "숙소명이 이미 존재합니다."),
+  NO_MINIMUM_PRICE_FOUND(500, "숙소의 최소 가격을 찾을 수 없습니다.");
 
   private final int code;
   private final String message;

@@ -5,6 +5,7 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
 import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.accommodation.picture.util.PictureMapper;
 import com.hotelJava.accommodation.repository.AccommodationRepository;
@@ -12,6 +13,7 @@ import com.hotelJava.accommodation.util.AccommodationMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.common.util.Base32Util;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.util.RoomMapper;
 import java.time.LocalDate;
@@ -35,6 +37,8 @@ public class AccommodationService {
   private final RoomMapper roomMapper;
 
   private final PictureMapper pictureMapper;
+
+  private final Base32Util base32Util;
 
   public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
@@ -96,5 +100,23 @@ public class AccommodationService {
     if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
       throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
     }
+  }
+
+  @Transactional
+  public void updateAccommodation(
+      String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+    String accommodationId = base32Util.decode(encodedAccommodationId);
+    Accommodation accommodation =
+        accommodationRepository
+            .findById(Long.parseLong(accommodationId))
+            .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
+
+    accommodation.updateAccommodation(
+        updateAccommodationRequestDto.getName(),
+        updateAccommodationRequestDto.getType(),
+        updateAccommodationRequestDto.getPhoneNumber(),
+        updateAccommodationRequestDto.getAddress(),
+        pictureMapper.toEntity(updateAccommodationRequestDto.getPictureDto()),
+        updateAccommodationRequestDto.getDescription());
   }
 }
