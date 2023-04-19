@@ -1,5 +1,7 @@
 package com.hotelJava.member.service;
 
+import static com.hotelJava.member.MemberTestFixture.getTestMember;
+import static com.hotelJava.member.MemberTestFixture.getTestSignUpDto;
 import static com.hotelJava.member.util.MemberMapper.MEMBER_MAPPER;
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -48,24 +50,5 @@ class MemberServiceTest {
 
     // then
     Assertions.assertThat(result).isTrue();
-  }
-
-  /** test fixture */
-  static SignUpRequestDto getTestSignUpDto() {
-    return SignUpRequestDto.builder()
-        .email("testcode@example.com")
-        .name("testcode")
-        .phone("010-1111-2222")
-        .password("abcd1234")
-        .build();
-  }
-
-  static Member getTestMember() {
-    return Member.builder()
-        .email("testcode@emxample.com")
-        .name("010-1111-2222")
-        .phone("010-1111-2222")
-        .password("abcd1234")
-        .build();
   }
 }
