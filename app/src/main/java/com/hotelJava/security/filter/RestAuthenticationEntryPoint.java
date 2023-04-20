@@ -22,8 +22,10 @@ public class RestAuthenticationEntryPoint implements AuthenticationEntryPoint {
   public void commence(
       HttpServletRequest request, HttpServletResponse response, AuthenticationException ex)
       throws IOException {
-    log.error("비인증 사용자 요청");
+    log.error("Unauthorized user request called");
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
+    response.setHeader(
+        "WWW-Authenticate", "try login at path \"/login\" with json value{email,password}");
     objectMapper.writeValue(response.getWriter(), ErrorCode.AUTHENTICATION_FAIL);
   }
 }

@@ -1,10 +1,10 @@
 spring:
-#  datasource:
-#    url: jdbc:h2:tcp://localhost/~/hotel-java
-#    username: sa
-#    password:
-#    driver-class-name: org.h2.Driver
-#
+  #  datasource:
+  #    url: jdbc:h2:tcp://localhost/~/hotel-java
+  #    username: sa
+  #    password:
+  #    driver-class-name: org.h2.Driver
+  #
   jpa:
     hibernate:
       ddl-auto: create
@@ -15,4 +15,11 @@ spring:
 
 logging.level:
   org.hibernate.SQL: debug
-  org.hibernate.type: trace
+  org.hibernate.type: debug
+  org.springframework.security.web: trace
+
+jwt:
+  header: Authorization
+  validity-time: 10m # minute
+  issuer: Hotel-java
+  secret: Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code

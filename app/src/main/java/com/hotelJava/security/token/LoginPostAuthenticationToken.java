@@ -1,7 +1,7 @@
 package com.hotelJava.security.token;
 
 import com.hotelJava.security.MemberDetails;
-import com.hotelJava.security.util.specification.JwtPayload;
+import com.hotelJava.security.util.impl.JwtPayload;
 import java.util.List;
 import java.util.stream.Collectors;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

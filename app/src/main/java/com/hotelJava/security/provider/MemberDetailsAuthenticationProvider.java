@@ -7,7 +7,7 @@ import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.LoginPostAuthenticationToken;
 import com.hotelJava.security.token.LoginPreAuthenticationToken;
-import com.hotelJava.security.util.impl.MemberPasswordEncoder;
+import com.hotelJava.security.util.specification.MemberPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
@@ -27,7 +27,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
     if (authentication == null) {
       log.info("authentication null");
-      throw new InternalServerException(ErrorCode.BAD_CREDENTIAL);
+      throw new InternalServerException(ErrorCode.AUTHENTICATION_FAIL);
     }
 
     LoginPreAuthenticationToken preAuthToken = (LoginPreAuthenticationToken) authentication;

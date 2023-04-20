@@ -25,7 +25,7 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
   public Authentication attemptAuthentication(
       HttpServletRequest request, HttpServletResponse response)
       throws AuthenticationException, IOException {
-
+    log.trace("login request received");
     LoginDto loginDto = getLoginDto(request);
     LoginPreAuthenticationToken preAuthToken = new LoginPreAuthenticationToken(loginDto);
 
