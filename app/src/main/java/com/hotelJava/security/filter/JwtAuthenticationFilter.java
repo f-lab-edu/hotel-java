@@ -1,7 +1,7 @@
 package com.hotelJava.security.filter;
 
 import com.hotelJava.common.error.ErrorCode;
-import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.security.token.JwtPreAuthenticationToken;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -31,7 +31,7 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
 
     if (jwtToken == null) {
       log.error("authorization is null");
-      throw new InternalServerException(ErrorCode.AUTHENTICATION_FAIL);
+      throw new BadRequestException(ErrorCode.AUTHENTICATION_FAIL);
     }
 
     JwtPreAuthenticationToken preAuthToken = new JwtPreAuthenticationToken(jwtToken);

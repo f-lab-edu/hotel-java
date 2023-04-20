@@ -23,7 +23,7 @@ public class RestAccessDeniedHandler implements AccessDeniedHandler {
   public void handle(
       HttpServletRequest request, HttpServletResponse response, AccessDeniedException exception)
       throws IOException {
-    log.error("알 수 없는 경로 호출 = {}", request.getRequestURI());
+    log.error("not supported uri called = {}", request.getRequestURI());
     response.setContentType(MediaType.APPLICATION_JSON_VALUE);
     objectMapper.writeValue(response.getWriter(), ErrorCode.ACCESS_DENIED);
   }

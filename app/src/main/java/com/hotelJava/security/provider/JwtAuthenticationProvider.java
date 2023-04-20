@@ -3,7 +3,7 @@ package com.hotelJava.security.provider;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.token.JwtPostAuthenticationToken;
 import com.hotelJava.security.token.JwtPreAuthenticationToken;
-import com.hotelJava.security.util.specification.JwtTokenDecoder;
+import com.hotelJava.security.util.impl.JwtTokenDecoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;

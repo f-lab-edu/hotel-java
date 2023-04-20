@@ -1,4 +1,4 @@
-package com.hotelJava.security.util.specification;
+package com.hotelJava.security.util.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.JWTVerifier;
