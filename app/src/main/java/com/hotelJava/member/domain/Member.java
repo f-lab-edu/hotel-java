@@ -1,15 +1,17 @@
 package com.hotelJava.member.domain;
 
-import com.hotelJava.reservation.domain.Reservation;
-import jakarta.persistence.*;
-import lombok.*;
-import lombok.Builder.Default;
-
-import java.util.ArrayList;
-import java.util.List;
-
 import static com.hotelJava.member.domain.Grade.NORMAL;
 import static com.hotelJava.member.domain.Role.USER;
+
+import com.hotelJava.reservation.domain.Reservation;
+import jakarta.persistence.*;
+import java.util.ArrayList;
+import java.util.List;
+import lombok.AccessLevel;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Builder.Default;
+import lombok.EqualsAndHashCode;import lombok.Getter;import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -42,4 +44,8 @@ public class Member implements ProfileInfo {
   @Default
   @Enumerated(value = EnumType.STRING)
   private Grade grade = NORMAL;
+
+  public void changePassword(String password) {
+    this.password = password;
+  }
 }
