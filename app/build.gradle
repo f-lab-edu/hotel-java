@@ -9,6 +9,7 @@ repositories {
 dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
     implementation 'com.auth0:java-jwt:4.4.0'
+    implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'com.h2database:h2:2.1.214'
     implementation 'commons-codec:commons-codec:1.15'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
