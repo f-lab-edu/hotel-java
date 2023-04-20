@@ -28,6 +28,7 @@ import com.hotelJava.room.dto.CreateRoomRequestDto;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -350,5 +351,20 @@ public class AccommodationServiceTest {
     // then
     assertThat(accommodation1.getName()).isEqualTo("숙소 이름 변경");
     assertThat(accommodation1.getAddress().getSecondLocation()).isEqualTo("수원");
+  }
+
+  @DisplayName("숙소 삭제")
+  @Test
+  void 숙소_삭제() {
+    // given
+
+    // when
+    accommodationService.deleteAccommodation(
+        base32Util.encode(String.valueOf(accommodation2.getId())));
+    Optional<Accommodation> deletedAccommodation =
+        accommodationRepository.findById(accommodation2.getId());
+
+    // then
+    assertThat(deletedAccommodation).isEmpty();
   }
 }
