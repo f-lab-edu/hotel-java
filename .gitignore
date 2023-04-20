@@ -1,5 +1,5 @@
 .gradle
 .idea
 build
-
+app/src/main/generated/**/*MapperImpl.java
 **/out/
