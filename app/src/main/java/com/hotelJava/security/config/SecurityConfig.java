@@ -9,6 +9,7 @@ import com.hotelJava.security.filter.LoginAuthenticationFilter;
 import com.hotelJava.security.handler.LoginAuthenticationSuccessHandler;
 import com.hotelJava.security.provider.JwtAuthenticationProvider;
 import com.hotelJava.security.provider.MemberDetailsAuthenticationProvider;
+import com.hotelJava.security.util.impl.HeaderTokenExtractor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -40,6 +41,7 @@ public class SecurityConfig {
   private final AccessDeniedHandler accessDeniedHandler;
   private final AuthenticationEntryPoint authenticationEntryPoint;
   private final ExceptionHandlerFilter exceptionHandlerFilter;
+  private final HeaderTokenExtractor extractor;
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
@@ -100,7 +102,7 @@ public class SecurityConfig {
     FilterSkipMatcher matcher =
         new FilterSkipMatcher(
             API_URL, antMatcher(LOGIN_URL), antMatcher(HttpMethod.POST, SIGNUP_URL));
-    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher);
+    JwtAuthenticationFilter filter = new JwtAuthenticationFilter(matcher, extractor);
     filter.setAuthenticationManager(authenticationManager);
     return filter;
   }
