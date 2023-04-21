@@ -3,6 +3,7 @@ package com.hotelJava.security.filter;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.security.token.JwtPreAuthenticationToken;
+import com.hotelJava.security.util.impl.HeaderTokenExtractor;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,15 +20,18 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 @Slf4j
 public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
 
-  public JwtAuthenticationFilter(RequestMatcher requestMatcher) {
+  private final HeaderTokenExtractor extractor;
+
+  public JwtAuthenticationFilter(RequestMatcher requestMatcher, HeaderTokenExtractor extractor) {
     super(requestMatcher);
+    this.extractor = extractor;
   }
 
   @Override
   public Authentication attemptAuthentication(
       HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
     log.trace("jwt login request received");
-    String jwtToken = request.getHeader("Authorization");
+    String jwtToken = extractor.extract(request.getHeader("Authorization"));
 
     if (jwtToken == null) {
       log.error("authorization is null");

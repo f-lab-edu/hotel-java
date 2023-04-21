@@ -1,6 +1,6 @@
 ###
 GET http://localhost:8080/api/members
-Authorization: eyJhbGciOiJIUzUxMiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiJ0ZXN0QHRlc3QuY29tIiwicm9sZXMiOlsiVVNFUiJdLCJleHAiOjE2ODE2NzAxMTgsImlzcyI6IkhvdGVsLWphdmEifQ.55Pi4jErRNVH_DQKgNloXr9GSjLNIvdsFpRMQuy6KtS63Guzd_Zy3O5oiH-v-DQuWdkhbqRBCFAmBSouc2xz6w
+Authorization: Bearer token-value
 
 ###
 POST http://localhost:8080/api/members
