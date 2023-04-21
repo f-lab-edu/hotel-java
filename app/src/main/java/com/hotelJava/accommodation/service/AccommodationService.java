@@ -124,7 +124,7 @@ public class AccommodationService {
             });
   }
 
-  private long validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
+  private Long validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
     return base32Util.decode(encodedAccommodationId).filter(id -> !id.trim().isEmpty()).stream()
         .mapToLong(Long::parseLong)
         .findFirst()
