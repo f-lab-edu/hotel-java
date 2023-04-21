@@ -7,12 +7,12 @@ import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.LoginPostAuthenticationToken;
 import com.hotelJava.security.token.LoginPreAuthenticationToken;
-import com.hotelJava.security.util.specification.MemberPasswordEncoder;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class MemberDetailsAuthenticationProvider implements AuthenticationProvider {
 
   private final MemberDetailsService memberDetailsService;
-  private final MemberPasswordEncoder passwordEncoder;
+  private final PasswordEncoder passwordEncoder;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -51,7 +51,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     if (!memberDetails.isCredentialsNonExpired()) {
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
-    if (!passwordEncoder.matches(password, memberDetails.getPassword())) {
+    if (!matches(password, memberDetails.getPassword())) {
       throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 
@@ -61,5 +61,9 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
   @Override
   public boolean supports(Class<?> authentication) {
     return LoginPreAuthenticationToken.class.isAssignableFrom(authentication);
+  }
+
+  public boolean matches(String requestPassword, String originPassword) {
+    return passwordEncoder.matches(requestPassword, originPassword);
   }
 }
