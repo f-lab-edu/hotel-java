@@ -23,7 +23,10 @@ public enum ErrorCode {
   // 숙소 관련 에러
   ACCOMMODATION_NOT_FOUND(404, "해당 숙소가 존재하지 않습니다."),
   DUPLICATED_NAME_FOUND(409, "숙소명이 이미 존재합니다."),
-  NO_MINIMUM_PRICE_FOUND(500, "숙소의 최소 가격을 찾을 수 없습니다.");
+  NO_MINIMUM_PRICE_FOUND(500, "숙소의 최소 가격을 찾을 수 없습니다."),
+
+  // 서버 에러
+  INTERNAL_SERVER_ERROR(500, "요청을 정상 처리하지 못하였습니다.");
 
   private final int code;
   private final String message;
