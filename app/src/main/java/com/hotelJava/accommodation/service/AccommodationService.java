@@ -98,11 +98,10 @@ public class AccommodationService {
   @Transactional
   public void updateAccommodation(
       String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
-    String accommodationId = validateAccommodationIdForEmptyOrNull(encodedAccommodationId);
 
     Accommodation accommodation =
         accommodationRepository
-            .findById(Long.parseLong(String.valueOf(accommodationId)))
+            .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(
@@ -116,10 +115,8 @@ public class AccommodationService {
 
   @Transactional
   public void deleteAccommodation(String encodedAccommodationId) {
-    String accommodationId = validateAccommodationIdForEmptyOrNull(encodedAccommodationId);
-
     accommodationRepository
-        .findById(Long.parseLong(accommodationId))
+        .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
         .ifPresentOrElse(
             accommodationRepository::delete,
             () -> {
@@ -127,10 +124,10 @@ public class AccommodationService {
             });
   }
 
-  private String validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
-    return base32Util
-        .decode(encodedAccommodationId)
-        .filter(id -> !id.trim().isEmpty())
+  private long validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
+    return base32Util.decode(encodedAccommodationId).filter(id -> !id.trim().isEmpty()).stream()
+        .mapToLong(Long::parseLong)
+        .findFirst()
         .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
   }
 
