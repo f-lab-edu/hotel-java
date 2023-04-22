@@ -1,8 +1,9 @@
 package com.hotelJava.common.util;
 
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import org.apache.commons.codec.binary.Base32;
 import org.springframework.stereotype.Component;
-import java.nio.charset.StandardCharsets;
 
 @Component
 public class Base32Util {
@@ -13,7 +14,7 @@ public class Base32Util {
         return new Base32().encodeToString(bytes);
     }
 
-    public String decode(String content) {
-        return new String(new Base32().decode(content));
+    public Optional<String> decode(String content) {
+        return Optional.of(new String(new Base32().decode(content)));
     }
 }

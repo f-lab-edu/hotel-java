@@ -95,20 +95,13 @@ public class AccommodationService {
         accommodationRepository.save(accommodation));
   }
 
-  private void validateDuplicatedAccommodation(
-      CreateAccommodationRequestDto createAccommodationRequestDto) {
-    if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
-      throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
-    }
-  }
-
   @Transactional
   public void updateAccommodation(
       String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
-    String accommodationId = base32Util.decode(encodedAccommodationId);
+
     Accommodation accommodation =
         accommodationRepository
-            .findById(Long.parseLong(accommodationId))
+            .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(
@@ -118,5 +111,30 @@ public class AccommodationService {
         updateAccommodationRequestDto.getAddress(),
         pictureMapper.toEntity(updateAccommodationRequestDto.getPictureDto()),
         updateAccommodationRequestDto.getDescription());
+  }
+
+  @Transactional
+  public void deleteAccommodation(String encodedAccommodationId) {
+    accommodationRepository
+        .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
+        .ifPresentOrElse(
+            accommodationRepository::delete,
+            () -> {
+              throw new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND);
+            });
+  }
+
+  private Long validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
+    return base32Util.decode(encodedAccommodationId).filter(id -> !id.trim().isEmpty()).stream()
+        .mapToLong(Long::parseLong)
+        .findFirst()
+        .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
+  }
+
+  private void validateDuplicatedAccommodation(
+      CreateAccommodationRequestDto createAccommodationRequestDto) {
+    if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
+      throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
+    }
   }
 }
