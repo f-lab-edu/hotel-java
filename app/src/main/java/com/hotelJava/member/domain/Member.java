@@ -11,7 +11,9 @@ import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Builder.Default;
-import lombok.EqualsAndHashCode;import lombok.Getter;import lombok.NoArgsConstructor;
+import lombok.EqualsAndHashCode;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
@@ -19,7 +21,7 @@ import lombok.EqualsAndHashCode;import lombok.Getter;import lombok.NoArgsConstru
 @Getter
 @Builder
 @Entity
-public class Member implements ProfileInfo {
+public class Member implements Profile {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -47,5 +49,10 @@ public class Member implements ProfileInfo {
 
   public void changePassword(String password) {
     this.password = password;
+  }
+
+  public void changeProfile(Profile profileInfo) {
+    this.name = profileInfo.getName();
+    this.phone = profileInfo.getPhone();
   }
 }
