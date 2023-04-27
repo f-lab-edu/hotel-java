@@ -38,6 +38,18 @@ public class MemberService {
     member.changeProfile(dto);
   }
 
+  @Transactional
+  public void changePassword(String email, String newPassword) {
+    Member member = findByEmail(email);
+    member.changePassword(newPassword);
+  }
+
+  @Transactional
+  public void withdrawal(String email) {
+    Member member = findByEmail(email);
+    memberRepository.delete(member);
+  }
+
   public boolean isDuplicatedEmail(String email) {
     return memberRepository.existsByEmail(email);
   }
