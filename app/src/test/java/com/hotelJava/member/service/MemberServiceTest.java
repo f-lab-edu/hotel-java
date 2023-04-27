@@ -3,6 +3,7 @@ package com.hotelJava.member.service;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.Mockito.*;
 
+import com.github.javafaker.Faker;
 import com.hotelJava.member.MemberTestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.dto.ChangeProfileRequestDto;
@@ -67,6 +68,37 @@ class MemberServiceTest {
           softly.assertThat(findMember.getName()).isEqualTo(newProfile.getName());
           softly.assertThat(findMember.getPhone()).isEqualTo(newProfile.getPhone());
         });
+  }
+
+  @Test
+  @DisplayName("회원탈퇴 기능을 테스트한다.")
+  void withdrawal() {
+    // given
+    Member member = MemberTestFixture.getMember();
+    memberRepository.save(member);
+
+    // when
+    memberService.withdrawal(member.getEmail());
+
+    // then
+    Assertions.assertThat(memberRepository.existsByEmail(member.getEmail())).isFalse();
+  }
+
+  @Test
+  @DisplayName("비밀빈호 변경 기능을 테스트한다.")
+  void changePassword() {
+    // given
+    Member member = MemberTestFixture.getMember();
+    String newPassword = Faker.instance().internet().password();
+    doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
+
+    // when
+    memberService.changePassword(member.getEmail(), newPassword);
+
+    // then
+    Member findMember =
+        memberRepository.findByEmail(member.getEmail()).orElseThrow(IllegalArgumentException::new);
+    Assertions.assertThat(findMember.getPassword()).isEqualTo(newPassword);
   }
 
   @Test
