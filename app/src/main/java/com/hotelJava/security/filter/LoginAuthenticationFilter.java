@@ -7,15 +7,12 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.AbstractAuthenticationProcessingFilter;
 
 @Slf4j
 public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingFilter {
-
-  @Autowired private ObjectMapper objectMapper;
 
   public LoginAuthenticationFilter(String defaultUrl) {
     super(defaultUrl);
@@ -33,6 +30,6 @@ public class LoginAuthenticationFilter extends AbstractAuthenticationProcessingF
   }
 
   private LoginDto getLoginDto(HttpServletRequest request) throws IOException {
-    return objectMapper.readValue(request.getInputStream(), LoginDto.class);
+    return new ObjectMapper().readValue(request.getInputStream(), LoginDto.class);
   }
 }

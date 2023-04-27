@@ -53,7 +53,14 @@ public class JwtAuthenticationFilter extends AbstractAuthenticationProcessingFil
     SecurityContext context = SecurityContextHolder.createEmptyContext();
     context.setAuthentication(authResult);
     SecurityContextHolder.setContext(context);
-
     chain.doFilter(request, response);
+  }
+
+  @Override
+  protected void unsuccessfulAuthentication(
+      HttpServletRequest request, HttpServletResponse response, AuthenticationException failed)
+      throws ServletException, IOException {
+    SecurityContextHolder.clearContext();
+    super.getFailureHandler().onAuthenticationFailure(request, response, failed);
   }
 }
