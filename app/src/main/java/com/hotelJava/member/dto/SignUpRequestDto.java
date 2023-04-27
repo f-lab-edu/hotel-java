@@ -1,6 +1,6 @@
 package com.hotelJava.member.dto;
 
-import com.hotelJava.member.domain.ProfileInfo;
+import com.hotelJava.member.domain.Profile;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,7 +11,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignUpRequestDto implements ProfileInfo {
+public class SignUpRequestDto implements Profile {
   private String email;
   private String name;
   private String password;
