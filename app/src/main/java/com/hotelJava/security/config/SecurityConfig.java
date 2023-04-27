@@ -89,7 +89,6 @@ public class SecurityConfig {
         .build();
   }
 
-  @Bean
   public LoginAuthenticationFilter loginFilter(AuthenticationManager authenticationManager) {
     LoginAuthenticationFilter filter = new LoginAuthenticationFilter(LOGIN_URL);
     filter.setAuthenticationManager(authenticationManager);
@@ -97,7 +96,6 @@ public class SecurityConfig {
     return filter;
   }
 
-  @Bean
   public JwtAuthenticationFilter jwtFilter(AuthenticationManager authenticationManager) {
     FilterSkipMatcher matcher =
         new FilterSkipMatcher(
@@ -107,7 +105,6 @@ public class SecurityConfig {
     return filter;
   }
 
-  @Bean
   public CharacterEncodingFilter encodingFilter() {
     CharacterEncodingFilter encodingFilter = new CharacterEncodingFilter();
     encodingFilter.setEncoding("UTF-8");
