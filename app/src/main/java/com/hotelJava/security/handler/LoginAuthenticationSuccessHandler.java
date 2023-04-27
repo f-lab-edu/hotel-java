@@ -37,6 +37,7 @@ public class LoginAuthenticationSuccessHandler extends SimpleUrlAuthenticationSu
     ObjectMapper objectMapper = new ObjectMapper();
     TokenDto dto = new TokenDto(token);
     try {
+      response.setContentType("application/json");
       response.getWriter().write(objectMapper.writeValueAsString(dto));
     } catch (IOException e) {
       log.error("problem with writing jwt token");
