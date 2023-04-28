@@ -4,6 +4,7 @@ import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.mockito.Mockito.*;
 
 import com.github.javafaker.Faker;
+import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.member.MemberTestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.dto.ChangeProfileRequestDto;
@@ -75,13 +76,27 @@ class MemberServiceTest {
   void withdrawal() {
     // given
     Member member = MemberTestFixture.getMember();
-    memberRepository.save(member);
+    doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
 
     // when
     memberService.withdrawal(member.getEmail());
 
     // then
-    Assertions.assertThat(memberRepository.existsByEmail(member.getEmail())).isFalse();
+    Member findMember =
+        memberRepository.findByEmail(member.getEmail()).orElseThrow(IllegalArgumentException::new);
+    Assertions.assertThat(findMember.isDeleted()).isTrue();
+  }
+
+  @Test
+  @DisplayName("이미 탈퇴한 회원을 탈퇴시키는 경우 예외가 발생하는지 테스트한다.")
+  void withdrawal_BadRequestException_alreadyDeleted() {
+    // given
+    Member member = MemberTestFixture.getMember();
+    member.deleteAccount();
+
+    // when, then
+    Assertions.assertThatThrownBy(() -> memberService.withdrawal(member.getEmail()))
+        .isInstanceOf(BadRequestException.class);
   }
 
   @Test
