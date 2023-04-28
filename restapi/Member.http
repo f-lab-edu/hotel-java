@@ -1,8 +1,4 @@
-###
-GET http://localhost:8080/api/members
-Authorization: Bearer token-value
-
-###
+### 회원가입
 POST http://localhost:8080/api/members
 Content-Type: application/json
 
@@ -13,12 +9,40 @@ Content-Type: application/json
   "phone": "010-1111-2222"
 }
 
-###
-GET http://localhost:8080/login
+### 회원정보수정
+PUT http://localhost:8080/api/members
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "name": "example",
+  "phone": "01012345678"
+}
+
+### 회원탈퇴
+DELETE http://localhost:8080/api/members
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+### 로그인
+POST http://localhost:8080/login
 Content-Type: application/json
 
 {
-    "email": "test@test.com",
-    "password": "1234"
+  "email": "test@test.com",
+  "password": "1234"
 }
 
+> {%
+    client.log(response.body.token)
+    client.global.set("auth_token", response.body.token)
+%}
+
+### 비밀번호변경
+PUT http://localhost:8080/api/members/password
+Content-Type: application/json
+Authorization: Bearer {{auth_token}}
+
+{
+  "newPassword": "12345678"
+}
