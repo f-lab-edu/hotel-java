@@ -1,15 +1,17 @@
 package com.hotelJava.security;
 
+import com.hotelJava.member.domain.Member;
+import com.hotelJava.member.domain.Role;
 import java.util.Collection;
 import java.util.List;
 import java.util.stream.Collectors;
-import com.hotelJava.member.domain.Member;
-import com.hotelJava.member.domain.Role;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.User;
 
 public class MemberDetails extends User {
+
+  private Member member;
 
   public MemberDetails(
       String email, String password, Collection<? extends GrantedAuthority> authorities) {
@@ -18,6 +20,7 @@ public class MemberDetails extends User {
 
   public MemberDetails(Member member) {
     super(member.getEmail(), member.getPassword(), parseAuthorities(member.getRole()));
+    this.member = member;
   }
 
   public String getEmail() {
@@ -28,6 +31,11 @@ public class MemberDetails extends User {
     return super.getAuthorities().stream()
         .map(r -> Role.valueOf(r.getAuthority()))
         .collect(Collectors.toList());
+  }
+
+  @Override
+  public boolean isEnabled() {
+    return !member.isDeleted();
   }
 
   public static List<SimpleGrantedAuthority> parseAuthorities(Role role) {

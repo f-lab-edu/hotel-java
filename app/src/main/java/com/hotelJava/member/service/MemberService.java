@@ -47,7 +47,7 @@ public class MemberService {
   @Transactional
   public void withdrawal(String email) {
     Member member = findByEmail(email);
-    memberRepository.delete(member);
+    member.deleteAccount();
   }
 
   public boolean isDuplicatedEmail(String email) {

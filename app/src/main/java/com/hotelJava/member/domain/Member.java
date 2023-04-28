@@ -14,7 +14,11 @@ import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 
+@Where(clause = "deleted = false")
+@SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor(access = AccessLevel.PROTECTED)
 @EqualsAndHashCode
@@ -35,6 +39,8 @@ public class Member implements Profile {
 
   private String phone;
 
+  private boolean deleted;
+
   @OneToMany(mappedBy = "member")
   @Builder.Default
   private List<Reservation> reservations = new ArrayList<>();
@@ -54,5 +60,9 @@ public class Member implements Profile {
   public void changeProfile(Profile profileInfo) {
     this.name = profileInfo.getName();
     this.phone = profileInfo.getPhone();
+  }
+
+  public void deleteAccount() {
+    this.deleted = true;
   }
 }
