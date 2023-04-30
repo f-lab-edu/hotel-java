@@ -25,6 +25,9 @@ public enum ErrorCode {
   DUPLICATED_NAME_FOUND(409, "숙소명이 이미 존재합니다."),
   NO_MINIMUM_PRICE_FOUND(500, "숙소의 최소 가격을 찾을 수 없습니다."),
 
+  // 클라이언트 에러
+  BAD_REQUEST_ERROR(400, "요청값이 잘못되었습니다."),
+  
   // 서버 에러
   INTERNAL_SERVER_ERROR(500, "요청을 정상 처리하지 못하였습니다.");
 

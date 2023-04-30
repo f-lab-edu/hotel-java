@@ -26,7 +26,7 @@ public class CreateAccommodationRequestDto {
   @Length(max = 20, message = "숙소 이름은 20자 이내로 입력해주세요.")
   private String name;
 
-  @NotBlank(message = "숙소 번호의 형식이 맞지 않습니다.")
+  @NotBlank(message = "휴대폰 번호의 형식이 맞지 않습니다.")
   @Pattern(regexp = "\\d{3}-\\d{4}-\\d{4}")
   private String phoneNumber;
 
