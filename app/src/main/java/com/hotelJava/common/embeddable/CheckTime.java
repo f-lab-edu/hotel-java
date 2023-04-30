@@ -7,6 +7,7 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Embeddable
 @Getter
@@ -15,7 +16,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class CheckTime {
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalTime checkInTime;
 
+  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
   private LocalTime checkOutTime;
 }
