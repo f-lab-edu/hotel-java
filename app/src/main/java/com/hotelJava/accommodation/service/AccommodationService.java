@@ -13,21 +13,19 @@ import com.hotelJava.accommodation.util.AccommodationMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.common.util.Base32Util;
+import com.hotelJava.common.validation.Validation;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.util.RoomMapper;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-@Slf4j
 public class AccommodationService {
 
   private final AccommodationRepository accommodationRepository;
@@ -38,7 +36,7 @@ public class AccommodationService {
 
   private final PictureMapper pictureMapper;
 
-  private final Base32Util base32Util;
+  private final Validation validation;
 
   public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
@@ -101,7 +99,7 @@ public class AccommodationService {
 
     Accommodation accommodation =
         accommodationRepository
-            .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
+            .findById(validation.validateIdForEmptyOrNullAndDecoding(encodedAccommodationId))
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(
@@ -116,21 +114,14 @@ public class AccommodationService {
   @Transactional
   public void deleteAccommodation(String encodedAccommodationId) {
     accommodationRepository
-        .findById(validateAccommodationIdForEmptyOrNull(encodedAccommodationId))
+        .findById(validation.validateIdForEmptyOrNullAndDecoding(encodedAccommodationId))
         .ifPresentOrElse(
             accommodationRepository::delete,
             () -> {
               throw new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND);
             });
   }
-
-  private Long validateAccommodationIdForEmptyOrNull(String encodedAccommodationId) {
-    return base32Util.decode(encodedAccommodationId).filter(id -> !id.trim().isEmpty()).stream()
-        .mapToLong(Long::parseLong)
-        .findFirst()
-        .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
-  }
-
+  
   private void validateDuplicatedAccommodation(
       CreateAccommodationRequestDto createAccommodationRequestDto) {
     if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
