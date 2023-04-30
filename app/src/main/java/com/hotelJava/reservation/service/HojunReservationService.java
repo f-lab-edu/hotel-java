@@ -11,5 +11,8 @@ public class HojunReservationService implements ReservationService {
   }
 
   @Override
-  public void createReservation(CreateReservationRequestDto createReservationRequestDto) {}
+  public void saveReservation(
+      String encodedAccommodationId,
+      String encodedRoomId,
+      CreateReservationRequestDto createReservationRequestDto) {}
 }
