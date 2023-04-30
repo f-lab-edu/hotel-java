@@ -25,7 +25,7 @@ public class Inventory extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long hotelId;
+  private Long accommodationId;
 
   private Long roomId;
   
