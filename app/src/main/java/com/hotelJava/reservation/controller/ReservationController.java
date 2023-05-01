@@ -1,5 +1,6 @@
 package com.hotelJava.reservation.controller;
 
+import com.hotelJava.common.dto.DecodeId;
 import com.hotelJava.reservation.dto.CreateReservationRequestDto;
 import com.hotelJava.reservation.service.ReservationService;
 import com.hotelJava.reservation.service.ReservationServiceManager;
@@ -18,13 +19,13 @@ public class ReservationController {
 
   @PostMapping("{encodedAccommodationId}/{encodedRoomId}")
   public void createReservation(
-      @PathVariable String encodedAccommodationId,
-      @PathVariable String encodedRoomId,
+      @PathVariable("encodedAccommodationId") DecodeId accommodationId,
+      @PathVariable("encodedRoomId") DecodeId roomId,
       @Valid @RequestBody CreateReservationRequestDto createReservationRequestDto) {
     ReservationService reservationService =
         reservationServiceManager.findService(createReservationRequestDto.getReservationCommand());
 
     reservationService.saveReservation(
-        encodedAccommodationId, encodedRoomId, createReservationRequestDto);
+            accommodationId.getDecodeId(), roomId.getDecodeId(), createReservationRequestDto);
   }
 }

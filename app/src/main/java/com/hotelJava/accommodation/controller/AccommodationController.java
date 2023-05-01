@@ -6,6 +6,7 @@ import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.accommodation.service.AccommodationService;
+import com.hotelJava.common.dto.DecodeId;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
@@ -52,16 +53,16 @@ public class AccommodationController {
   }
 
   @PutMapping("/{encodedAccommodationId}")
-  public HttpStatus updateAccommodation(@PathVariable String encodedAccommodationId,
+  public HttpStatus updateAccommodation(@PathVariable("encodedAccommodationId") DecodeId accommodationId,
       @Valid @RequestBody UpdateAccommodationRequestDto updateAccommodationRequestDto) {
-    accommodationService.updateAccommodation(encodedAccommodationId, updateAccommodationRequestDto);
+    accommodationService.updateAccommodation(accommodationId.getDecodeId(), updateAccommodationRequestDto);
     
     return HttpStatus.OK;
   }
 
   @DeleteMapping("/{encodedAccommodationId}")
-  public HttpStatus deleteAccommodation(@PathVariable String encodedAccommodationId) {
-    accommodationService.deleteAccommodation(encodedAccommodationId);
+  public HttpStatus deleteAccommodation(@PathVariable("encodedAccommodationId") DecodeId accommodationId) {
+    accommodationService.deleteAccommodation(accommodationId.getDecodeId());
     
     return HttpStatus.OK;
   }

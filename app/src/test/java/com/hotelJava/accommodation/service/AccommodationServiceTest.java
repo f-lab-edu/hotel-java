@@ -345,8 +345,7 @@ public class AccommodationServiceTest {
             .build();
 
     // when
-    accommodationService.updateAccommodation(
-        base32Util.encode(String.valueOf(accommodation1.getId())), updateAccommodationRequestDto);
+    accommodationService.updateAccommodation(accommodation1.getId(), updateAccommodationRequestDto);
 
     // then
     assertThat(accommodation1.getName()).isEqualTo("숙소 이름 변경");
@@ -359,8 +358,7 @@ public class AccommodationServiceTest {
     // given
 
     // when
-    accommodationService.deleteAccommodation(
-        base32Util.encode(String.valueOf(accommodation2.getId())));
+    accommodationService.deleteAccommodation(accommodation1.getId());
     Optional<Accommodation> deletedAccommodation =
         accommodationRepository.findById(accommodation2.getId());
 

@@ -13,7 +13,6 @@ import com.hotelJava.accommodation.util.AccommodationMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.common.validation.Validation;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.util.RoomMapper;
 import java.time.LocalDate;
@@ -35,8 +34,6 @@ public class AccommodationService {
   private final RoomMapper roomMapper;
 
   private final PictureMapper pictureMapper;
-
-  private final Validation validation;
 
   public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
@@ -95,11 +92,11 @@ public class AccommodationService {
 
   @Transactional
   public void updateAccommodation(
-      String encodedAccommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+      Long accommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
 
     Accommodation accommodation =
         accommodationRepository
-            .findById(validation.validateIdForEmptyOrNullAndDecoding(encodedAccommodationId))
+            .findById(accommodationId)
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(
@@ -112,9 +109,9 @@ public class AccommodationService {
   }
 
   @Transactional
-  public void deleteAccommodation(String encodedAccommodationId) {
+  public void deleteAccommodation(Long accommodationId) {
     accommodationRepository
-        .findById(validation.validateIdForEmptyOrNullAndDecoding(encodedAccommodationId))
+        .findById(accommodationId)
         .ifPresentOrElse(
             accommodationRepository::delete,
             () -> {
