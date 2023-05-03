@@ -1,7 +1,7 @@
 package com.hotelJava.accommodation.dto;
 
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.picture.dto.PictureDto;
+import com.hotelJava.picture.dto.PictureDto;
 import com.hotelJava.common.embeddable.Address;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

@@ -1,11 +1,14 @@
-package com.hotelJava.accommodation.controller;
+package com.hotelJava.accommodation.adapter.web;
 
+import com.hotelJava.accommodation.application.port.DeleteAccommodationQuery;
+import com.hotelJava.accommodation.application.port.FindAccommodationQuery;
+import com.hotelJava.accommodation.application.port.SaveAccommodationUseCase;
+import com.hotelJava.accommodation.application.port.UpdateAccommodationUseCase;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
 import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
-import com.hotelJava.accommodation.service.AccommodationService;
 import com.hotelJava.common.dto.DecodeId;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
@@ -29,7 +32,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/accommodations")
 public class AccommodationController {
 
-  private final AccommodationService accommodationService;
+  private final SaveAccommodationUseCase saveAccommodationUseCase;
+
+  private final FindAccommodationQuery findAccommodationQuery;
+
+  private final UpdateAccommodationUseCase updateAccommodationUseCase;
+
+  private final DeleteAccommodationQuery deleteAccommodationQuery;
 
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
   public List<FindAccommodationResponseDto> findAccommodations(
@@ -42,28 +51,31 @@ public class AccommodationController {
       @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().plusDays(1)}")
           LocalDate checkOutDate,
       @RequestParam(required = false, defaultValue = "2") int guestCount) {
-    return accommodationService.findAccommodations(
+    return findAccommodationQuery.findAccommodations(
         type, firstLocation, secondLocation, name, checkInDate, checkOutDate, guestCount);
   }
 
   @PostMapping
   public CreateAccommodationResponseDto createAccommodation(
       @Valid @RequestBody CreateAccommodationRequestDto createAccommodationRequestDto) {
-    return accommodationService.saveAccommodation(createAccommodationRequestDto);
+    return saveAccommodationUseCase.saveAccommodation(createAccommodationRequestDto);
   }
 
   @PutMapping("/{encodedAccommodationId}")
-  public HttpStatus updateAccommodation(@PathVariable("encodedAccommodationId") DecodeId accommodationId,
+  public HttpStatus updateAccommodation(
+      @PathVariable("encodedAccommodationId") DecodeId accommodationId,
       @Valid @RequestBody UpdateAccommodationRequestDto updateAccommodationRequestDto) {
-    accommodationService.updateAccommodation(accommodationId.getDecodeId(), updateAccommodationRequestDto);
-    
+    updateAccommodationUseCase.updateAccommodation(
+        accommodationId.getDecodeId(), updateAccommodationRequestDto);
+
     return HttpStatus.OK;
   }
 
   @DeleteMapping("/{encodedAccommodationId}")
-  public HttpStatus deleteAccommodation(@PathVariable("encodedAccommodationId") DecodeId accommodationId) {
-    accommodationService.deleteAccommodation(accommodationId.getDecodeId());
-    
+  public HttpStatus deleteAccommodation(
+      @PathVariable("encodedAccommodationId") DecodeId accommodationId) {
+    deleteAccommodationQuery.deleteAccommodation(accommodationId.getDecodeId());
+
     return HttpStatus.OK;
   }
 }

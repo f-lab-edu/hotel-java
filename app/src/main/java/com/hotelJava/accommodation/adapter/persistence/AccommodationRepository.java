@@ -1,4 +1,4 @@
-package com.hotelJava.accommodation.repository;
+package com.hotelJava.accommodation.adapter.persistence;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;

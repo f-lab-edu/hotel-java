@@ -1,8 +1,8 @@
 package com.hotelJava.accommodation.domain;
 
-import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.util.BaseTimeEntity;
+import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.CascadeType;

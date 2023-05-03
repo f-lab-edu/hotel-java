@@ -1,9 +1,9 @@
 package com.hotelJava.room.domain;
 
 import com.hotelJava.accommodation.domain.Accommodation;
-import com.hotelJava.accommodation.picture.domain.Picture;
 import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
+import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.reservation.domain.Reservation;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;

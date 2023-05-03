@@ -1,4 +1,4 @@
-package com.hotelJava.accommodation.picture.domain;
+package com.hotelJava.picture.domain;
 
 public enum PictureType {
   ACCOMMODATION,
