@@ -11,6 +11,7 @@ import com.hotelJava.security.provider.JwtAuthenticationProvider;
 import com.hotelJava.security.provider.MemberDetailsAuthenticationProvider;
 import com.hotelJava.security.util.impl.HeaderTokenExtractor;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpMethod;
@@ -43,9 +44,13 @@ public class SecurityConfig {
   private final ExceptionHandlerFilter exceptionHandlerFilter;
   private final HeaderTokenExtractor extractor;
 
+  @Value("${spring.security.enabled}")
+  private boolean securityEnabled;
+
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http, AuthenticationManager manager)
       throws Exception {
+
     // 해당 기능을 켜두면 Authorization 헤더를 기본적으로 사용
     // authorization 헤더를 JWT 토큰을 담는 용도로 사용하기 위해 해당 옵션 off
     http.httpBasic().disable();
@@ -58,6 +63,20 @@ public class SecurityConfig {
     // Jwt 토큰을 기반으로 인증할 것이므로 해당 옵션 off
     http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
+
+    if (securityEnabled) {
+      return enableSecurity(http, manager);
+    }
+    return disableSecurity(http);
+  }
+
+  private SecurityFilterChain disableSecurity(HttpSecurity http) throws Exception {
+    http.authorizeHttpRequests().anyRequest().anonymous();
+    return http.build();
+  }
+
+  private SecurityFilterChain enableSecurity(HttpSecurity http, AuthenticationManager manager)
+      throws Exception {
     // == URL 인가 설정 == //
     http.authorizeHttpRequests()
         .requestMatchers(HttpMethod.POST, SIGNUP_URL, LOGIN_URL)
