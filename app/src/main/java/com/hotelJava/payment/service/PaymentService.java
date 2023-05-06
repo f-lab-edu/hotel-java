@@ -1,16 +1,13 @@
 package com.hotelJava.payment.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.hotelJava.payment.dto.CreatePaymentRequestDto;
+import com.hotelJava.payment.dto.ImpUidDto;
+import com.siot.IamportRestClient.response.IamportResponse;
+import com.siot.IamportRestClient.response.Payment;
 
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
-public class PaymentService {
+public interface PaymentService {
 
-    @Transactional
-    public void savePayment() {
-
-    }
+  IamportResponse<Payment> verifyIamport(ImpUidDto impUidDto);
+  
+  void savePayment(CreatePaymentRequestDto createPaymentRequestDto);
 }

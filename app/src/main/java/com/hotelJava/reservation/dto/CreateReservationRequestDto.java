@@ -1,7 +1,6 @@
 package com.hotelJava.reservation.dto;
 
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.payment.dto.CreatePaymentRequestDto;
 import com.hotelJava.reservation.domain.ReservationCommand;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
@@ -32,5 +31,11 @@ public class CreateReservationRequestDto {
   @Future
   private CheckDate checkDate;
 
-  private CreatePaymentRequestDto createPaymentRequestDto;
+  private Long accommodationId;
+
+  private Long roomId;
+
+  private String reservationNo;
+
+  private int numberOfGuests = 2;
 }
