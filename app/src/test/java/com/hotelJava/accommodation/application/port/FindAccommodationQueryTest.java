@@ -6,6 +6,7 @@ import com.hotelJava.accommodation.adapter.persistence.AccommodationRepository;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.common.util.Base32Util;
+import com.hotelJava.member.domain.Role;
 import java.time.LocalDate;
 import java.util.List;
 import org.junit.jupiter.api.DisplayName;
@@ -37,8 +38,8 @@ public class FindAccommodationQueryTest extends BeforeEachInit {
 
     // when
     List<FindAccommodationResponseDto> accommodations =
-            sut.findAccommodations(
-                    type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2);
+        sut.findAccommodations(
+            type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2, Role.ADMIN);
 
     // then
     assertThat(accommodations.size()).isEqualTo(2);

@@ -2,6 +2,7 @@ package com.hotelJava.accommodation.adapter.persistence;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
+import com.hotelJava.reservation.domain.ReservationStatus;
 import java.time.LocalDate;
 import java.util.List;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -21,7 +22,7 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
           + "AND a.type = :type "
           + "AND r.maxOccupancy >= :guestCount "
           + "AND (:name = '' OR a.name LIKE %:name%) "
-          + "AND (res.id is null OR res.status <> 'RESERVATION_COMPLETED') "
+          + "AND (res.id is null OR res.status = :status) "
           + "AND :checkInDate >= CURRENT_DATE "
           + "AND :checkOutDate > CURRENT_DATE AND "
           + "NOT EXISTS (SELECT res from Reservation res "
@@ -33,7 +34,8 @@ public interface AccommodationRepository extends JpaRepository<Accommodation, Lo
       @Param("name") String name,
       @Param("checkInDate") LocalDate checkInDate,
       @Param("checkOutDate") LocalDate checkOutDate,
-      @Param("guestCount") int guestCount);
+      @Param("guestCount") int guestCount,
+      @Param("status") ReservationStatus status);
 
   boolean existsByName(String name);
 }
