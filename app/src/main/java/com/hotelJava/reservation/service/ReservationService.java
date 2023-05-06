@@ -12,7 +12,7 @@ public interface ReservationService {
   boolean supports(ReservationCommand reservationCommand);
 
   void saveReservation(
-      String encodedAccommodationId,
-      String encodedRoomId,
+      Long accommodationId,
+      Long roomId,
       CreateReservationRequestDto createReservationRequestDto);
 }

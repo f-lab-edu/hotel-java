@@ -1,7 +1,7 @@
 package com.hotelJava.room.dto;
 
-import com.hotelJava.accommodation.picture.dto.PictureDto;
 import com.hotelJava.common.embeddable.CheckTime;
+import com.hotelJava.picture.dto.PictureDto;
 import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;

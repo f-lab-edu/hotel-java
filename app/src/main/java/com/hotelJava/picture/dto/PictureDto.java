@@ -1,7 +1,7 @@
-package com.hotelJava.accommodation.picture.dto;
+package com.hotelJava.picture.dto;
 
-import com.hotelJava.accommodation.picture.domain.PictureInfo;
-import com.hotelJava.accommodation.picture.domain.PictureType;
+import com.hotelJava.picture.domain.PictureInfo;
+import com.hotelJava.picture.domain.PictureType;
 import jakarta.persistence.Embedded;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
