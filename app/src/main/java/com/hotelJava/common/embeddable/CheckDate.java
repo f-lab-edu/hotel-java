@@ -21,4 +21,8 @@ public class CheckDate {
 
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate checkOutDate;
+
+  public boolean matches(LocalDate date) {
+    return date.isEqual(checkInDate) || (date.isAfter(checkInDate) && date.isBefore(checkOutDate));
+  }
 }
