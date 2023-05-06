@@ -7,5 +7,5 @@ import org.springframework.stereotype.Repository;import java.util.List;
 @Repository
 public interface InventoryRepository extends JpaRepository<Inventory, Long> {
 
-  List<Inventory> findByAccommodationIdAndRoomId(Long accommodationId, Long roomId);
+  List<Inventory> findByRoomId(Long roomId);
 }
