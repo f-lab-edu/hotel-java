@@ -13,7 +13,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 @Transactional
 public class DeleteAccommodationUseCaseTest extends BeforeEachInit {
 
-  @Autowired DeleteAccommodationQuery sut;
+  @Autowired DeleteAccommodationUseCase sut;
 
   @DisplayName("숙소 삭제")
   @Test

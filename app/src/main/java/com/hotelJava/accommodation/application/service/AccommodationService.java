@@ -1,7 +1,7 @@
 package com.hotelJava.accommodation.application.service;
 
 import com.hotelJava.accommodation.adapter.persistence.AccommodationRepository;
-import com.hotelJava.accommodation.application.port.DeleteAccommodationQuery;
+import com.hotelJava.accommodation.application.port.DeleteAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.SaveAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.UpdateAccommodationUseCase;
 import com.hotelJava.accommodation.domain.Accommodation;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AccommodationService implements SaveAccommodationUseCase, UpdateAccommodationUseCase, DeleteAccommodationQuery {
+public class AccommodationService implements SaveAccommodationUseCase, UpdateAccommodationUseCase, DeleteAccommodationUseCase {
 
   private final AccommodationRepository accommodationRepository;
 

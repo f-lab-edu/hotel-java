@@ -1,6 +1,6 @@
 package com.hotelJava.accommodation.application.port;
 
-public interface DeleteAccommodationQuery {
+public interface DeleteAccommodationUseCase {
 
   void deleteAccommodation(Long accommodationId);
 }
