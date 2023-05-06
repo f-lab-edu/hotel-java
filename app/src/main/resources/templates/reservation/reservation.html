@@ -71,10 +71,14 @@
                         msg += '\n카드 승인번호 : ' + rsp.apply_num;
 
                         alert(msg);
-                    });
+                    }).fail((xhr) => {
+                        alert(xhr.responseJSON.message);
+                    }) ;
                 } else {
                     alert('결제 취소');
                 }
+            }).fail((xhr) => {
+                alert(xhr.responseJSON.message);
             });
         } else {
             let msg = '결제에 실패하였습니다.';
