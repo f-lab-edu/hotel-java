@@ -1,6 +1,6 @@
 package com.hotelJava.accommodation.adapter.web;
 
-import com.hotelJava.accommodation.application.port.DeleteAccommodationQuery;
+import com.hotelJava.accommodation.application.port.DeleteAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.FindAccommodationQuery;
 import com.hotelJava.accommodation.application.port.SaveAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.UpdateAccommodationUseCase;
@@ -38,7 +38,7 @@ public class AccommodationController {
 
   private final UpdateAccommodationUseCase updateAccommodationUseCase;
 
-  private final DeleteAccommodationQuery deleteAccommodationQuery;
+  private final DeleteAccommodationUseCase deleteAccommodationUseCase;
 
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
   public List<FindAccommodationResponseDto> findAccommodations(
@@ -74,7 +74,7 @@ public class AccommodationController {
   @DeleteMapping("/{encodedAccommodationId}")
   public HttpStatus deleteAccommodation(
       @PathVariable("encodedAccommodationId") DecodeId accommodationId) {
-    deleteAccommodationQuery.deleteAccommodation(accommodationId.getDecodeId());
+    deleteAccommodationUseCase.deleteAccommodation(accommodationId.getDecodeId());
 
     return HttpStatus.OK;
   }

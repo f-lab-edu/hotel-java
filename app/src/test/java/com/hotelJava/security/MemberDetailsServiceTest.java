@@ -1,12 +1,12 @@
 package com.hotelJava.security;
 
-import static com.hotelJava.member.MemberTestFixture.getMember;
 import static com.hotelJava.security.MemberDetails.parseAuthorities;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.SoftAssertions.assertSoftly;
 import static org.junit.jupiter.api.Assertions.*;
 
 import com.github.javafaker.Faker;
+import com.hotelJava.TestFixture;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.CommonException;
@@ -31,7 +31,7 @@ class MemberDetailsServiceTest {
   @DisplayName("이메일을 바탕으로 사용자를 올바르게 인식하는지 테스트한다")
   void loadUserByUsername_MemberDetails_ValidMember() {
     // given
-    Member member = getMember();
+    Member member = TestFixture.getMember();
     memberRepository.save(member);
 
     // when

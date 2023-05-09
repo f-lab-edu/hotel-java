@@ -2,7 +2,7 @@ package com.hotelJava.security.token;
 
 import static org.assertj.core.api.Assertions.*;
 
-import com.hotelJava.member.MemberTestFixture;
+import com.hotelJava.TestFixture;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.util.impl.JwtPayload;
 import org.junit.jupiter.api.DisplayName;
@@ -15,7 +15,7 @@ class LoginPostAuthenticationTokenTest {
   void getJwtPayload_JwtPayload() {
 
     // given
-    MemberDetails memberDetails = new MemberDetails(MemberTestFixture.getMember());
+    MemberDetails memberDetails = new MemberDetails(TestFixture.getMember());
     LoginPostAuthenticationToken postAuthToken = new LoginPostAuthenticationToken(memberDetails);
 
     // when

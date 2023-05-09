@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 import com.github.javafaker.Faker;
-import com.hotelJava.MemberTestFixture;
+import com.hotelJava.TestFixture;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.token.JwtPostAuthenticationToken;
 import com.hotelJava.security.token.JwtPreAuthenticationToken;
@@ -28,7 +28,7 @@ class JwtAuthenticationProviderTest {
     // given
     String token = faker.letterify("????");
     JwtPreAuthenticationToken preAuthentication = new JwtPreAuthenticationToken(token);
-    MemberDetails loginMemberDetails = new MemberDetails(MemberTestFixture.getMember());
+    MemberDetails loginMemberDetails = new MemberDetails(TestFixture.getMember());
     doReturn(loginMemberDetails).when(decoder).decode(anyString());
 
     // when
