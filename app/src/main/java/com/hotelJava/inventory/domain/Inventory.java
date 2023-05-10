@@ -1,17 +1,14 @@
-package com.hotelJava.inventory;
+package com.hotelJava.inventory.domain;
 
-import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.common.error.ErrorCode;
-import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.time.LocalDate;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -46,25 +43,15 @@ public class Inventory extends BaseTimeEntity {
     this.quantity = quantity;
   }
 
-  public boolean isEnoughQuantity() {
+  public boolean isZeroQuantity() {
     if (quantity <= 0) {
-      log.error("quantity at {} is 0", date);
-      return false;
+      log.info("quantity at {} is 0", date);
+      return true;
     }
-    return true;
+    return false;
   }
 
-  public void validate() {
-    if (!isEnoughQuantity()) {
-      throw new BadRequestException(ErrorCode.OUT_OF_STOCK);
-    }
-  }
-
-  public Inventory reduceQuantity(CheckDate checkDate) {
-    if (checkDate.matches(date)) {
-      validate();
-      return new Inventory(date, quantity - 1);
-    }
-    return this;
+  public void reduceQuantity() {
+    quantity--;
   }
 }
