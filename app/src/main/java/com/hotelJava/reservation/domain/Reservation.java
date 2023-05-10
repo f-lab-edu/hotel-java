@@ -6,13 +6,15 @@ import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.domain.Payment;
+import com.hotelJava.payment.domain.PaymentResult;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
-import lombok.NoArgsConstructor;import lombok.Setter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -38,6 +40,10 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
 
   private int numberOfGuests;
 
+  private String name;
+
+  private String phone;
+
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "payment_id")
   private Payment payment;
@@ -50,30 +56,31 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Reservation(GuestInfo info) {
-    this.member = info.getMember();
-    this.checkDate = info.getCheckDate();
-    this.numberOfGuests = info.getNumberOfGuests();
+  public Reservation(Member member, GuestInfo guestInfo) {
+    this.member = member;
+    this.checkDate = guestInfo.getCheckDate();
+    this.name = guestInfo.getName();
+    this.numberOfGuests = guestInfo.getNumberOfGuests();
+    this.phone = guestInfo.getPhone();
     this.payment = new Payment(room.calcPrice());
   }
 
-  public Reservation confirm() {
+  public Reservation confirm(PaymentResult paymentResult) {
     validateReservation();
-    if (!payment.isPaymentSuccess()) {
-      throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
-    }
+    payment.approve(paymentResult);
     room.reduceStock(checkDate);
-    // TODO: 결제승인
     status = ReservationStatus.RESERVATION_COMPLETED;
-    // payment.approve();
     return this;
   }
 
-  public void validateReservation() {
-    if (!room.isAvailableReservation(numberOfGuests, checkDate)) {
-      // TODO: 결제승인거절
-      // payment.decline();
-      log.info("payment declined");
+  private void validateReservation() {
+    if (room.isStockOut(checkDate)) {
+      log.info("room stock is not enough. payment declined");
+      throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
+    }
+
+    if (!room.isLowerMaxOccupancy(numberOfGuests)) {
+      log.info("guest number is over max occupancy. payment declined");
       throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
     }
   }
