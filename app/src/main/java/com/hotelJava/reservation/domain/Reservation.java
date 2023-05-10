@@ -1,8 +1,6 @@
 package com.hotelJava.reservation.domain;
 
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.common.error.ErrorCode;
-import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.domain.Payment;
@@ -56,8 +54,10 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Reservation(Member member, GuestInfo guestInfo) {
+  public Reservation(Member member, Room room, String reservationNo, GuestInfo guestInfo) {
     this.member = member;
+    this.room = room;
+    this.reservationNo = reservationNo;
     this.checkDate = guestInfo.getCheckDate();
     this.name = guestInfo.getName();
     this.numberOfGuests = guestInfo.getNumberOfGuests();
@@ -66,22 +66,9 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   }
 
   public Reservation confirm(PaymentResult paymentResult) {
-    validateReservation();
     payment.approve(paymentResult);
     room.reduceStock(checkDate);
     status = ReservationStatus.RESERVATION_COMPLETED;
     return this;
-  }
-
-  private void validateReservation() {
-    if (room.isStockOut(checkDate)) {
-      log.info("room stock is not enough. payment declined");
-      throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
-    }
-
-    if (!room.isLowerMaxOccupancy(numberOfGuests)) {
-      log.info("guest number is over max occupancy. payment declined");
-      throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
-    }
   }
 }
