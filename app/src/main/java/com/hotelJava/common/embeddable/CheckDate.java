@@ -22,6 +22,11 @@ public class CheckDate {
   @DateTimeFormat(pattern = "yyyy-MM-dd")
   private LocalDate checkOutDate;
 
+  public CheckDate(LocalDate checkInDate, int duration) {
+    this.checkInDate = checkInDate;
+    this.checkOutDate = checkInDate.plusDays(duration);
+  }
+
   public boolean matches(LocalDate date) {
     return date.isEqual(checkInDate) || (date.isAfter(checkInDate) && date.isBefore(checkOutDate));
   }
