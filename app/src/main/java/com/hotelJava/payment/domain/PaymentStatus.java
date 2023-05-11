@@ -4,7 +4,8 @@ public enum PaymentStatus {
   WAITING("결제대기"),
   COMPLETE("결제완료"),
   CANCEL("결제취소"),
-  ERROR("결제오류");
+  ERROR("결제오류"),
+  TIMEOUT("결제시간초과");
 
   private final String label;
 
