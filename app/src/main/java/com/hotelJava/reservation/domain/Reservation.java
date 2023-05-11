@@ -38,12 +38,11 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
 
   private int numberOfGuests;
 
-  private String name;
+  private String guestName;
 
-  private String phone;
+  private String guestPhone;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "payment_id")
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.ALL)
   private Payment payment;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -59,16 +58,45 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
     this.room = room;
     this.reservationNo = reservationNo;
     this.checkDate = guestInfo.getCheckDate();
-    this.name = guestInfo.getName();
+    this.guestName = guestInfo.getGuestName();
+    this.guestPhone = guestInfo.getGuestPhone();
     this.numberOfGuests = guestInfo.getNumberOfGuests();
-    this.phone = guestInfo.getPhone();
     this.payment = new Payment(room.calcPrice());
   }
 
   public Reservation confirm(PaymentResult paymentResult) {
     payment.approve(paymentResult);
-    room.reduceStock(checkDate);
     status = ReservationStatus.RESERVATION_COMPLETED;
     return this;
+  }
+
+  public void consumeInventory() {
+    room.calcInventory(checkDate, -1);
+  }
+
+  public void restoreInventory() {
+    room.calcInventory(checkDate, 1);
+  }
+
+  public boolean isInvalidReservation() {
+    if (room.isNotEnoughInventoryAtCheckDate(checkDate)) {
+      log.info("room stock is not enough. payment declined");
+      return true;
+    }
+
+    if (room.isOverMaxOccupancy(numberOfGuests)) {
+      log.info("guest number is over max occupancy. payment declined");
+      return true;
+    }
+
+    return false;
+  }
+
+  public boolean isExpiredPayment() {
+    if (payment.isExpired()) {
+      log.info("payment time out. payment declined");
+      return true;
+    }
+    return false;
   }
 }

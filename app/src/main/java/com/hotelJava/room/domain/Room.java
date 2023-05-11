@@ -58,20 +58,20 @@ public class Room extends BaseTimeEntity {
   @Builder.Default
   private List<Inventory> inventories = new ArrayList<>();
 
-  public void reduceStock(CheckDate checkDate) {
+  public void calcInventory(CheckDate checkDate, int value) {
     inventories.stream()
         .filter(i -> checkDate.matches(i.getDate()))
-        .forEach(Inventory::reduceQuantity);
+        .forEach(i -> i.plusQuantity(value));
   }
 
-  public boolean isStockOut(CheckDate checkDate) {
+  public boolean isNotEnoughInventoryAtCheckDate(CheckDate checkDate) {
     return inventories.stream()
         .filter(i -> checkDate.matches(i.getDate()))
         .anyMatch(Inventory::isZeroQuantity);
   }
 
-  public boolean isLowerMaxOccupancy(int guestNumber) {
-    return guestNumber <= maxOccupancy;
+  public boolean isOverMaxOccupancy(int guestNumber) {
+    return guestNumber > maxOccupancy;
   }
 
   public int calcPrice() {
