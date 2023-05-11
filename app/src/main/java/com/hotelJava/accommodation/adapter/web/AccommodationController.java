@@ -10,12 +10,14 @@ import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
 import com.hotelJava.common.dto.DecodeId;
+import com.hotelJava.member.domain.Role;
 import jakarta.validation.Valid;
 import java.time.LocalDate;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -50,9 +52,17 @@ public class AccommodationController {
           LocalDate checkInDate,
       @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().plusDays(1)}")
           LocalDate checkOutDate,
-      @RequestParam(required = false, defaultValue = "2") int guestCount) {
+      @RequestParam(required = false, defaultValue = "2") int guestCount,
+      @AuthenticationPrincipal(expression = "role") List<Role> roles) {
     return findAccommodationQuery.findAccommodations(
-        type, firstLocation, secondLocation, name, checkInDate, checkOutDate, guestCount);
+        type,
+        firstLocation,
+        secondLocation,
+        name,
+        checkInDate,
+        checkOutDate,
+        guestCount,
+        roles.get(0));
   }
 
   @PostMapping

@@ -1,7 +1,7 @@
 package com.hotelJava.security.util.specification;
 
 import com.hotelJava.common.error.exception.BadRequestException;
-import com.hotelJava.member.MemberTestFixture;
+import com.hotelJava.TestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.util.impl.JwtPayload;
@@ -24,7 +24,7 @@ class JwtTokenDecoderTest {
   @DisplayName("유효한 토큰은 디코딩했을 때 MemberDetails 정보를 가져올 수 있다")
   void verify_DecodedJWT() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     String token = getJwtToken(member, System.currentTimeMillis());
 
     // when
@@ -38,7 +38,7 @@ class JwtTokenDecoderTest {
   @DisplayName("유효 시간이 지난 토큰은 디코딩했을 때 예외가 발생한다")
   void verify_Exception() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     String token = getJwtToken(member, 1000);
 
     // when, then

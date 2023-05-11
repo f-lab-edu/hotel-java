@@ -5,7 +5,7 @@ import static org.mockito.Mockito.*;
 
 import com.github.javafaker.Faker;
 import com.hotelJava.common.error.exception.BadRequestException;
-import com.hotelJava.member.MemberTestFixture;
+import com.hotelJava.TestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.dto.ChangeProfileRequestDto;
 import com.hotelJava.member.dto.SignUpRequestDto;
@@ -32,7 +32,7 @@ class MemberServiceTest {
   @DisplayName("회원가입 기능을 테스트한다.")
   void signUp() {
     // given
-    SignUpRequestDto signUpDto = MemberTestFixture.getSignUpDto();
+    SignUpRequestDto signUpDto = TestFixture.getSignUpDto();
 
     // when
     memberService.signUp(signUpDto);
@@ -54,8 +54,8 @@ class MemberServiceTest {
   @DisplayName("프로필 변경 기능을 테스트한다.")
   void changeProfile() {
     // given
-    Member member = MemberTestFixture.getMember();
-    ChangeProfileRequestDto newProfile = MemberTestFixture.getChangeProfileDto();
+    Member member = TestFixture.getMember();
+    ChangeProfileRequestDto newProfile = TestFixture.getChangeProfileDto();
     doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
 
     // when
@@ -75,7 +75,7 @@ class MemberServiceTest {
   @DisplayName("회원탈퇴 기능을 테스트한다.")
   void withdrawal() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
 
     // when
@@ -91,7 +91,7 @@ class MemberServiceTest {
   @DisplayName("이미 탈퇴한 회원을 탈퇴시키는 경우 예외가 발생하는지 테스트한다.")
   void withdrawal_BadRequestException_alreadyDeleted() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     member.deleteAccount();
 
     // when, then
@@ -103,7 +103,7 @@ class MemberServiceTest {
   @DisplayName("비밀빈호 변경 기능을 테스트한다.")
   void changePassword() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     String newPassword = Faker.instance().internet().password();
     doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
 
@@ -120,7 +120,7 @@ class MemberServiceTest {
   @DisplayName("이메일 중복 검사 기능을 테스트한다.")
   void isDuplicated() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     memberRepository.save(member);
 
     // when

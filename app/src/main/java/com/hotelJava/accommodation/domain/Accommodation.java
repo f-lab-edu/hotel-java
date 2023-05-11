@@ -3,6 +3,7 @@ package com.hotelJava.accommodation.domain;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.picture.domain.Picture;
+import com.hotelJava.picture.domain.PictureType;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.CascadeType;
@@ -84,11 +85,12 @@ public class Accommodation extends BaseTimeEntity {
   // == 연관관계 편의 메소드 ==//
   public void setPicture(Picture picture) {
     this.picture = picture;
+    picture.setPictureType(PictureType.ACCOMMODATION);
     picture.setAccommodation(this);
   }
 
   public void createAccommodation(List<Room> rooms, Picture accommodationPicture) {
-    this.picture = accommodationPicture;
+    setPicture(accommodationPicture);
     this.rooms.addAll(rooms);
     rooms.forEach(room -> room.setAccommodation(this));
   }

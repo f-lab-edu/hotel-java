@@ -1,8 +1,8 @@
 package com.hotelJava.security.provider;
 
-import com.hotelJava.MemberTestFixture;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.TestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
@@ -30,7 +30,7 @@ class MemberDetailsAuthenticationProviderTest {
   @DisplayName("올바른 로그인요청 LoginDto 가 주어졌을 때, 인증작업은 LoginPostAuthenticationToken 을 발행한다")
   void authenticate_success() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     String originPassword = member.getPassword();
     String encodedPassword = passwordEncoder.encode(originPassword);
     member.changePassword(encodedPassword);
@@ -55,7 +55,7 @@ class MemberDetailsAuthenticationProviderTest {
   @DisplayName("탈퇴한 회원에 대한 로그인 요청 LoginDto 가 주어졌을 때, 인증작업은 BadRequestException 을 발생시킨다")
   void authenticate_deletedAccount_BadRequestException() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     member.deleteAccount();
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
@@ -74,7 +74,7 @@ class MemberDetailsAuthenticationProviderTest {
   @DisplayName("비밀번호가 틀린 로그인 요청 LoginDto 가 주어졌을 때, 인증작업은 BadRequestException 을 발생시킨다")
   void authenticate_wrongPassword_BadRequestException() {
     // given
-    Member member = MemberTestFixture.getMember();
+    Member member = TestFixture.getMember();
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
         new LoginPreAuthenticationToken(
