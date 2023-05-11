@@ -61,7 +61,7 @@ public class Room extends BaseTimeEntity {
   public void calcInventory(CheckDate checkDate, int value) {
     inventories.stream()
         .filter(i -> checkDate.matches(i.getDate()))
-        .forEach(i -> i.plusQuantity(value));
+        .forEach(i -> i.calcQuantity(value));
   }
 
   public boolean isNotEnoughInventoryAtCheckDate(CheckDate checkDate) {

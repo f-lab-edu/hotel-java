@@ -5,9 +5,6 @@ import static org.assertj.core.api.Assertions.*;
 
 import com.hotelJava.TestFixture;
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.inventory.domain.Inventory;
-import java.util.LinkedList;
-import java.util.List;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -22,22 +19,14 @@ class RoomTest {
     CheckDate checkDate = new CheckDate(now(), 1);
 
     // when
-    LinkedList<Inventory> beforeReduce = new LinkedList<>(room.getInventories());
-    room.reduceStock(checkDate);
+    room.calcInventory(checkDate, -1);
 
     // then
-    assertThat((isReduceQuantitySuccessful(beforeReduce, room.getInventories()))).isTrue();
-  }
-
-  private boolean isReduceQuantitySuccessful(List<Inventory> i1, List<Inventory> i2) {
-    for (int i = 0; i < i1.size(); i++) {
-      long beforeQuantity = i2.get(i).getQuantity();
-      long afterQuantity = i2.get(i).getQuantity();
-      if (beforeQuantity != afterQuantity) {
-        return false;
-      }
-    }
-    return true;
+    assertThat(
+            room.getInventories().stream()
+                .filter(i -> checkDate.matches(i.getDate()))
+                .allMatch(i -> i.getQuantity() == 9))
+        .isTrue();
   }
 
   @Test
@@ -50,8 +39,8 @@ class RoomTest {
     CheckDate checkDate = new CheckDate(now(), duration);
 
     // when, then
-    room.isStockOut(checkDate);
-    Assertions.assertThat(room.isStockOut(checkDate)).isTrue();
+    room.isNotEnoughInventoryAtCheckDate(checkDate);
+    Assertions.assertThat(room.isNotEnoughInventoryAtCheckDate(checkDate)).isTrue();
   }
 
   @Test
@@ -62,6 +51,6 @@ class RoomTest {
     CheckDate checkDate = new CheckDate(now(), 10);
 
     // when, then
-    Assertions.assertThat(room.isStockOut(checkDate)).isFalse();
+    Assertions.assertThat(room.isNotEnoughInventoryAtCheckDate(checkDate)).isFalse();
   }
 }

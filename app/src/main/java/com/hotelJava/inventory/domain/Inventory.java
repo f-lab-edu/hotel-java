@@ -51,7 +51,7 @@ public class Inventory extends BaseTimeEntity {
     return false;
   }
 
-  public void reduceQuantity() {
-    quantity--;
+  public void calcQuantity(int value) {
+    quantity += value;
   }
 }
