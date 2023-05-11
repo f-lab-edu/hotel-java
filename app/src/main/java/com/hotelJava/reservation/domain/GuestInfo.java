@@ -4,9 +4,9 @@ import com.hotelJava.common.embeddable.CheckDate;
 
 public interface GuestInfo {
 
-  String getName();
+  String getGuestName();
 
-  String getPhone();
+  String getGuestPhone();
 
   int getNumberOfGuests();
 
