@@ -1,10 +1,13 @@
-package com.hotelJava.inventory;
+package com.hotelJava.inventory.domain;
 
 import com.hotelJava.common.util.BaseTimeEntity;
+import com.hotelJava.room.domain.Room;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import java.time.LocalDate;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
@@ -12,7 +15,9 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.extern.slf4j.Slf4j;
 
+@Slf4j
 @Entity
 @Getter
 @Setter
@@ -25,11 +30,28 @@ public class Inventory extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  private Long accommodationId;
+  @ManyToOne
+  @JoinColumn(name = "room_id")
+  private Room room;
 
-  private Long roomId;
-  
   private LocalDate date;
-  
+
   private long quantity;
+
+  public Inventory(LocalDate date, long quantity) {
+    this.date = date;
+    this.quantity = quantity;
+  }
+
+  public boolean isZeroQuantity() {
+    if (quantity <= 0) {
+      log.info("quantity at {} is 0", date);
+      return true;
+    }
+    return false;
+  }
+
+  public void calcQuantity(int value) {
+    quantity += value;
+  }
 }

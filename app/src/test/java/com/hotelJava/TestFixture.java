@@ -4,7 +4,7 @@ import com.github.javafaker.Faker;
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
-import com.hotelJava.inventory.Inventory;
+import com.hotelJava.inventory.domain.Inventory;
 import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.Role;
@@ -73,7 +73,7 @@ public class TestFixture {
     return Picture.builder().pictureInfo(getPictureInfo()).build();
   }
 
-  public static Accommodation getAccommodation(LocalDate start, int duration, int roomNumber) {
+  public static Accommodation getAccommodation(LocalDate from, int duration, int roomNumber) {
     Picture picture = getPicture();
     Accommodation accommodation =
         Accommodation.builder()
@@ -88,22 +88,23 @@ public class TestFixture {
     // mapping rooms & picture
     List<Room> rooms = new LinkedList<>();
     for (int i = 0; i < roomNumber; i++) {
-      rooms.add(getRoom(faker.number().numberBetween(1, 5)));
+      int maxOccupancy = faker.number().numberBetween(1, 5);
+      int quantity = faker.number().numberBetween(1, 5);
+      rooms.add(getRoom(maxOccupancy, quantity, from, duration));
     }
     accommodation.createAccommodation(rooms, picture);
-
-    // mapping inventory
-
-    rooms.forEach(
-        room ->
-            start
-                .datesUntil(start.plusDays(duration))
-                .forEach(date -> getInventory(room, date, faker.number().numberBetween(1, 5))));
 
     return accommodation;
   }
 
-  public static Room getRoom(int maxOccupancy) {
+  /**
+   * @param maxOccupancy 객실 최대 인원
+   * @param quantity 객실 재고량
+   * @param from 객실 재고를 언제부터 관리할 것인지
+   * @param duration 객실 재고 보관 기간
+   * @return 객실 및 객실의 재고 정보
+   */
+  public static Room getRoom(int maxOccupancy, int quantity, LocalDate from, int duration) {
     Picture picture = getPicture();
     Room room =
         Room.builder()
@@ -111,13 +112,15 @@ public class TestFixture {
             .price(faker.number().numberBetween(50000, 100000))
             .maxOccupancy(maxOccupancy)
             .build();
+
     room.addPicture(picture);
+    from.datesUntil(from.plusDays(duration))
+        .forEach(d -> room.addInventory(getInventory(d, quantity)));
+
     return room;
   }
 
-  public static Inventory getInventory(Room room, LocalDate date, int quantity) {
-    Inventory inventory = new Inventory(date, quantity);
-    room.addInventory(inventory);
-    return inventory;
+  private static Inventory getInventory(LocalDate date, int quantity) {
+    return new Inventory(date, quantity);
   }
 }
