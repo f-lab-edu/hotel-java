@@ -33,17 +33,17 @@ public class FindAccommodationQueryTest extends BeforeEachInit {
     String firstLocation = "서울";
     String secondLocation = "강남";
     String name = "";
-    LocalDate checkInDate = LocalDate.of(2023, 5, 6);
-    LocalDate checkOutDate = LocalDate.of(2023, 5, 7);
+    LocalDate checkInDate = LocalDate.now();
+    LocalDate checkOutDate = LocalDate.now().plusDays(1);
 
     // when
     List<FindAccommodationResponseDto> accommodations =
         sut.findAccommodations(
-            type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2, Role.ADMIN);
+            type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2, Role.USER);
 
     // then
-    assertThat(accommodations.size()).isEqualTo(2);
-    assertThat(accommodations.get(0).getName()).isEqualTo("test accommodation");
-    assertThat(accommodations.get(0).getMinimumRoomPrice()).isEqualTo(1000);
+    assertThat(accommodations.size()).isEqualTo(1);
+    assertThat(accommodations.get(0).getName()).isEqualTo("숙소 이름이 숙소 이름입니다");
+    assertThat(accommodations.get(0).getMinimumRoomPrice()).isEqualTo(30000);
   }
 }

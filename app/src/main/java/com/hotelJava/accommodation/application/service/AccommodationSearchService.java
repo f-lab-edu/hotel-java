@@ -27,6 +27,7 @@ public class AccommodationSearchService implements FindAccommodationQuery {
 
   private final AccommodationMapper accommodationMapper;
 
+  @Override
   public List<FindAccommodationResponseDto> findAccommodations(
       AccommodationType type,
       String firstLocation,
@@ -36,23 +37,11 @@ public class AccommodationSearchService implements FindAccommodationQuery {
       LocalDate checkOutDate,
       int guestCount,
       Role role) {
-    ReservationStatus reservationStatus;
+    ReservationStatus reservationStatus = getReservationStatus(role);
 
-    if (role.equals(Role.ADMIN)) {
-      reservationStatus = ReservationStatus.RESERVATION_COMPLETED;
-    } else {
-      reservationStatus = ReservationStatus.RESERVATION_AVAILABLE;
-    }
     List<Accommodation> accommodations =
         accommodationRepository.findAccommodations(
-            type,
-            firstLocation,
-            secondLocation,
-            name,
-            checkInDate,
-            checkOutDate,
-            guestCount,
-            reservationStatus);
+            type, firstLocation, secondLocation, name, checkInDate, checkOutDate, guestCount);
     return accommodations.stream()
         .map(
             accommodation -> {
@@ -66,5 +55,12 @@ public class AccommodationSearchService implements FindAccommodationQuery {
                   minimumRoomPrice, accommodation);
             })
         .collect(Collectors.toList());
+  }
+
+  private ReservationStatus getReservationStatus(Role role) {
+    if (role.equals(Role.ADMIN)) {
+      return ReservationStatus.RESERVATION_COMPLETED;
+    }
+    return ReservationStatus.RESERVATION_AVAILABLE;
   }
 }

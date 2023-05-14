@@ -78,7 +78,7 @@ public class Room extends BaseTimeEntity {
     return price;
   }
 
-  // == 연관관계 편의 메소드 ==//
+  //== 연관관계 편의 메소드 ==//
   public void setAccommodation(Accommodation accommodation) {
     this.accommodation = accommodation;
   }

@@ -82,7 +82,7 @@ public class Accommodation extends BaseTimeEntity {
     return this;
   }
 
-  // == 연관관계 편의 메소드 ==//
+  //== 연관관계 편의 메소드 ==//
   public void setPicture(Picture picture) {
     this.picture = picture;
     picture.setPictureType(PictureType.ACCOMMODATION);

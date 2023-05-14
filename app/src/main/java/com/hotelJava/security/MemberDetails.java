@@ -27,7 +27,7 @@ public class MemberDetails extends User {
     return super.getUsername();
   }
 
-  public List<Role> getRole() {
+  public List<Role> getRoles() {
     return super.getAuthorities().stream()
         .map(r -> Role.valueOf(r.getAuthority()))
         .collect(Collectors.toList());
