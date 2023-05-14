@@ -3,70 +3,93 @@ package com.hotelJava.payment.service;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.dto.CreatePaymentRequestDto;
-import com.hotelJava.payment.dto.ImpUidDto;
-import com.hotelJava.reservation.service.ReservationService;
-import com.hotelJava.reservation.service.ReservationServiceManager;
+import com.hotelJava.reservation.domain.Reservation;
+import com.hotelJava.reservation.domain.ReservationStatus;
+import com.hotelJava.reservation.repository.ReservationRepository;
+import com.hotelJava.room.domain.Room;
+import com.hotelJava.room.repository.RoomRepository;
 import com.siot.IamportRestClient.IamportClient;
 import com.siot.IamportRestClient.exception.IamportResponseException;
 import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import java.io.IOException;
-import java.math.BigDecimal;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @RequiredArgsConstructor
+@Slf4j
+@Transactional(readOnly = true)
 public class PaymentByKakaoPay implements PaymentService {
 
-  private final ReservationServiceManager reservationServiceManager;
+  private final RoomRepository roomRepository;
 
-  private final IamportClient api =
-      new IamportClient(
-          "6318782456272832",
-          "drziCrVVErSjpA7mal4EKUNrTuGa1Gf6oG0keXXRO6cs2AVo5YVZGeAuUZsry2YfKtTSVFZFnmcIlWIv");
+  private final ReservationRepository reservationRepository;
 
-  @Override
-  public IamportResponse<Payment> verifyIamport(ImpUidDto impUidDto) {
-    try {
-      return api.paymentByImpUid(impUidDto.getImpUid());
-    } catch (IamportResponseException | IOException e) {
-      throw new InternalServerException(ErrorCode.INTERNAL_SERVER_ERROR);
+  @Value("${iamport.apiKey}")
+  private String apiKey;
+
+  @Value("${iamport.apiSecret}")
+  private String apiSecret;
+
+  private final IamportClient api = new IamportClient(apiKey, apiSecret);
+
+  @Transactional
+  public void createPayment(Long roomId, Member member, CreatePaymentRequestDto dto) {
+    Room room =
+        roomRepository
+            .findById(roomId)
+            .orElseThrow(() -> new BadRequestException(ErrorCode.ROOM_NOT_FOUND));
+    Reservation reservation =
+        reservationRepository
+            .findByReservationNo(dto.getReservationNo())
+            .orElseThrow(() -> new BadRequestException(ErrorCode.RESERVATION_NOT_FOUND));
+
+    // 결제 금액 검증
+    if (verifyAmount(dto.getImpUid(), dto.getAmount(), room.getPrice(), reservation)) {
+
+      // 결제
+      reservation.getPayment().changePaymentStatus(dto.getAmount());
+
+      // 예약 처리상태 변경 (대기 -> 완료)
+      reservation.changeReservationStatus(ReservationStatus.RESERVATION_COMPLETED);
     }
   }
 
-  @Override
-  @Transactional
-  public void savePayment(CreatePaymentRequestDto createPaymentRequestDto) {
+  private boolean verifyAmount(
+      String impUid, int clientRoomAmount, int serverRoomAmount, Reservation reservation) {
     try {
-      Payment payment =
-          verifyIamport(ImpUidDto.builder().impUid(createPaymentRequestDto.getImpUid()).build())
-              .getResponse();
+      IamportResponse<Payment> paymentIamportResponse = api.paymentByImpUid(impUid);
+      int iamportRoomAmount = paymentIamportResponse.getResponse().getAmount().intValue();
 
-      // 결제된 금액과 클라이언트에서 요청한 금액 비교 검증
-      if (payment.getAmount().compareTo(BigDecimal.valueOf(createPaymentRequestDto.getPrice()))
-          != 0) {
+      if (iamportRoomAmount != clientRoomAmount || iamportRoomAmount != serverRoomAmount) {
+        log.info("결제 금액이 일치하지 않음");
 
-        // 결제 취소
-        api.cancelPaymentByImpUid(new CancelData(createPaymentRequestDto.getImpUid(), true));
+        // Iamport 결제 취소
+        cancelPayment(impUid);
 
-        throw new BadRequestException(ErrorCode.BAD_REQUEST_ERROR);
+        // 예약 처리상태 변경 (대기 -> 취소)
+        reservation.changeReservationStatus(ReservationStatus.RESERVATION_CANCEL);
+
+        throw new BadRequestException(ErrorCode.PAYMENT_FAIL);
       }
-
-      // DB에 예약정보 저장
-      ReservationService reservationService =
-          reservationServiceManager.findService(
-              createPaymentRequestDto.getCreateReservationRequestDto().getReservationCommand());
-
-      reservationService.saveReservation(createPaymentRequestDto.getCreateReservationRequestDto());
-
-      // DB에 결제정보 저장
-
-    } catch (IamportResponseException | IOException e) {
+    } catch (IamportResponseException e) {
+      log.error("IamportResponseException");
+      throw new InternalServerException(ErrorCode.INTERNAL_SERVER_ERROR);
+    } catch (IOException e) {
       throw new InternalServerException(ErrorCode.INTERNAL_SERVER_ERROR);
     }
+    
+    return true;
+  }
+
+  private void cancelPayment(String impUid) throws IamportResponseException, IOException {
+    api.cancelPaymentByImpUid(new CancelData(impUid, true));
   }
 }
