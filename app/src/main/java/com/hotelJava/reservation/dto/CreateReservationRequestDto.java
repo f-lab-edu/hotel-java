@@ -3,7 +3,6 @@ package com.hotelJava.reservation.dto;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.reservation.domain.GuestInfo;
 import com.hotelJava.reservation.domain.ReservationCommand;
-import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
@@ -33,12 +32,8 @@ public class CreateReservationRequestDto implements GuestInfo {
   private int numberOfGuests;
 
   @NotNull(message = "체크인, 체크아웃 시간을 선택해주세요.")
-  @Future
+//  @Future
   private CheckDate checkDate;
-
-  private Long accommodationId;
-
-  private Long roomId;
 
   private String reservationNo;
 }

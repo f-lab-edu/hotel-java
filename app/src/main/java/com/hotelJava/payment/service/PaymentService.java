@@ -1,13 +1,9 @@
 package com.hotelJava.payment.service;
 
+import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.dto.CreatePaymentRequestDto;
-import com.hotelJava.payment.dto.ImpUidDto;
-import com.siot.IamportRestClient.response.IamportResponse;
-import com.siot.IamportRestClient.response.Payment;
 
 public interface PaymentService {
 
-  IamportResponse<Payment> verifyIamport(ImpUidDto impUidDto);
-  
-  void savePayment(CreatePaymentRequestDto createPaymentRequestDto);
+  void createPayment(Long roomId, Member member, CreatePaymentRequestDto dto);
 }
