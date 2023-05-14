@@ -12,13 +12,11 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -41,6 +39,8 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   private String guestName;
 
   private String guestPhone;
+
+  private boolean deleted;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.ALL)
   private Payment payment;
@@ -98,5 +98,24 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
       return true;
     }
     return false;
+  }
+
+  public void changeReservationStatus(ReservationStatus reservationStatus) {
+    status = reservationStatus;
+  }
+
+  public void setRoom(Room room) {
+    this.room = room;
+  }
+
+  // == 연관관계 편의 메소드 ==//
+  public void setMember(Member member) {
+    this.member = member;
+    member.getReservations().add(this);
+  }
+
+  public void setPayment(Payment payment) {
+    this.payment = payment;
+    payment.setReservation(this);
   }
 }
