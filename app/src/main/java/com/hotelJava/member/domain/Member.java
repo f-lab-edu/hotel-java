@@ -13,8 +13,6 @@ import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Builder.Default;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -27,7 +25,6 @@ import org.hibernate.annotations.Where;
 @AllArgsConstructor
 @EqualsAndHashCode
 @Getter
-@Builder
 @Entity
 public class Member implements Authority, Credential, Identifier, Profile {
 
@@ -48,14 +45,11 @@ public class Member implements Authority, Credential, Identifier, Profile {
   private boolean deleted;
 
   @OneToMany(mappedBy = "member", fetch = FetchType.LAZY)
-  @Builder.Default
   private List<Reservation> reservations = new ArrayList<>();
 
-  @Default
   @Enumerated(value = EnumType.STRING)
   private Role role = USER;
 
-  @Default
   @Enumerated(value = EnumType.STRING)
   private Grade grade = NORMAL;
 
@@ -70,9 +64,9 @@ public class Member implements Authority, Credential, Identifier, Profile {
     this.password = Password.of(password);
   }
 
-  public void changeProfile(Profile profileInfo) {
-    this.name = profileInfo.getName();
-    this.phone = profileInfo.getPhone();
+  public void changeProfile(Profile profile) {
+    this.name = profile.getName();
+    this.phone = profile.getPhone();
   }
 
   public void deleteAccount() {
