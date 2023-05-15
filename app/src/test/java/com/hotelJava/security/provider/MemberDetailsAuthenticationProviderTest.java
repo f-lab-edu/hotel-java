@@ -1,8 +1,8 @@
 package com.hotelJava.security.provider;
 
+import com.hotelJava.TestFixture;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.TestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
@@ -17,27 +17,23 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class MemberDetailsAuthenticationProviderTest {
 
   @Autowired private MemberDetailsAuthenticationProvider provider;
   @SpyBean private MemberDetailsService memberDetailsService;
-  @Autowired private PasswordEncoder passwordEncoder;
 
   @Test
   @DisplayName("올바른 로그인요청 LoginDto 가 주어졌을 때, 인증작업은 LoginPostAuthenticationToken 을 발행한다")
   void authenticate_success() {
     // given
     Member member = TestFixture.getMember();
-    String originPassword = member.getPassword();
-    String encodedPassword = passwordEncoder.encode(originPassword);
-    member.changePassword(encodedPassword);
 
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
-        new LoginPreAuthenticationToken(new LoginDto(member.getEmail(), originPassword));
+        new LoginPreAuthenticationToken(
+            new LoginDto(member.getEmail(), member.getPassword().getEncryption()));
 
     Mockito.doReturn(loginMemberDetails)
         .when(memberDetailsService)
@@ -59,7 +55,8 @@ class MemberDetailsAuthenticationProviderTest {
     member.deleteAccount();
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
-        new LoginPreAuthenticationToken(new LoginDto(member.getEmail(), member.getPassword()));
+        new LoginPreAuthenticationToken(
+            new LoginDto(member.getEmail(), member.getPassword().getEncryption()));
 
     Mockito.doReturn(loginMemberDetails)
         .when(memberDetailsService)
@@ -78,7 +75,7 @@ class MemberDetailsAuthenticationProviderTest {
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
         new LoginPreAuthenticationToken(
-            new LoginDto(member.getEmail(), member.getPassword() + "mistake"));
+            new LoginDto(member.getEmail(), member.getPassword().getEncryption() + "mistake"));
 
     Mockito.doReturn(loginMemberDetails)
         .when(memberDetailsService)

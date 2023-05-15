@@ -7,9 +7,10 @@ import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.inventory.domain.Inventory;
 import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
+import com.hotelJava.member.domain.Password;
 import com.hotelJava.member.domain.Role;
 import com.hotelJava.member.dto.ChangeProfileRequestDto;
-import com.hotelJava.member.dto.SignUpRequestDto;
+import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
 import com.hotelJava.room.domain.Room;
@@ -22,10 +23,10 @@ public class TestFixture {
   private static final Faker faker = Faker.instance();
 
   /** dto test fixture * */
-  public static SignUpRequestDto getSignUpDto() {
-    return SignUpRequestDto.builder()
+  public static MemberSignUpCommand getMemberSignUpCommand() {
+    return MemberSignUpCommand.builder()
         .email(faker.internet().emailAddress())
-        .password(faker.internet().password())
+        .plainPassword(faker.internet().password())
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .build();
@@ -42,7 +43,7 @@ public class TestFixture {
   public static Member getMember() {
     return Member.builder()
         .email(faker.internet().emailAddress())
-        .password(faker.internet().password())
+        .password(Password.of(faker.internet().password()))
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .role(faker.options().option(Role.values()))

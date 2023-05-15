@@ -19,7 +19,7 @@ public class MemberDetails extends User {
   }
 
   public MemberDetails(Member member) {
-    super(member.getEmail(), member.getPassword(), parseAuthorities(member.getRole()));
+    super(member.getEmail(), member.getPassword().getEncryption(), parseAuthorities(member.getRole()));
     this.member = member;
   }
 
