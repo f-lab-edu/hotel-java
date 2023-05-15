@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-@AllArgsConstructor(access = AccessLevel.PROTECTED)
+@AllArgsConstructor
 public class MemberSignUpCommand implements Profile {
   @Email(message = "이메일 형식을 입력하세요.")
   private String email;

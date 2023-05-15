@@ -44,5 +44,5 @@ Content-Type: application/json
 Authorization: Bearer {{auth_token}}
 
 {
-  "newPassword": "12345678"
+  "password": "12345678"
 }
