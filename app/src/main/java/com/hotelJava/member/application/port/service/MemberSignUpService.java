@@ -16,7 +16,7 @@ import org.springframework.transaction.annotation.Transactional;
 @AllArgsConstructor
 public class MemberSignUpService implements SignUpUseCase {
 
-  private final RegisterMemberPort signUpMemberPort;
+  private final RegisterMemberPort registerMemberPort;
   private final CheckDuplicatedMemberEmailPort memberEmailDuplicateCheckPort;
 
   public Member signUp(MemberSignUpCommand command) {
@@ -26,7 +26,7 @@ public class MemberSignUpService implements SignUpUseCase {
         new Member(
             command.getEmail(), command.getName(), command.getPlainPassword(), command.getPhone());
 
-    signUpMemberPort.signUp(member);
+    registerMemberPort.register(member);
 
     return member;
   }
