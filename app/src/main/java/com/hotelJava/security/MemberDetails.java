@@ -19,7 +19,8 @@ public class MemberDetails extends User {
   }
 
   public MemberDetails(Member member) {
-    super(member.getEmail(), member.getPassword().getEncryption(), parseAuthorities(member.getRole()));
+    super(
+        member.getEmail(), member.getPassword().getEncrypted(), parseAuthorities(member.getRole()));
     this.member = member;
   }
 
@@ -27,7 +28,11 @@ public class MemberDetails extends User {
     return super.getUsername();
   }
 
-  public List<Role> getRole() {
+  public boolean matchPassword(String trialPassword) {
+    return member.getPassword().matches(trialPassword);
+  }
+
+  public List<Role> getRoles() {
     return super.getAuthorities().stream()
         .map(r -> Role.valueOf(r.getAuthority()))
         .collect(Collectors.toList());

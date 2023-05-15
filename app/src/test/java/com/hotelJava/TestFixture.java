@@ -7,10 +7,7 @@ import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.inventory.domain.Inventory;
 import com.hotelJava.member.application.port.in.command.ChangeProfileCommand;
 import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
-import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.member.domain.Password;
-import com.hotelJava.member.domain.Role;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
 import com.hotelJava.room.domain.Room;
@@ -41,14 +38,19 @@ public class TestFixture {
 
   /** domain test fixture * */
   public static Member getMember() {
-    return Member.builder()
-        .email(faker.internet().emailAddress())
-        .password(Password.of(faker.internet().password()))
-        .name(faker.name().name())
-        .phone(faker.phoneNumber().phoneNumber())
-        .role(faker.options().option(Role.values()))
-        .grade(faker.options().option(Grade.values()))
-        .build();
+    return new Member(
+        faker.internet().emailAddress(),
+        faker.name().name(),
+        faker.internet().password(),
+        faker.phoneNumber().phoneNumber());
+  }
+
+  public static Member getMember(String password) {
+    return new Member(
+        faker.internet().emailAddress(),
+        faker.name().name(),
+        password,
+        faker.phoneNumber().phoneNumber());
   }
 
   public static Address getAddress() {

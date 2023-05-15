@@ -13,19 +13,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Embeddable
 public class Password {
-  private String encryption;
+  private String encrypted;
 
-  private Password(String encryption) {
-    this.encryption = encryption;
+  private Password(String encrypted) {
+    this.encrypted = encrypted;
   }
 
-  public boolean matches(String trial) {
+  public boolean matches(String rawPassword) {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    return passwordEncoder.matches(trial, encryption);
+    return passwordEncoder.matches(rawPassword, encrypted);
   }
 
-  public static Password of(String plain) {
+  public static Password of(String rawPassword) {
     PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-    return new Password(passwordEncoder.encode(plain));
+    return new Password(passwordEncoder.encode(rawPassword));
   }
 }

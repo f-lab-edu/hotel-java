@@ -3,7 +3,6 @@ package com.hotelJava.security.provider;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.member.domain.Password;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.LoginPostAuthenticationToken;
@@ -32,7 +31,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     LoginPreAuthenticationToken preAuthToken = (LoginPreAuthenticationToken) authentication;
 
     String email = preAuthToken.getEmail();
-    Password password = preAuthToken.getPassword();
+    String password = preAuthToken.getPassword();
 
     if (password == null) {
       log.info("password null");
@@ -50,7 +49,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     if (!memberDetails.isCredentialsNonExpired()) {
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
-    if (!password.matches(memberDetails.getPassword())) {
+    if (!memberDetails.matchPassword(password)) {
       throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 
