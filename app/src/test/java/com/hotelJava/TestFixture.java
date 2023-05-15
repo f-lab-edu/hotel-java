@@ -5,12 +5,12 @@ import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.inventory.domain.Inventory;
+import com.hotelJava.member.application.port.in.command.ChangeProfileCommand;
+import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.Password;
 import com.hotelJava.member.domain.Role;
-import com.hotelJava.member.dto.ChangeProfileRequestDto;
-import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
 import com.hotelJava.room.domain.Room;
@@ -32,8 +32,8 @@ public class TestFixture {
         .build();
   }
 
-  public static ChangeProfileRequestDto getChangeProfileDto() {
-    return ChangeProfileRequestDto.builder()
+  public static ChangeProfileCommand getChangeProfileCommand() {
+    return ChangeProfileCommand.builder()
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .build();
