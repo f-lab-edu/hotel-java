@@ -1,0 +1,70 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+# This workflow will build a Java project with Gradle and cache/restore any dependencies to improve the workflow execution time
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
+
+# GitHub Repository Actions Tab 에 표시될 이름
+name: Java CI with Gradle
+
+# 작업을 트리거하는 이벤트
+# main 브랜치에 push, pull_request 이벤트 발생시 트리거
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+permissions:
+  contents: read
+
+# Workflow는 jobs로 구성
+# jobs는 순서대로 또는 병렬로 실행될 수 있음 
+jobs:
+  # 첫 번째 job 정의 => 이름: build
+  build:
+    
+    # GitHub에서 호스팅하는 최신버전의 ubuntu runner에서 실행
+    runs-on: ubuntu-latest
+    
+    # job을 구성하는 단계, 각 단계는 독립적인 action or shell script
+    # 각 단계는 - 기호로 구분하고 리스트 형태로 나열함
+    # - run <script>: script 호출
+    # - uses <action>: action 호출
+    steps:
+    
+    # 원격저장소의 코드를 CI 서버가 내려받는 step
+    # GitHub이 제공하는 actions/checkout@v3 호출
+    - uses: actions/checkout@v3
+    
+    # CI 서버 환경에 JDK17 설치하는 step
+    # GitHub이 제공하는 actions/setup-java@v3 호출
+    - name: Set up JDK 17
+      uses: actions/setup-java@v3
+      with:
+        java-version: '17'
+        distribution: 'temurin'
+        
+    # CI 서버 환경에 gradle dependency를 캐싱하는 step
+    - name: Cache Depedency Library
+      uses: actions/cache@v3
+      with:
+        path: |  # 캐싱할 데이터들의 경로
+          ~/.gradle/caches
+          ~/.gradle/wrapper
+          
+        # key를 통해 캐싱서버로부터 파일을 복구
+        # gradle 파일들을 해싱한 값을 키로 활용
+        # gradle 파일에 변화가 생긴다면 해시가 바뀌어 새로운 key로 새롭게 캐시
+        key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+        
+    # Gradle을 이용하여 빌드하는 step
+    # GitHub이 제공하는 스크립트 호출
+    - name: Validate Gradle wrapper
+      uses: gradle/wrapper-validation-action@v3
+    
+    - name: Build with Gradle
+      uses: gradle/gradle-build-action@67421db6bd0bf253fb4bd25b31ebb98943c375e1
+      with:
+        arguments: clean build
