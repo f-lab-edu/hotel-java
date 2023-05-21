@@ -3,6 +3,7 @@ package com.hotelJava.security.provider;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.member.application.port.out.MatchPasswordPort;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.LoginPostAuthenticationToken;
@@ -12,7 +13,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.authentication.AuthenticationProvider;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -21,7 +21,7 @@ import org.springframework.stereotype.Component;
 public class MemberDetailsAuthenticationProvider implements AuthenticationProvider {
 
   private final MemberDetailsService memberDetailsService;
-  private final PasswordEncoder passwordEncoder;
+  private final MatchPasswordPort matchPasswordPort;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -51,7 +51,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     if (!memberDetails.isCredentialsNonExpired()) {
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
-    if (!matches(password, memberDetails.getPassword())) {
+    if (!matchPasswordPort.matches(password, memberDetails.getPassword())) {
       throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 
@@ -61,9 +61,5 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
   @Override
   public boolean supports(Class<?> authentication) {
     return LoginPreAuthenticationToken.class.isAssignableFrom(authentication);
-  }
-
-  public boolean matches(String requestPassword, String originPassword) {
-    return passwordEncoder.matches(requestPassword, originPassword);
   }
 }

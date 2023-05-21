@@ -1,19 +1,17 @@
-package com.hotelJava.member.dto;
+package com.hotelJava.member.application.port.in.command;
 
-import com.hotelJava.member.domain.Profile;
+import jakarta.validation.constraints.NotBlank;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-@Getter
 @Builder
+@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class SignUpRequestDto implements Profile {
-  private String email;
-  private String name;
+public class ChangePasswordCommand {
+  @NotBlank(message = "비밀번호를 입력하세요.")
   private String password;
-  private String phone;
 }

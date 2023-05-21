@@ -7,8 +7,8 @@ import static org.mockito.Mockito.doReturn;
 
 import com.hotelJava.TestFixture;
 import com.hotelJava.common.embeddable.CheckDate;
+import com.hotelJava.member.application.port.out.persistence.FindMemberPort;
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.member.repository.MemberRepository;
 import com.hotelJava.reservation.dto.CreateReservationRequestDto;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.room.repository.RoomRepository;
@@ -29,7 +29,7 @@ public class ReservationServiceTest {
   @Qualifier("kyungtakReservationService")
   private ReservationService reservationService;
 
-  @SpyBean private MemberRepository memberRepository;
+  @SpyBean private FindMemberPort findMemberPort;
 
   @SpyBean private RoomRepository roomRepository;
   
@@ -38,7 +38,7 @@ public class ReservationServiceTest {
   void 객실_예약() {
     // given
     Member member = TestFixture.getMember();
-    doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
+    doReturn(member).when(findMemberPort).findByEmail(member.getEmail());
 
     Room room = TestFixture.getRoom(10, 10, now(), 10);
     doReturn(Optional.of(room)).when(roomRepository).findById(anyLong());

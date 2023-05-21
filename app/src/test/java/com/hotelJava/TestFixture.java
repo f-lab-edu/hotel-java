@@ -5,13 +5,9 @@ import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.stock.domain.Stock;
-import com.hotelJava.member.domain.Grade;
+import com.hotelJava.member.application.port.in.command.ChangeProfileCommand;
+import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.member.domain.Role;
-import com.hotelJava.member.dto.ChangeProfileRequestDto;
-import com.hotelJava.member.dto.SignUpRequestDto;
-import com.hotelJava.payment.domain.PaymentType;
 import com.hotelJava.payment.dto.CreatePaymentRequestDto;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
@@ -20,6 +16,7 @@ import com.hotelJava.reservation.domain.ReservationCommand;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.reservation.dto.CreateReservationRequestDto;
 import com.hotelJava.room.domain.Room;
+import com.hotelJava.stock.domain.Stock;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -29,17 +26,17 @@ public class TestFixture {
   private static final Faker faker = Faker.instance();
 
   /** dto test fixture * */
-  public static SignUpRequestDto getSignUpDto() {
-    return SignUpRequestDto.builder()
+  public static MemberSignUpCommand getMemberSignUpCommand() {
+    return MemberSignUpCommand.builder()
         .email(faker.internet().emailAddress())
-        .password(faker.internet().password())
+        .rawPassword(faker.internet().password())
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .build();
   }
 
-  public static ChangeProfileRequestDto getChangeProfileDto() {
-    return ChangeProfileRequestDto.builder()
+  public static ChangeProfileCommand getChangeProfileCommand() {
+    return ChangeProfileCommand.builder()
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .build();
@@ -67,11 +64,9 @@ public class TestFixture {
   public static Member getMember() {
     return Member.builder()
         .email(faker.internet().emailAddress())
-        .password(faker.internet().password())
         .name(faker.name().name())
+        .password(faker.internet().password())
         .phone(faker.phoneNumber().phoneNumber())
-        .role(faker.options().option(Role.values()))
-        .grade(faker.options().option(Grade.values()))
         .build();
   }
 
@@ -139,8 +134,7 @@ public class TestFixture {
             .build();
 
     room.addPicture(picture);
-    from.datesUntil(from.plusDays(duration))
-        .forEach(d -> room.addStock(getStock(d, quantity)));
+    from.datesUntil(from.plusDays(duration)).forEach(d -> room.addStock(getStock(d, quantity)));
 
     return room;
   }
@@ -150,7 +144,8 @@ public class TestFixture {
   }
 
   public static Reservation getReservation(CheckDate checkDate) {
-    Reservation reservation = Reservation.builder()
+    Reservation reservation =
+        Reservation.builder()
             .reservationNo(faker.random().toString())
             .status(faker.options().option(ReservationStatus.PAYMENT_PENDING))
             .checkDate(checkDate)
