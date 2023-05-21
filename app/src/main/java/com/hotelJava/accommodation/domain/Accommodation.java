@@ -26,11 +26,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 @Entity
 @Getter
-@Setter
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
@@ -82,7 +80,7 @@ public class Accommodation extends BaseTimeEntity {
     return this;
   }
 
-  // == 연관관계 편의 메소드 ==//
+  //== 연관관계 편의 메소드 ==//
   public void setPicture(Picture picture) {
     this.picture = picture;
     picture.setPictureType(PictureType.ACCOMMODATION);

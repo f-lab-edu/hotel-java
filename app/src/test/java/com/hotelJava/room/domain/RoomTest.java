@@ -19,11 +19,11 @@ class RoomTest {
     CheckDate checkDate = new CheckDate(now(), 1);
 
     // when
-    room.calcInventory(checkDate, -1);
+    room.calcStock(checkDate, -1);
 
     // then
     assertThat(
-            room.getInventories().stream()
+            room.getStocks().stream()
                 .filter(i -> checkDate.matches(i.getDate()))
                 .allMatch(i -> i.getQuantity() == 9))
         .isTrue();
@@ -35,12 +35,12 @@ class RoomTest {
     // given
     int duration = 10;
     Room room = TestFixture.getRoom(10, 10, now(), duration);
-    room.getInventories().get(duration - 1).setQuantity(0);
+    room.getStocks().get(duration - 1).setQuantity(0);
     CheckDate checkDate = new CheckDate(now(), duration);
 
     // when, then
-    room.isNotEnoughInventoryAtCheckDate(checkDate);
-    Assertions.assertThat(room.isNotEnoughInventoryAtCheckDate(checkDate)).isTrue();
+    room.isNotEnoughStockAtCheckDate(checkDate);
+    Assertions.assertThat(room.isNotEnoughStockAtCheckDate(checkDate)).isTrue();
   }
 
   @Test
@@ -51,6 +51,6 @@ class RoomTest {
     CheckDate checkDate = new CheckDate(now(), 10);
 
     // when, then
-    Assertions.assertThat(room.isNotEnoughInventoryAtCheckDate(checkDate)).isFalse();
+    Assertions.assertThat(room.isNotEnoughStockAtCheckDate(checkDate)).isFalse();
   }
 }
