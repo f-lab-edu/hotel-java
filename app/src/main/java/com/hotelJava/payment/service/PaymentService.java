@@ -1,16 +1,8 @@
 package com.hotelJava.payment.service;
 
-import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
+import com.hotelJava.payment.dto.CreatePaymentRequestDto;
 
-@Service
-@Transactional(readOnly = true)
-@RequiredArgsConstructor
-public class PaymentService {
+public interface PaymentService {
 
-    @Transactional
-    public void savePayment() {
-
-    }
+  void createPayment(Long roomId, CreatePaymentRequestDto dto);
 }

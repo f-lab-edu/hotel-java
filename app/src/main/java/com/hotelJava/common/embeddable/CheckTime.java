@@ -16,9 +16,9 @@ import org.springframework.format.annotation.DateTimeFormat;
 @AllArgsConstructor
 public class CheckTime {
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "HH:mm:ss")
   private LocalTime checkInTime;
 
-  @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+  @DateTimeFormat(pattern = "HH:mm:ss")
   private LocalTime checkOutTime;
 }

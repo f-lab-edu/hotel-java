@@ -53,7 +53,7 @@ public class AccommodationController {
       @RequestParam(required = false, defaultValue = "#{T(java.time.LocalDate).now().plusDays(1)}")
           LocalDate checkOutDate,
       @RequestParam(required = false, defaultValue = "2") int guestCount,
-      @AuthenticationPrincipal(expression = "role") List<Role> roles) {
+      @AuthenticationPrincipal(expression = "roles") List<Role> roles) {
     return findAccommodationQuery.findAccommodations(
         type,
         firstLocation,

@@ -4,13 +4,19 @@ import com.github.javafaker.Faker;
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
-import com.hotelJava.inventory.domain.Inventory;
+import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.member.application.port.in.command.ChangeProfileCommand;
 import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.member.domain.Member;
+import com.hotelJava.payment.dto.CreatePaymentRequestDto;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
+import com.hotelJava.reservation.domain.Reservation;
+import com.hotelJava.reservation.domain.ReservationCommand;
+import com.hotelJava.reservation.domain.ReservationStatus;
+import com.hotelJava.reservation.dto.CreateReservationRequestDto;
 import com.hotelJava.room.domain.Room;
+import com.hotelJava.stock.domain.Stock;
 import java.time.LocalDate;
 import java.util.LinkedList;
 import java.util.List;
@@ -33,6 +39,24 @@ public class TestFixture {
     return ChangeProfileCommand.builder()
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
+        .build();
+  }
+
+  public static CreateReservationRequestDto getCreateReservationRequestDto(CheckDate checkDate) {
+    return CreateReservationRequestDto.builder()
+        .reservationCommand(faker.options().option(ReservationCommand.values()))
+        .guestName(faker.name().name())
+        .guestPhone(faker.phoneNumber().phoneNumber())
+        .numberOfGuests(faker.number().randomDigit())
+        .checkDate(checkDate)
+        .build();
+  }
+
+  public static CreatePaymentRequestDto getCreatePaymentRequestDto() {
+    return CreatePaymentRequestDto.builder()
+        .impUid(faker.random().toString())
+        .amount(faker.number().numberBetween(50000, 100000))
+        .reservationNo(faker.random().toString())
         .build();
   }
 
@@ -110,13 +134,33 @@ public class TestFixture {
             .build();
 
     room.addPicture(picture);
-    from.datesUntil(from.plusDays(duration))
-        .forEach(d -> room.addInventory(getInventory(d, quantity)));
+    from.datesUntil(from.plusDays(duration)).forEach(d -> room.addStock(getStock(d, quantity)));
 
     return room;
   }
 
-  private static Inventory getInventory(LocalDate date, int quantity) {
-    return new Inventory(date, quantity);
+  private static Stock getStock(LocalDate date, int quantity) {
+    return new Stock(date, quantity);
+  }
+
+  public static Reservation getReservation(CheckDate checkDate) {
+    Reservation reservation =
+        Reservation.builder()
+            .reservationNo(faker.random().toString())
+            .status(faker.options().option(ReservationStatus.PAYMENT_PENDING))
+            .checkDate(checkDate)
+            .numberOfGuests(faker.number().numberBetween(1, 30))
+            .guestName(faker.name().name())
+            .guestPhone(faker.phoneNumber().phoneNumber())
+            .deleted(false)
+            .payment(null)
+            .build();
+    Room room = getRoom(10, 10, LocalDate.now(), 10);
+    room.addReservation(reservation);
+
+    Member member = getMember();
+    reservation.setMember(member);
+
+    return reservation;
   }
 }

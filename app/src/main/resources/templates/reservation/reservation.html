@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+    <meta charset="UTF-8">
+    <title>예약 테스트 페이지</title>
+</head>
+<body>
+<h1>카카오페이 결제 테스트</h1>
+
+<script src="https://cdn.iamport.kr/v1/iamport.js"></script>
+<script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js"></script>
+<script>
+    const date = new Date();
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, "0");
+    const day = String(date.getDate()).padStart(2, "0");
+    const add3day = String(date.getDate() + 3).padStart(2, "0");
+    const encodedRoomId = 'GE======'; // 1 (base32 encoding)
+    const reservationParam = {
+        reservationCommand: 'KYUNGTAK_RESERVATION',
+        guestName: '박경탁',
+        guestPhone: '010-2345-6789',
+        numberOfGuests: 3,
+        checkDate: {
+            checkInDate: year + '-' + month + '-' + day,
+            checkOutDate: year + '-' + month + '-' + add3day
+        },
+        paymentType: 'KAKAO_PAY'
+    };
+
+    const price = 20000;
+
+    $.ajax({
+        url: '/api/reservations/' + encodedRoomId,
+        type: 'POST',
+        dataType: 'json',
+        contentType: 'application/json; charset=utf-8',
+        data: JSON.stringify(reservationParam),
+    }).done((result) => {
+        console.log('result: ', result);
+
+        IMP.init('imp27148250'); // 가맹점 식별 코드
+        IMP.request_pay({
+            pg: 'kakaopay',
+            pay_method: 'card', // 생략 가능
+            merchant_uid: result.reservationNo, // 예약 번호
+            name: '자바 룸',
+            amount: price,
+            buyer_email: 'iamport@kakao.do',
+            buyer_name: '박경탁',
+            buyer_tel: '010-1234-5678',
+            buyer_addr: '서울특별시 강남구 삼성동',
+            buyer_postcode: '123-456'
+        }, function (rsp) {
+            if (rsp.success) {
+                console.log('rsp: ', rsp);
+
+                const paymentParam = {
+                    imp_uid: rsp.imp_uid,
+                    amount: price,
+                    reservationNo: rsp.merchant_uid
+                }
+
+                $.ajax({
+                    url: '/api/payments/' + encodedRoomId,
+                    type: 'POST',
+                    dataType: 'json',
+                    contentType: 'application/json; charset=utf-8',
+                    data: JSON.stringify(paymentParam)
+                }).done((data) => {
+                    console.log('data: ', data);
+
+                    let msg = '결제가 완료되었습니다.';
+                    msg += '\n고유 ID : ' + rsp.imp_uid;
+                    msg += '\n숙소 예약 번호 : ' + rsp.merchant_uid;
+                    msg += '\n결제 금액 : ' + rsp.paid_amount;
+                    msg += '\n카드 승인번호 : ' + rsp.apply_num;
+
+                    alert(msg);
+                }).fail((xhr) => {
+                    console.log(xhr);
+                    alert(xhr.responseJSON.message);
+                });
+            } else {
+                let msg = '결제에 실패하였습니다.';
+                msg += '에러내용 : ' + rsp.error_msg;
+
+                alert(msg);
+            }
+        });
+    }).fail((xhr) => {
+        console.log(xhr);
+        alert(xhr.responseJSON.message);
+    });
+
+    function generateReservationNumber() {
+        const date = new Date();
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, "0");
+        const day = String(date.getDate()).padStart(2, "0");
+        let orderNum = year + month + day;
+
+        for (let i = 0; i < 10; i++) {
+            orderNum += Math.floor(Math.random() * 8);
+        }
+
+        return orderNum;
+    }
+</script>
+</body>
+</html>
