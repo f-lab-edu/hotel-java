@@ -21,6 +21,7 @@ import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Builder.Default;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -42,6 +43,7 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   private String reservationNo;
 
   @Enumerated(EnumType.STRING)
+  @Default
   private ReservationStatus status = ReservationStatus.PAYMENT_PENDING;
 
   @Embedded private CheckDate checkDate;
@@ -70,6 +72,7 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
     this.member = member;
     this.room = room;
     this.reservationNo = reservationNo;
+    this.status = ReservationStatus.PAYMENT_PENDING;
     this.checkDate = guestInfo.getCheckDate();
     this.guestName = guestInfo.getGuestName();
     this.guestPhone = guestInfo.getGuestPhone();

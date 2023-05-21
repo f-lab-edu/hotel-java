@@ -31,6 +31,7 @@ public class Payment {
   private LocalDateTime paymentDate;
 
   @Enumerated(EnumType.STRING)
+  @Default
   private PaymentStatus status = PaymentStatus.WAITING;
 
   @OneToOne(fetch = FetchType.LAZY, mappedBy = "payment")

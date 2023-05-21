@@ -23,7 +23,7 @@ class RoomTest {
 
     // then
     assertThat(
-            room.getstocks().stream()
+            room.getStocks().stream()
                 .filter(i -> checkDate.matches(i.getDate()))
                 .allMatch(i -> i.getQuantity() == 9))
         .isTrue();
@@ -35,7 +35,7 @@ class RoomTest {
     // given
     int duration = 10;
     Room room = TestFixture.getRoom(10, 10, now(), duration);
-    room.getstocks().get(duration - 1).setQuantity(0);
+    room.getStocks().get(duration - 1).setQuantity(0);
     CheckDate checkDate = new CheckDate(now(), duration);
 
     // when, then
