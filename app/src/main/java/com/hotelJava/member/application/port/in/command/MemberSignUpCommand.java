@@ -21,7 +21,7 @@ public class MemberSignUpCommand implements Profile {
 
   @NotNull(message = "비밀번호를 입력하세요.")
   @JsonProperty("password")
-  private String plainPassword;
+  private String rawPassword;
 
   @NotBlank(message = "이름을 입력하세요.")
   private String name;

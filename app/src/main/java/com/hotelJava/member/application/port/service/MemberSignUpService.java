@@ -4,8 +4,9 @@ import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.member.application.port.in.SignUpUseCase;
 import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
-import com.hotelJava.member.application.port.out.CheckDuplicatedMemberEmailPort;
-import com.hotelJava.member.application.port.out.RegisterMemberPort;
+import com.hotelJava.member.application.port.out.EncryptPasswordPort;
+import com.hotelJava.member.application.port.out.persistence.CheckDuplicatedMemberEmailPort;
+import com.hotelJava.member.application.port.out.persistence.RegisterMemberPort;
 import com.hotelJava.member.domain.Member;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -18,13 +19,18 @@ public class MemberSignUpService implements SignUpUseCase {
 
   private final RegisterMemberPort registerMemberPort;
   private final CheckDuplicatedMemberEmailPort memberEmailDuplicateCheckPort;
+  private final EncryptPasswordPort encryptPasswordPort;
 
   public Member signUp(MemberSignUpCommand command) {
     requireNotDuplicated(command.getEmail());
 
     Member member =
-        new Member(
-            command.getEmail(), command.getName(), command.getPlainPassword(), command.getPhone());
+        Member.builder()
+            .email(command.getEmail())
+            .name(command.getName())
+            .password(encryptPasswordPort.encode(command.getRawPassword()))
+            .phone(command.getPhone())
+            .build();
 
     registerMemberPort.register(member);
 

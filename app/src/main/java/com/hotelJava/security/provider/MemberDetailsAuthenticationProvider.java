@@ -3,6 +3,7 @@ package com.hotelJava.security.provider;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
+import com.hotelJava.member.application.port.out.MatchPasswordPort;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
 import com.hotelJava.security.token.LoginPostAuthenticationToken;
@@ -20,6 +21,7 @@ import org.springframework.stereotype.Component;
 public class MemberDetailsAuthenticationProvider implements AuthenticationProvider {
 
   private final MemberDetailsService memberDetailsService;
+  private final MatchPasswordPort matchPasswordPort;
 
   @Override
   public Authentication authenticate(Authentication authentication) throws AuthenticationException {
@@ -49,7 +51,7 @@ public class MemberDetailsAuthenticationProvider implements AuthenticationProvid
     if (!memberDetails.isCredentialsNonExpired()) {
       throw new BadRequestException(ErrorCode.EXPIRED_PASSWORD);
     }
-    if (!memberDetails.matchPassword(password)) {
+    if (!matchPasswordPort.matches(password, memberDetails.getPassword())) {
       throw new BadRequestException(ErrorCode.WRONG_PASSWORD);
     }
 

@@ -23,7 +23,7 @@ public class TestFixture {
   public static MemberSignUpCommand getMemberSignUpCommand() {
     return MemberSignUpCommand.builder()
         .email(faker.internet().emailAddress())
-        .plainPassword(faker.internet().password())
+        .rawPassword(faker.internet().password())
         .name(faker.name().name())
         .phone(faker.phoneNumber().phoneNumber())
         .build();
@@ -38,19 +38,12 @@ public class TestFixture {
 
   /** domain test fixture * */
   public static Member getMember() {
-    return new Member(
-        faker.internet().emailAddress(),
-        faker.name().name(),
-        faker.internet().password(),
-        faker.phoneNumber().phoneNumber());
-  }
-
-  public static Member getMember(String password) {
-    return new Member(
-        faker.internet().emailAddress(),
-        faker.name().name(),
-        password,
-        faker.phoneNumber().phoneNumber());
+    return Member.builder()
+        .email(faker.internet().emailAddress())
+        .name(faker.name().name())
+        .password(faker.internet().password())
+        .phone(faker.phoneNumber().phoneNumber())
+        .build();
   }
 
   public static Address getAddress() {

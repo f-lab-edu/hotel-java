@@ -20,16 +20,12 @@ public class MemberDetails extends User {
 
   public MemberDetails(Member member) {
     super(
-        member.getEmail(), member.getPassword().getEncrypted(), parseAuthorities(member.getRole()));
+        member.getEmail(), member.getPassword(), parseAuthorities(member.getRole()));
     this.member = member;
   }
 
   public String getEmail() {
     return super.getUsername();
-  }
-
-  public boolean matchPassword(String trialPassword) {
-    return member.getPassword().matches(trialPassword);
   }
 
   public List<Role> getRoles() {
