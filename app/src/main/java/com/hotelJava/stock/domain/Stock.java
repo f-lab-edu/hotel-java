@@ -1,4 +1,4 @@
-package com.hotelJava.inventory.domain;
+package com.hotelJava.stock.domain;
 
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.room.domain.Room;
@@ -24,7 +24,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Inventory extends BaseTimeEntity {
+public class Stock extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -38,7 +38,7 @@ public class Inventory extends BaseTimeEntity {
 
   private long quantity;
 
-  public Inventory(LocalDate date, long quantity) {
+  public Stock(LocalDate date, long quantity) {
     this.date = date;
     this.quantity = quantity;
   }

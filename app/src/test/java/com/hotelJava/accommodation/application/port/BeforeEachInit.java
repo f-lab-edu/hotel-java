@@ -6,7 +6,7 @@ import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.embeddable.CheckTime;
-import com.hotelJava.inventory.domain.Inventory;
+import com.hotelJava.stock.domain.Stock;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
 import com.hotelJava.picture.domain.PictureType;
@@ -30,15 +30,15 @@ public class BeforeEachInit {
   @BeforeEach
   public void init() {
     // 재고 등록
-    Inventory inventory = Inventory.builder()
+    Stock stock = Stock.builder()
             .date(LocalDate.now())
             .quantity(3)
             .build();
-    Inventory inventory2 = Inventory.builder()
+    Stock stock2 = Stock.builder()
             .date(LocalDate.now().plusDays(1))
             .quantity(2)
             .build();
-    Inventory inventory3 = Inventory.builder()
+    Stock stock3 = Stock.builder()
             .date(LocalDate.now().plusDays(2))
             .quantity(2)
             .build();
@@ -134,9 +134,9 @@ public class BeforeEachInit {
     room1.addPicture(roomPicture2);
 
     room3.addReservation(reservation2);
-    room3.addInventory(inventory);
-    room3.addInventory(inventory2);
-    room3.addInventory(inventory3);
+    room3.addStock(stock);
+    room3.addStock(stock2);
+    room3.addStock(stock3);
 
     accommodation1.createAccommodation(List.of(room1, room2), accommodationPicture);
     accommodation2.createAccommodation(List.of(room3), accommodationPicture);

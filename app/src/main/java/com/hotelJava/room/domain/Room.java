@@ -3,9 +3,9 @@ package com.hotelJava.room.domain;
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.util.BaseTimeEntity;
-import com.hotelJava.inventory.domain.Inventory;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.reservation.domain.Reservation;
+import com.hotelJava.stock.domain.Stock;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -56,18 +56,18 @@ public class Room extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "room", cascade = CascadeType.ALL)
   @Builder.Default
-  private List<Inventory> inventories = new ArrayList<>();
+  private List<Stock> stocks = new ArrayList<>();
 
-  public void calcInventory(CheckDate checkDate, int value) {
-    inventories.stream()
+  public void calcStock(CheckDate checkDate, int value) {
+    stocks.stream()
         .filter(i -> checkDate.matches(i.getDate()))
         .forEach(i -> i.calcQuantity(value));
   }
 
-  public boolean isNotEnoughInventoryAtCheckDate(CheckDate checkDate) {
-    return inventories.stream()
-        .filter(i -> checkDate.matches(i.getDate()))
-        .anyMatch(Inventory::isZeroQuantity);
+  public boolean isNotEnoughStockAtCheckDate(CheckDate checkDate) {
+    return stocks.stream()
+            .filter(i -> checkDate.matches(i.getDate()))
+            .anyMatch(Stock::isZeroQuantity);
   }
 
   public boolean isOverMaxOccupancy(int guestNumber) {
@@ -93,8 +93,8 @@ public class Room extends BaseTimeEntity {
     reservation.setRoom(this);
   }
 
-  public void addInventory(Inventory inventory) {
-    inventories.add(inventory);
-    inventory.setRoom(this);
+  public void addStock(Stock stock) {
+    stocks.add(stock);
+    stock.setRoom(this);
   }
 }

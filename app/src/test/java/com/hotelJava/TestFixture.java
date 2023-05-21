@@ -5,7 +5,7 @@ import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.accommodation.domain.AccommodationType;
 import com.hotelJava.common.embeddable.Address;
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.inventory.domain.Inventory;
+import com.hotelJava.stock.domain.Stock;
 import com.hotelJava.member.domain.Grade;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.member.domain.Role;
@@ -15,8 +15,10 @@ import com.hotelJava.payment.domain.PaymentType;
 import com.hotelJava.payment.dto.CreatePaymentRequestDto;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
-import com.hotelJava.reservation.domain.Reservation;import com.hotelJava.reservation.domain.ReservationCommand;
-import com.hotelJava.reservation.domain.ReservationStatus;import com.hotelJava.reservation.dto.CreateReservationRequestDto;
+import com.hotelJava.reservation.domain.Reservation;
+import com.hotelJava.reservation.domain.ReservationCommand;
+import com.hotelJava.reservation.domain.ReservationStatus;
+import com.hotelJava.reservation.dto.CreateReservationRequestDto;
 import com.hotelJava.room.domain.Room;
 import java.time.LocalDate;
 import java.util.LinkedList;
@@ -50,7 +52,6 @@ public class TestFixture {
         .guestPhone(faker.phoneNumber().phoneNumber())
         .numberOfGuests(faker.number().randomDigit())
         .checkDate(checkDate)
-        .reservationNo(faker.random().toString())
         .build();
   }
 
@@ -58,7 +59,6 @@ public class TestFixture {
     return CreatePaymentRequestDto.builder()
         .impUid(faker.random().toString())
         .amount(faker.number().numberBetween(50000, 100000))
-        .paymentType(faker.options().option(PaymentType.values()))
         .reservationNo(faker.random().toString())
         .build();
   }
@@ -140,13 +140,13 @@ public class TestFixture {
 
     room.addPicture(picture);
     from.datesUntil(from.plusDays(duration))
-        .forEach(d -> room.addInventory(getInventory(d, quantity)));
+        .forEach(d -> room.addStock(getStock(d, quantity)));
 
     return room;
   }
 
-  private static Inventory getInventory(LocalDate date, int quantity) {
-    return new Inventory(date, quantity);
+  private static Stock getStock(LocalDate date, int quantity) {
+    return new Stock(date, quantity);
   }
 
   public static Reservation getReservation(CheckDate checkDate) {

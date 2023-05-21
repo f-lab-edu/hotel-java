@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 public interface AccommodationRepository extends JpaRepository<Accommodation, Long> {
 
   @Query(
-      "select a from Accommodation a left join a.rooms r left join r.inventories i"
+      "select a from Accommodation a left join a.rooms r left join r.stocks i"
           + " where i.quantity > 0 and i.date >= :checkInDate and i.date < :checkOutDate"
           + " and a.address.firstLocation = :firstLocation and a.address.secondLocation = :secondLocation"
           + " and a.type = :type and r.maxOccupancy >= :guestCount and (a.name = '' or a.name like %:name%)"

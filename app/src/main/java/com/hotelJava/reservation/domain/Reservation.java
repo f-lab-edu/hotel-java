@@ -5,15 +5,28 @@ import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.domain.Payment;
 import com.hotelJava.payment.domain.PaymentResult;
-import com.hotelJava.room.domain.Room;
-import jakarta.persistence.*;
+import com.hotelJava.payment.domain.PaymentType;import com.hotelJava.room.domain.Room;
+import jakarta.persistence.CascadeType;
+import jakarta.persistence.Embedded;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.hibernate.annotations.SQLDelete;
 
+@SQLDelete(sql = "UPDATE reservation SET status = 'RESERVATION_CANCEL' WHERE id = ?")
 @Slf4j
 @Entity
 @Getter
@@ -28,7 +41,6 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
 
   private String reservationNo;
 
-  @Builder.Default
   @Enumerated(EnumType.STRING)
   private ReservationStatus status = ReservationStatus.PAYMENT_PENDING;
 
@@ -42,7 +54,8 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
 
   private boolean deleted;
 
-  @OneToOne(fetch = FetchType.LAZY, mappedBy = "reservation", cascade = CascadeType.ALL)
+  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+  @JoinColumn(name = "payment_id")
   private Payment payment;
 
   @ManyToOne(fetch = FetchType.LAZY)
@@ -53,7 +66,7 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Reservation(Member member, Room room, String reservationNo, GuestInfo guestInfo) {
+  public Reservation(Member member, Room room, String reservationNo, GuestInfo guestInfo, PaymentType paymentType) {
     this.member = member;
     this.room = room;
     this.reservationNo = reservationNo;
@@ -61,7 +74,7 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
     this.guestName = guestInfo.getGuestName();
     this.guestPhone = guestInfo.getGuestPhone();
     this.numberOfGuests = guestInfo.getNumberOfGuests();
-    this.payment = new Payment(room.calcPrice());
+    this.payment = new Payment(room.calcPrice(), paymentType);
   }
 
   public Reservation confirm(PaymentResult paymentResult) {
@@ -70,16 +83,16 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
     return this;
   }
 
-  public void consumeInventory() {
-    room.calcInventory(checkDate, -1);
+  public void consumeStock() {
+    room.calcStock(checkDate, -1);
   }
 
-  public void restoreInventory() {
-    room.calcInventory(checkDate, 1);
+  public void restoreStock() {
+    room.calcStock(checkDate, 1);
   }
 
   public boolean isInvalidReservation() {
-    if (room.isNotEnoughInventoryAtCheckDate(checkDate)) {
+    if (room.isNotEnoughStockAtCheckDate(checkDate)) {
       log.info("room stock is not enough. payment declined");
       return true;
     }
