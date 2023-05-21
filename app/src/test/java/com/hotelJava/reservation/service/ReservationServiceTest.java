@@ -1,8 +1,8 @@
 package com.hotelJava.reservation.service;
 
 import static java.time.LocalDate.now;
-import static org.assertj.core.api.Assertions.*;
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 
 import com.hotelJava.TestFixture;
@@ -32,7 +32,7 @@ public class ReservationServiceTest {
   @SpyBean private MemberRepository memberRepository;
 
   @SpyBean private RoomRepository roomRepository;
-
+  
   @Test
   @DisplayName("사용자가 선택한 숙박 기간(체크인, 체크아웃)과 해당하는 객실에 예약한다.")
   void 객실_예약() {
@@ -41,7 +41,7 @@ public class ReservationServiceTest {
     doReturn(Optional.of(member)).when(memberRepository).findByEmail(member.getEmail());
 
     Room room = TestFixture.getRoom(10, 10, now(), 10);
-    doReturn(Optional.of(room)).when(roomRepository).findById(room.getId());
+    doReturn(Optional.of(room)).when(roomRepository).findById(anyLong());
 
     CheckDate checkDate = new CheckDate(now(), 10);
     CreateReservationRequestDto createReservationRequestDto =
@@ -51,6 +51,6 @@ public class ReservationServiceTest {
     assertDoesNotThrow(
         () ->
             reservationService.createReservation(
-                room.getId(), member, createReservationRequestDto));
+                anyLong(), member.getEmail(), createReservationRequestDto));
   }
 }

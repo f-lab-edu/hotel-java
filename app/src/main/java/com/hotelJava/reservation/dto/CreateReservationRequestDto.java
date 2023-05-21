@@ -1,7 +1,7 @@
 package com.hotelJava.reservation.dto;
 
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.reservation.domain.GuestInfo;
+import com.hotelJava.payment.domain.PaymentType;import com.hotelJava.reservation.domain.GuestInfo;
 import com.hotelJava.reservation.domain.ReservationCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -35,5 +35,6 @@ public class CreateReservationRequestDto implements GuestInfo {
 //  @Future
   private CheckDate checkDate;
 
-  private String reservationNo;
+  @NotNull(message = "결제수단을 선택해주세요.")
+  private PaymentType paymentType;
 }

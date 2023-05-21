@@ -1,13 +1,13 @@
 package com.hotelJava.reservation.service;
 
-import com.hotelJava.member.domain.Member;
 import com.hotelJava.reservation.domain.ReservationCommand;
 import com.hotelJava.reservation.dto.CreateReservationRequestDto;
+import com.hotelJava.reservation.dto.CreateReservationResponseDto;
 
 public interface ReservationService {
 
   boolean supports(ReservationCommand reservationCommand);
 
-  void createReservation(
-      Long roomId, Member member, CreateReservationRequestDto createReservationRequestDto);
+  CreateReservationResponseDto createReservation(
+      Long roomId, String email, CreateReservationRequestDto createReservationRequestDto);
 }
