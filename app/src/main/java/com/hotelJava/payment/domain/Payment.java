@@ -31,15 +31,14 @@ public class Payment {
   private LocalDateTime paymentDate;
 
   @Enumerated(EnumType.STRING)
-  @Default
   private PaymentStatus status = PaymentStatus.WAITING;
 
-  @OneToOne(fetch = FetchType.LAZY)
-  @JoinColumn(name = "reservation_id")
+  @OneToOne(fetch = FetchType.LAZY, mappedBy = "payment")
   private Reservation reservation;
 
-  public Payment(int amount) {
+  public Payment(int amount, PaymentType paymentType) {
     this.amount = amount;
+    this.paymentType = paymentType;
   }
 
   public PaymentStatus approve(PaymentResult paymentResult) {

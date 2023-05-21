@@ -20,8 +20,5 @@ public class CreatePaymentRequestDto {
 
   private int amount;
 
-  @NotNull(message = "결제수단을 선택해주세요.")
-  private PaymentType paymentType;
-
   private String reservationNo;
 }

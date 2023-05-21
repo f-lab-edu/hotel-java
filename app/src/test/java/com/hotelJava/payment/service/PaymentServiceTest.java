@@ -2,6 +2,7 @@ package com.hotelJava.payment.service;
 
 import static java.time.LocalDate.now;
 import static org.assertj.core.api.Assertions.assertThatThrownBy;
+import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.doReturn;
 
 import com.hotelJava.TestFixture;
@@ -45,13 +46,10 @@ public class PaymentServiceTest {
         .when(reservationRepository)
         .findByReservationNo(reservation.getReservationNo());
     Room room = reservation.getRoom();
-    doReturn(Optional.of(room)).when(roomRepository).findById(room.getId());
+    doReturn(Optional.of(room)).when(roomRepository).findById(anyLong());
 
     // when & then
-    assertThatThrownBy(
-            () ->
-                paymentService.createPayment(
-                    room.getId(), reservation.getMember(), createPaymentRequestDto))
+    assertThatThrownBy(() -> paymentService.createPayment(anyLong(), createPaymentRequestDto))
         .isInstanceOf(InternalServerException.class)
         .hasMessageContaining("요청을 정상 처리하지 못하였습니다");
   }
