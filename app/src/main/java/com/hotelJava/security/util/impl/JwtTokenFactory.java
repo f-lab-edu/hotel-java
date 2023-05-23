@@ -2,7 +2,7 @@ package com.hotelJava.security.util.impl;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.hotelJava.security.config.JwtConfigurationProperties;
+import com.hotelJava.security.JwtConfigurationProperties;
 import java.util.Date;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

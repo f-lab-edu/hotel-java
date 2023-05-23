@@ -1,4 +1,4 @@
-package com.hotelJava.security.config;
+package com.hotelJava.security;
 
 import java.time.Duration;
 import org.springframework.boot.context.properties.ConfigurationProperties;

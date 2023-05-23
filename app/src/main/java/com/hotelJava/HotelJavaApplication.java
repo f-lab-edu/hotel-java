@@ -1,7 +1,7 @@
 package com.hotelJava;
 
 import com.hotelJava.payment.config.PaymentConfigurationProperties;
-import com.hotelJava.security.config.JwtConfigurationProperties;
+import com.hotelJava.security.JwtConfigurationProperties;
 import com.siot.IamportRestClient.IamportClient;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
