@@ -1,30 +1,7 @@
 spring:
-  #  datasource:
-  #    url: jdbc:h2:tcp://localhost/~/hotel-java
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
-  #
-  security:
-    enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        #        show_sql: true
-        format_sql: true
+  profiles:
+    active: dev
 
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: debug
-  org.springframework.security.web: trace
-
-jwt:
-  validity-time: 10m # minute
-  issuer: Hotel-java
-  secret: Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code
-
-iamport:
-  apiKey: 6318782456272832
-  apiSecret: drziCrVVErSjpA7mal4EKUNrTuGa1Gf6oG0keXXRO6cs2AVo5YVZGeAuUZsry2YfKtTSVFZFnmcIlWIv
+payment-gateway:
+  apiKey: ENC(uFpff5Dh/asRCgzF4dmXZgy3TA0a0CxzLpLlOxQ+AZA=)
+  apiSecret: ENC(/F1NAmdc8LzXpjrVJndtJZL8EWxJsPi7+9Cb+MIkh3kjoZZP85Izj5UzKhAJuW5CbkKfgGfrgtdqRxL3JDNUecUZXj7OABmDDkfpY3nLsXNkM0evsnM6Fg616x0hhBR9)

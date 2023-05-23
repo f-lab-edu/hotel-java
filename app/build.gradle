@@ -12,9 +12,22 @@ dependencies {
     implementation 'com.auth0:java-jwt:4.4.0'
     implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
     implementation 'com.github.javafaker:javafaker:1.0.2'
+    implementation 'com.github.ulisesbocchio:jasypt-spring-boot-starter:3.0.4'
+    implementation 'com.google.guava:guava:31.1-jre'
     implementation 'com.h2database:h2:2.1.214'
     implementation 'commons-codec:commons-codec:1.15'
+    implementation 'mysql:mysql-connector-java:8.0.28'
     implementation 'org.mapstruct:mapstruct:1.5.3.Final'
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
     implementation 'org.springframework.boot:spring-boot-starter-security'
+    implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+}
+
+bootJar {
+    enabled = false
+}
+
+tasks.withType(Jar) {
+    enabled = true
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
 }

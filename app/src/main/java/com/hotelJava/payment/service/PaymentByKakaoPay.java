@@ -15,32 +15,20 @@ import com.siot.IamportRestClient.request.CancelData;
 import com.siot.IamportRestClient.response.IamportResponse;
 import com.siot.IamportRestClient.response.Payment;
 import java.io.IOException;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 @Transactional(readOnly = true)
 public class PaymentByKakaoPay implements PaymentService {
 
   private final RoomRepository roomRepository;
   private final ReservationRepository reservationRepository;
-  private final String apiKey, apiSecret;
   private final IamportClient api;
-
-  public PaymentByKakaoPay(
-      @Value("${iamport.apiKey}") String apiKey,
-      @Value("${iamport.apiSecret}") String apiSecret,
-      ReservationRepository reservationRepository,
-      RoomRepository roomRepository) {
-    this.apiKey = apiKey;
-    this.apiSecret = apiSecret;
-    this.reservationRepository = reservationRepository;
-    this.roomRepository = roomRepository;
-    api = new IamportClient(apiKey, apiSecret);
-  }
 
   @Transactional(noRollbackFor = {BadRequestException.class})
   @Override

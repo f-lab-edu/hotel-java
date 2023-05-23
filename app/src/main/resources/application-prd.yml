@@ -1,0 +1,24 @@
+spring:
+  datasource:
+    url: ENC(SH9r5BG6QX7XeFFQEpq1ZvGBfb4CWYrWamkBlu2E9019QkCcjgsZiygY6HvFnzGABYpMX7ZNZFXXbRXskB1QHTB4rsUSP9J4Kv5ouadcK4psw92ejb+IvL7GJWLxv+/lGIEfw7wWa5kmfB8BiziIZvERuKoUaWpIscTarcH3Gl8VqntOn1dbZZno4HLXIqUCcYJGye4xzssyKMa86e/zhQ==)
+    username: ENC(fQlZNylapIrj/smqC24qq+/gJMV0j01E)
+    password: ENC(Z3rHO7GCuMjuCDQnUG83xb0Ao6ZTozQa)
+    driver-class-name: com.mysql.cj.jdbc.Driver
+  security:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: debug
+
+jwt:
+  validity-time: 10m # minute
+  issuer: Hotel-java
+  secret: ENC(PmfQK8XAKEWMGqv2nDK1PI5LQ3RChRJ54KzpD27no7+swlmth/MC9leUVuwPawE/5hOWklYeq3ow8fu+NI3oiCJJ7GDMj7nv+KIO+eGvBT2kXunmMWDF1cxKeQ3DUbvQfywz7QSUx4vWUpGAqDKM73axc7T82K3CMmMpkhAjPZk=)

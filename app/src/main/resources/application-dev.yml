@@ -1,0 +1,26 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MySQL;
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  security:
+    enabled: true
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+logging.level:
+  org.hibernate.SQL: debug
+  org.hibernate.type: debug
+  org.springframework.security.web: trace
+
+jwt:
+  validity-time: 10m # minute
+  issuer: Hotel-java
+  secret: Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code
