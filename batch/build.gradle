@@ -1,0 +1,15 @@
+plugins {
+    id 'spring-batch-conventions'
+}
+
+repositories {
+    mavenCentral()
+    maven { url 'https://jitpack.io' }
+}
+
+dependencies {
+    implementation project(':app')
+    implementation 'com.h2database:h2:2.1.214'
+    implementation 'com.google.guava:guava:31.1-jre'
+    implementation 'mysql:mysql-connector-java:8.0.15'
+}

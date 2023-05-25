@@ -38,6 +38,8 @@ public class Stock extends BaseTimeEntity {
 
   private long quantity;
 
+  private long maxQuantity;
+
   public Stock(LocalDate date, long quantity) {
     this.date = date;
     this.quantity = quantity;

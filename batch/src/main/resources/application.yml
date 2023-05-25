@@ -1,0 +1,30 @@
+spring:
+  profiles:
+    active: local
+
+---
+spring:
+  config:
+    activate:
+      on-profile: local
+  datasource:
+    hikari:
+      jdbc-url: jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+      username: sa
+      password:
+      driver-class-name: org.h2.Driver
+
+---
+spring:
+  config:
+    activate:
+      on-profile: dev
+  batch:
+    jdbc:
+      initialize-schema: always
+  datasource:
+    hikari:
+      jdbc-url: jdbc:mysql://ls-0c512c9eddd159c7af3264f51e02fb6d6dced27f.c3fbwxikhrdb.ap-northeast-2.rds.amazonaws.com:3306/dbmaster?rewriteBatchedStatements=true&useSSL=false
+      username: dbmasteruser
+      password: flab-hotel-java
+      driver-class-name: com.mysql.cj.jdbc.Driver
