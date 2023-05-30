@@ -1,10 +1,9 @@
-package com.hotelJava.member.application.port.service;
+package com.hotelJava.member.application.port.in;
 
 import static org.mockito.Mockito.doReturn;
 
-import com.hotelJava.TestFixture;
+import com.hotelJava.DomainTestFixture;
 import com.hotelJava.common.error.exception.BadRequestException;
-import com.hotelJava.member.application.port.in.WithdrawalAccountUseCase;
 import com.hotelJava.member.application.port.out.persistence.FindMemberPort;
 import com.hotelJava.member.domain.Member;
 import org.assertj.core.api.Assertions;
@@ -15,8 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 
 @SpringBootTest
-class WithdrawalAccountServiceTest {
-
+class WithdrawalAccountUseCaseTest {
   @Autowired private WithdrawalAccountUseCase sut;
   @SpyBean private FindMemberPort findMemberPort;
 
@@ -24,7 +22,7 @@ class WithdrawalAccountServiceTest {
   @DisplayName("회원을 탈퇴했을 경우, isDeleted() 결과값은 true 이어야한다.")
   void 회원탈퇴_성공() {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
     doReturn(member).when(findMemberPort).findByEmail(member.getEmail());
 
     // when
@@ -46,7 +44,7 @@ class WithdrawalAccountServiceTest {
   @DisplayName("이미 탈퇴한 회원을 탈퇴시키는 경우 예외가 발생한다.")
   void 회원탈퇴_이미탈퇴한회원() {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
     member.deleteAccount();
     doReturn(member).when(findMemberPort).findByEmail(member.getEmail());
 
