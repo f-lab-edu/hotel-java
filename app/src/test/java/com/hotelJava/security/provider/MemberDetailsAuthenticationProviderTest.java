@@ -1,9 +1,10 @@
 package com.hotelJava.security.provider;
 
-import com.hotelJava.TestFixture;
+import static org.mockito.ArgumentMatchers.anyString;
+
+import com.hotelJava.DomainTestFixture;
 import com.hotelJava.common.error.exception.BadRequestException;
 import com.hotelJava.common.error.exception.InternalServerException;
-import com.hotelJava.member.application.port.out.MatchPasswordPort;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.MemberDetailsService;
@@ -18,28 +19,27 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.core.Authentication;
-
-import static org.mockito.ArgumentMatchers.anyString;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @SpringBootTest
 class MemberDetailsAuthenticationProviderTest {
 
   @Autowired private MemberDetailsAuthenticationProvider provider;
   @SpyBean private MemberDetailsService memberDetailsService;
-  @SpyBean private MatchPasswordPort matchPasswordPort;
+  @SpyBean private PasswordEncoder passwordEncoder;
 
   @Test
   @DisplayName("올바른 로그인요청 LoginDto 가 주어졌을 때, 인증작업은 LoginPostAuthenticationToken 을 발행한다")
   void 인증성공() {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
 
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
         new LoginPreAuthenticationToken(new LoginDto(member.getEmail(), "1234"));
 
     Mockito.doReturn(loginMemberDetails).when(memberDetailsService).loadUserByUsername(anyString());
-    Mockito.doReturn(true).when(matchPasswordPort).matches(anyString(), anyString());
+    Mockito.doReturn(true).when(passwordEncoder).matches(anyString(), anyString());
 
     // when
     Authentication postAuthentication = provider.authenticate(preAuthentication);
@@ -53,7 +53,7 @@ class MemberDetailsAuthenticationProviderTest {
   @DisplayName("탈퇴한 회원에 대한 로그인 요청 LoginDto 가 주어졌을 때, 인증작업은 BadRequestException 을 발생시킨다")
   void 인증실패_탈퇴한회원() {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
     member.deleteAccount();
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
@@ -70,13 +70,13 @@ class MemberDetailsAuthenticationProviderTest {
   @DisplayName("비밀번호가 틀린 로그인 요청 LoginDto 가 주어졌을 때, 인증작업은 BadRequestException 을 발생시킨다")
   void 인증실패_틀린비밀번호() {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
     MemberDetails loginMemberDetails = new MemberDetails(member);
     LoginPreAuthenticationToken preAuthentication =
         new LoginPreAuthenticationToken(new LoginDto(member.getEmail(), member.getPassword()));
 
     Mockito.doReturn(loginMemberDetails).when(memberDetailsService).loadUserByUsername(anyString());
-    Mockito.doReturn(false).when(matchPasswordPort).matches(anyString(), anyString());
+    Mockito.doReturn(false).when(passwordEncoder).matches(anyString(), anyString());
 
     // when, then
     Assertions.assertThatThrownBy(() -> provider.authenticate(preAuthentication))

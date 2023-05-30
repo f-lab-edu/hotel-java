@@ -2,7 +2,7 @@ package com.hotelJava.security.handler;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.github.javafaker.Faker;
-import com.hotelJava.TestFixture;
+import com.hotelJava.DomainTestFixture;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.security.MemberDetails;
 import com.hotelJava.security.dto.TokenDto;
@@ -33,7 +33,7 @@ class LoginAuthenticationSuccessHandlerTest {
   @DisplayName("로그인에 성공하면 응답 메시지에 토큰값을 남긴다")
   void onAuthenticationSuccess() throws IOException {
     // given
-    Member member = TestFixture.getMember();
+    Member member = DomainTestFixture.member();
     MemberDetails memberDetails = new MemberDetails(member);
 
     MockHttpServletRequest request = new MockHttpServletRequest();
