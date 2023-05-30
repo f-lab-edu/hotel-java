@@ -1,7 +1,3 @@
 spring:
   profiles:
     active: dev
-
-payment-gateway:
-  apiKey: ENC(uFpff5Dh/asRCgzF4dmXZgy3TA0a0CxzLpLlOxQ+AZA=)
-  apiSecret: ENC(/F1NAmdc8LzXpjrVJndtJZL8EWxJsPi7+9Cb+MIkh3kjoZZP85Izj5UzKhAJuW5CbkKfgGfrgtdqRxL3JDNUecUZXj7OABmDDkfpY3nLsXNkM0evsnM6Fg616x0hhBR9)

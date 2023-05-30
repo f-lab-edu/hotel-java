@@ -1,23 +1,21 @@
 package com.hotelJava.accommodation.util;
 
+import com.hotelJava.accommodation.application.port.in.command.RegisterAccommodationCommand;
+import com.hotelJava.accommodation.application.port.in.result.RegisterAccommodationResult;
+import com.hotelJava.accommodation.application.port.in.result.SearchAccommodationResult;
 import com.hotelJava.accommodation.domain.Accommodation;
-import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
-import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
-import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
 import org.mapstruct.Mapper;
-import org.mapstruct.Mapping;
 import org.mapstruct.ReportingPolicy;
+import org.mapstruct.factory.Mappers;
 
 @Mapper(componentModel = "spring", unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccommodationMapper {
 
-  Accommodation toEntity(CreateAccommodationRequestDto createAccommodationRequestDto);
+  AccommodationMapper ACCOMMODATION_MAPPER = Mappers.getMapper(AccommodationMapper.class);
 
-  @Mapping(source = "accommodation.picture", target = "pictureDto")
-  @Mapping(source = "accommodation.rooms", target = "createRoomResponseDtos")
-  CreateAccommodationResponseDto toCreateAccommodationResponseDto(Accommodation accommodation);
+  Accommodation toEntity(RegisterAccommodationCommand registerAccommodationCommand);
 
-  @Mapping(source = "accommodation.picture", target = "pictureDto")
-  FindAccommodationResponseDto toFindAccommodationResponseDto(
-      int minimumRoomPrice, Accommodation accommodation);
+  RegisterAccommodationResult toRegisteredResult(Accommodation accommodation);
+
+  SearchAccommodationResult toSearchedResult(long minimumRoomPrice, Accommodation accommodation);
 }

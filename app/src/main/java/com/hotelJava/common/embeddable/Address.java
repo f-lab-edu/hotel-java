@@ -15,4 +15,5 @@ public class Address {
     private String secondLocation;
 
     private String fullAddress;
+
 }

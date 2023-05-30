@@ -7,10 +7,10 @@ import com.hotelJava.member.application.port.out.persistence.FindMemberPort;
 import com.hotelJava.member.application.port.out.persistence.RegisterMemberPort;
 import com.hotelJava.member.domain.Member;
 import lombok.RequiredArgsConstructor;
-import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 
 @RequiredArgsConstructor
-@Component
+@Repository
 class MemberAdapter implements CheckDuplicatedMemberEmailPort, FindMemberPort, RegisterMemberPort {
 
   private final MemberRepository memberRepository;

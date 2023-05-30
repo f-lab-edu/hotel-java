@@ -22,3 +22,7 @@ jwt:
   validity-time: 10m # minute
   issuer: Hotel-java
   secret: ENC(PmfQK8XAKEWMGqv2nDK1PI5LQ3RChRJ54KzpD27no7+swlmth/MC9leUVuwPawE/5hOWklYeq3ow8fu+NI3oiCJJ7GDMj7nv+KIO+eGvBT2kXunmMWDF1cxKeQ3DUbvQfywz7QSUx4vWUpGAqDKM73axc7T82K3CMmMpkhAjPZk=)
+
+payment-gateway:
+  apiKey: ENC(X8e/9H5I/hqMuypq+X1SLeQ/DWLZzFAT1xP7UE9xK3g=)
+  apiSecret: ENC(RePEU+mubDmM04Iwz1UOmVsjf/cIivDogOiGKeLYFnxcIto4vhX22LNvmZjHTqs9vPBfmLfMISJfVuavzEnfVRvICqMVRBJxKTSfyb07Uz6L95JrAFprNMxkYVsHjK2a)

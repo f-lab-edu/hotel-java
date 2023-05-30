@@ -1,11 +1,10 @@
 package com.hotelJava.reservation.domain;
 
+import com.hotelJava.accommodation.domain.Room;
 import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.payment.domain.Payment;
-import com.hotelJava.payment.domain.PaymentResult;
-import com.hotelJava.payment.domain.PaymentType;import com.hotelJava.room.domain.Room;
+import com.hotelJava.reservation.application.port.in.command.ReserveCommand;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -43,6 +42,9 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   private String reservationNo;
 
   @Enumerated(EnumType.STRING)
+  private ReserveType reserveType;
+
+  @Enumerated(EnumType.STRING)
   @Default
   private ReservationStatus status = ReservationStatus.PAYMENT_PENDING;
 
@@ -68,20 +70,22 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Reservation(Member member, Room room, String reservationNo, GuestInfo guestInfo, PaymentType paymentType) {
+  public Reservation(
+      Member member, Room room, String reservationNo, ReserveCommand reserveCommand) {
     this.member = member;
     this.room = room;
     this.reservationNo = reservationNo;
     this.status = ReservationStatus.PAYMENT_PENDING;
-    this.checkDate = guestInfo.getCheckDate();
-    this.guestName = guestInfo.getGuestName();
-    this.guestPhone = guestInfo.getGuestPhone();
-    this.numberOfGuests = guestInfo.getNumberOfGuests();
-    this.payment = new Payment(room.calcPrice(), paymentType);
+    this.checkDate = reserveCommand.getCheckDate();
+    this.guestName = reserveCommand.getGuestName();
+    this.guestPhone = reserveCommand.getGuestPhone();
+    this.numberOfGuests = reserveCommand.getNumberOfGuests();
+    this.reserveType = reserveCommand.getReserveType();
+    this.payment = new Payment(room.getPrice());
   }
 
-  public Reservation confirm(PaymentResult paymentResult) {
-    payment.approve(paymentResult);
+  public Reservation confirm() {
+    payment.approve();
     status = ReservationStatus.RESERVATION_COMPLETED;
     return this;
   }
@@ -94,30 +98,20 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
     room.calcStock(checkDate, 1);
   }
 
-  public boolean isInvalidReservation() {
-    if (room.isNotEnoughStockAtCheckDate(checkDate)) {
-      log.info("room stock is not enough. payment declined");
-      return true;
-    }
-
-    if (room.isOverMaxOccupancy(numberOfGuests)) {
-      log.info("guest number is over max occupancy. payment declined");
-      return true;
-    }
-
-    return false;
+  public boolean isAlreadyConfirmed() {
+    return status == ReservationStatus.RESERVATION_COMPLETED;
   }
 
   public boolean isExpiredPayment() {
-    if (payment.isExpired()) {
-      log.info("payment time out. payment declined");
-      return true;
-    }
-    return false;
+    return payment.isExpired();
   }
 
-  public void changeReservationStatus(ReservationStatus reservationStatus) {
-    status = reservationStatus;
+  public boolean isNotEnoughStockAtCheckDate() {
+    return room.isNotEnoughStockAtCheckDate(checkDate);
+  }
+
+  public boolean isOverMaxOccupancy() {
+    return room.isOverMaxOccupancy(numberOfGuests);
   }
 
   public void setRoom(Room room) {

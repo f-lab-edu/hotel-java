@@ -24,3 +24,7 @@ jwt:
   validity-time: 10m # minute
   issuer: test
   secret: test
+
+payment-gateway:
+  apiKey: 6318782456272832
+  apiSecret: drziCrVVErSjpA7mal4EKUNrTuGa1Gf6oG0keXXRO6cs2AVo5YVZGeAuUZsry2YfKtTSVFZFnmcIlWIv

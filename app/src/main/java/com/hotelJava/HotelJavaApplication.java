@@ -1,8 +1,10 @@
 package com.hotelJava;
 
-import com.hotelJava.payment.config.PaymentConfigurationProperties;
+import com.hotelJava.reservation.PaymentConfigurationProperties;
 import com.hotelJava.security.JwtConfigurationProperties;
+import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.siot.IamportRestClient.IamportClient;
+import jakarta.persistence.EntityManager;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
@@ -30,5 +32,10 @@ public class HotelJavaApplication {
   @Bean
   public IamportClient iamportClient(PaymentConfigurationProperties properties) {
     return new IamportClient(properties.apiKey(), properties.apiSecret());
+  }
+
+  @Bean
+  public JPAQueryFactory jpaQueryFactory(EntityManager entityManager) {
+    return new JPAQueryFactory(entityManager);
   }
 }

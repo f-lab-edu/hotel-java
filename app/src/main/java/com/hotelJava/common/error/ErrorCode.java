@@ -36,6 +36,7 @@ public enum ErrorCode {
   // 결제 관련 에러
   PAYMENT_FAIL(400, "결제 오류"),
   PAYMENT_TIME_OUT(408, "결제 유효 시간을 초과하였습니다"),
+  PAYMENT_GATEWAY_ERROR(500, "결제 서버가 요청을 처리하지 못하였습니다"),
 
   // 클라이언트 에러
   BAD_REQUEST_ERROR(400, "요청값이 잘못되었습니다"),

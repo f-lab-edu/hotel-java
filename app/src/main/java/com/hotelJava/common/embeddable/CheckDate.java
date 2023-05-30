@@ -2,6 +2,7 @@ package com.hotelJava.common.embeddable;
 
 import jakarta.persistence.Embeddable;
 import java.time.LocalDate;
+import java.util.stream.Stream;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -29,5 +30,9 @@ public class CheckDate {
 
   public boolean matches(LocalDate date) {
     return date.isEqual(checkInDate) || (date.isAfter(checkInDate) && date.isBefore(checkOutDate));
+  }
+
+  public Stream<LocalDate> duration() {
+    return checkInDate.datesUntil(checkOutDate);
   }
 }
