@@ -21,6 +21,12 @@ dependencies {
     implementation 'org.mariadb.jdbc:mariadb-java-client:2.7.3'
     implementation 'org.springframework.boot:spring-boot-starter-security'
     implementation 'org.springframework.boot:spring-boot-starter-data-jdbc'
+
+    // querydsl
+    implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
+    annotationProcessor 'com.querydsl:querydsl-apt:5.0.0:jakarta'
+    annotationProcessor "jakarta.annotation:jakarta.annotation-api"
+    annotationProcessor "jakarta.persistence:jakarta.persistence-api"
 }
 
 bootJar {
@@ -30,4 +36,8 @@ bootJar {
 tasks.withType(Jar) {
     enabled = true
     duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+}
+
+clean {
+    delete file('src/main/generated')
 }
