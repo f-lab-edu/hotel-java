@@ -5,7 +5,8 @@ import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.Member;
 import com.hotelJava.payment.domain.Payment;
 import com.hotelJava.payment.domain.PaymentResult;
-import com.hotelJava.payment.domain.PaymentType;import com.hotelJava.room.domain.Room;
+import com.hotelJava.payment.domain.PaymentType;
+import com.hotelJava.room.domain.Room;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
@@ -68,7 +69,12 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "room_id")
   private Room room;
 
-  public Reservation(Member member, Room room, String reservationNo, GuestInfo guestInfo, PaymentType paymentType) {
+  public Reservation(
+      Member member,
+      Room room,
+      String reservationNo,
+      GuestInfo guestInfo,
+      PaymentType paymentType) {
     this.member = member;
     this.room = room;
     this.reservationNo = reservationNo;
@@ -133,5 +139,11 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   public void setPayment(Payment payment) {
     this.payment = payment;
     payment.setReservation(this);
+  }
+
+  public void cancelExpiredReservation() {
+    status = ReservationStatus.RESERVATION_CANCEL;
+
+    restoreStock();
   }
 }
