@@ -56,7 +56,7 @@ public class PaymentByKakaoPay implements PaymentService {
     String impUid = dto.getImpUid();
 
     // 결제 금액 검증
-    if (verifyAmount(impUid, dto.getAmount(), room, reservation)) {
+    if (verifyAmount(impUid, dto.getAmount(), room)) {
 
       // 결제
       reservation.getPayment().changePaymentStatus(dto.getAmount());
@@ -72,13 +72,15 @@ public class PaymentByKakaoPay implements PaymentService {
   }
 
   private boolean verifyAmount(
-      String impUid, int clientRoomAmount, Room room, Reservation reservation) {
+      String impUid, int clientRoomAmount, Room room) {
     try {
       IamportResponse<Payment> paymentIamportResponse = api.paymentByImpUid(impUid);
       int iamportRoomAmount = paymentIamportResponse.getResponse().getAmount().intValue();
 
       if (iamportRoomAmount != clientRoomAmount || iamportRoomAmount != room.getPrice()) {
         log.info("결제 금액이 일치하지 않음");
+
+        return false;
       }
     } catch (IamportResponseException e) {
       log.error("IamportResponseException: {}", e.getMessage());
