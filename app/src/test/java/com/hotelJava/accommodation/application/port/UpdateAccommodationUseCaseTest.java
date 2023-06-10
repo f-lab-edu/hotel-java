@@ -1,6 +1,6 @@
 package com.hotelJava.accommodation.application.port;
 
-import com.hotelJava.accommodation.domain.AccommodationType;import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;import com.hotelJava.common.embeddable.Address;import com.hotelJava.picture.domain.PictureInfo;import com.hotelJava.picture.domain.PictureType;import com.hotelJava.picture.dto.PictureDto;import org.junit.jupiter.api.DisplayName;import org.junit.jupiter.api.Test;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.boot.test.context.SpringBootTest;
+import com.hotelJava.accommodation.domain.AccommodationType;import com.hotelJava.accommodation.dto.UpdateAccommodationRequest;import com.hotelJava.common.embeddable.Address;import com.hotelJava.picture.domain.PictureInfo;import com.hotelJava.picture.domain.PictureType;import com.hotelJava.picture.dto.PictureDto;import org.junit.jupiter.api.DisplayName;import org.junit.jupiter.api.Test;import org.springframework.beans.factory.annotation.Autowired;import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.transaction.annotation.Transactional;import static org.assertj.core.api.Assertions.assertThat;
 
 @SpringBootTest
@@ -23,8 +23,8 @@ public class UpdateAccommodationUseCaseTest extends BeforeEachInit {
                         .fileSize(5000)
                         .build();
 
-        UpdateAccommodationRequestDto updateAccommodationRequestDto =
-                UpdateAccommodationRequestDto.builder()
+        UpdateAccommodationRequest updateAccommodationRequest =
+                UpdateAccommodationRequest.builder()
                         .name("숙소 이름 변경")
                         .phoneNumber("010-0000-0000")
                         .type(AccommodationType.GUESTHOUSE)
@@ -43,7 +43,7 @@ public class UpdateAccommodationUseCaseTest extends BeforeEachInit {
                         .build();
 
         // when
-        sut.updateAccommodation(accommodation1.getId(), updateAccommodationRequestDto);
+        sut.updateAccommodation(accommodation1.getId(), updateAccommodationRequest);
 
         // then
         assertThat(accommodation1.getName()).isEqualTo("숙소 이름 변경");

@@ -1,9 +1,9 @@
 package com.hotelJava.accommodation.application.port;
 
-import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequest;
 
 public interface UpdateAccommodationUseCase {
 
   void updateAccommodation(
-      Long accommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto);
+      Long accommodationId, UpdateAccommodationRequest updateAccommodationRequest);
 }
