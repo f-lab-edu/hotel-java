@@ -1,12 +1,13 @@
 spring:
-  #  datasource:
-  #    url: jdbc:h2:tcp://localhost/~/hotel-java
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
-  #
+  datasource:
+    url: jdbc:mariadb://127.0.0.1:3306/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    username: devktak
+    password: password
+    driver-class-name: org.mariadb.jdbc.Driver
   security:
     enabled: true
+  thymeleaf:
+    cache: false
   jpa:
     hibernate:
       ddl-auto: create
@@ -16,8 +17,9 @@ spring:
         format_sql: true
 
 logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: debug
+  p6spy: info
+  #  org.hibernate.SQL: debug
+  #  org.hibernate.type: debug
   org.springframework.security.web: trace
 
 jwt:
