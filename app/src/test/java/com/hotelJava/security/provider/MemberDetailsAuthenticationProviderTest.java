@@ -18,10 +18,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.security.core.Authentication;
+import org.springframework.test.context.ActiveProfiles;
 
 import static org.mockito.ArgumentMatchers.anyString;
 
 @SpringBootTest
+@ActiveProfiles("test")
 class MemberDetailsAuthenticationProviderTest {
 
   @Autowired private MemberDetailsAuthenticationProvider provider;

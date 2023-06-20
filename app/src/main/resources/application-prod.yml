@@ -1,0 +1,32 @@
+spring:
+  batch:
+    job:
+      enabled: true
+    jdbc:
+      initialize-schema: always
+#  datasource:
+#    url: jdbc:mariadb://127.0.0.1:3306/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+#    username:
+#    password:
+#    driver-class-name: org.mariadb.jdbc.Driver
+  security:
+    enabled: true
+  thymeleaf:
+    cache: false
+  jpa:
+    hibernate:
+      ddl-auto: none
+    properties:
+      hibernate:
+        use_sql_comment: true
+        show_sql: true
+        format_sql: true
+        highlight_sql: true
+
+logging.level:
+  p6spy: info
+  org.hibernate.SQL: info
+  org.hibernate.type: info
+  org.springframework:
+    batch: info
+    security.web: info
