@@ -17,5 +17,3 @@ public class WebConfig implements WebMvcConfigurer {
     registry.addConverter(idDecodedConverter);
   }
 }
-
-

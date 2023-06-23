@@ -4,7 +4,6 @@ import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationStatus;
 import com.hotelJava.reservation.repository.ReservationRepository;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,7 +12,6 @@ import java.util.List;
 
 @Component
 @RequiredArgsConstructor
-@Slf4j
 public class ReservationCancelScheduler {
 
   private final ReservationRepository reservationRepository;
