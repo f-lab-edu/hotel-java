@@ -1,4 +1,4 @@
-package com.hotelJava.common.config;
+package com.hotelJava.common.batch;
 
 import com.hotelJava.common.batch.HotelJavaBatchConfigurationProperties;
 import com.hotelJava.room.domain.Room;

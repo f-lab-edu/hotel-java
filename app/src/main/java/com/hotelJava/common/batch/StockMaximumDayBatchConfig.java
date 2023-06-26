@@ -1,4 +1,4 @@
-package com.hotelJava.common.config;
+package com.hotelJava.common.batch;
 
 import com.hotelJava.common.batch.HotelJavaBatchConfigurationProperties;
 import com.hotelJava.common.batch.JpaItemListWriter;
@@ -96,8 +96,8 @@ public class StockMaximumDayBatchConfig {
         .entityManagerFactory(entityManagerFactory)
         // pageSize의 default는 10
         // chunk와 pageSize 갯수를 똑같이 맞춰줘야함!
-        // 예) chunk가 100, pageSize가 10이면 chunk 단위로 reader에서 processor로 전달되기에 100개를 채워야만 processor로
-        // 데이터가 전달된다.
+        // 예) chunk가 100, pageSize가 10이면 chunk 단위로 reader에서 processor로 전달되기에 100개를 채워야만
+        // processor로 데이터가 전달된다.
         // 10번을 조회해서 문제가 아니라 JpaPagingItemReader는 페이지를 읽을때, 이전 트랜잭션 초기화를 시키기 때문이다.
         // 그러다보니 마지막 조회를 제외한 9번의 조회결과들이 트랜잭션 세션이 전부 종료되어 org.hibernate.LazyInitializationException
         // 발생
