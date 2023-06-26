@@ -1,7 +1,5 @@
 package com.hotelJava.common.batch;
 
-import com.hotelJava.common.batch.HotelJavaBatchConfigurationProperties;
-import com.hotelJava.common.batch.JpaItemListWriter;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.stock.domain.Stock;
 import jakarta.persistence.EntityManager;
