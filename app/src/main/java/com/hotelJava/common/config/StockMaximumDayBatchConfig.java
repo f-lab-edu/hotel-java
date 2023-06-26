@@ -1,12 +1,12 @@
 package com.hotelJava.common.config;
 
+import com.hotelJava.common.batch.HotelJavaBatchConfigurationProperties;
 import com.hotelJava.common.batch.JpaItemListWriter;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.stock.domain.Stock;
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
 import org.springframework.batch.core.configuration.annotation.StepScope;
@@ -28,7 +28,6 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
-@Slf4j
 @Configuration
 @RequiredArgsConstructor
 public class StockMaximumDayBatchConfig {
@@ -41,15 +40,7 @@ public class StockMaximumDayBatchConfig {
   private final JpaTransactionManager jpaTransactionManager;
   private final EntityManagerFactory entityManagerFactory;
   private final EntityManager entityManager;
-
-  @Value("${spring.batch.chunk.size}")
-  private int chunkSize;
-
-  @Value("${spring.batch.stock.add.day}")
-  private int stockAddDay;
-
-  @Value("${spring.batch.stock.add.quantity}")
-  private int stockAddQuantity;
+  private final HotelJavaBatchConfigurationProperties properties;
 
   /*
      Job은 배치 처리 과정을 하나의 단위로 만들어 포현한 객체
@@ -75,7 +66,7 @@ public class StockMaximumDayBatchConfig {
         // <Reader에서 반환할 타입, Writer에 파라미터로 넘어올 타입>
         // chunkSize: Reader & Writer가 묶일 Chunk 트랜잭션 범위
         // 쓰기 시에 청크 단위로 writer() 메서드를 실행시킬 단위를 지정, 즉 커밋단위가 10개
-        .<Room, List<Stock>>chunk(chunkSize, jpaTransactionManager)
+        .<Room, List<Stock>>chunk(properties.getStock().getChunkSize(), jpaTransactionManager)
         .faultTolerant()
         .retryLimit(3)
         .retry(Exception.class) // Exception이 발생할 경우에만 최대 재시도 횟수 3회
@@ -110,7 +101,7 @@ public class StockMaximumDayBatchConfig {
         // 10번을 조회해서 문제가 아니라 JpaPagingItemReader는 페이지를 읽을때, 이전 트랜잭션 초기화를 시키기 때문이다.
         // 그러다보니 마지막 조회를 제외한 9번의 조회결과들이 트랜잭션 세션이 전부 종료되어 org.hibernate.LazyInitializationException
         // 발생
-        .pageSize(chunkSize)
+        .pageSize(properties.getStock().getChunkSize())
         .queryString("SELECT r FROM Room r WHERE stockBatchDateTime IS NULL")
         .build();
   }
@@ -129,13 +120,13 @@ public class StockMaximumDayBatchConfig {
       room.changeStockBatchDateTime(now);
       Room mergedRoom = entityManager.merge(room);
 
-      return IntStream.range(0, stockAddDay)
+      return IntStream.range(0, properties.getStock().getDay())
           .mapToObj(
               i ->
                   Stock.builder()
                       .room(mergedRoom)
                       .date(LocalDate.now().plusDays(i))
-                      .quantity(stockAddQuantity)
+                      .quantity(properties.getStock().getQuantity())
                       .build())
           .collect(Collectors.toList());
     };

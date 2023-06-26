@@ -14,6 +14,9 @@ spring:
       hibernate:
         #        show_sql: true
         format_sql: true
+  batch:
+    job:
+      enabled: false
 
 logging.level:
   org.hibernate.SQL: debug
@@ -31,8 +34,12 @@ iamport:
   apiKey: 6318782456272832
   apiSecret: drziCrVVErSjpA7mal4EKUNrTuGa1Gf6oG0keXXRO6cs2AVo5YVZGeAuUZsry2YfKtTSVFZFnmcIlWIv
 
-spring.batch:
-  chunk.size: 10
-  stock.add:
+hotel-java.batch:
+  stock:
+    chunkSize: 10
     day: 30
     quantity: 10
+
+
+
+
