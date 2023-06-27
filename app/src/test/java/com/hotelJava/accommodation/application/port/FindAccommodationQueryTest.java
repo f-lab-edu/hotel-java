@@ -4,7 +4,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import com.hotelJava.accommodation.adapter.persistence.AccommodationRepository;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
+import com.hotelJava.accommodation.dto.FindAccommodationResponse;
 import com.hotelJava.common.util.Base32Util;
 import com.hotelJava.member.domain.Role;
 import java.time.LocalDate;
@@ -13,9 +13,11 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
 @SpringBootTest
+@ActiveProfiles("test")
 @Transactional
 public class FindAccommodationQueryTest extends BeforeEachInit {
 
@@ -37,7 +39,7 @@ public class FindAccommodationQueryTest extends BeforeEachInit {
     LocalDate checkOutDate = LocalDate.now().plusDays(1);
 
     // when
-    List<FindAccommodationResponseDto> accommodations =
+    List<FindAccommodationResponse> accommodations =
         sut.findAccommodations(
             type, firstLocation, secondLocation, name, checkInDate, checkOutDate, 2, Role.USER);
 
