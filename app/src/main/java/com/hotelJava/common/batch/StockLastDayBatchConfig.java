@@ -2,7 +2,6 @@ package com.hotelJava.common.batch;
 
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.stock.domain.Stock;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -30,7 +29,6 @@ public class StockLastDayBatchConfig {
   private final JobRepository jobRepository;
   private final JpaTransactionManager jpaTransactionManager;
   private final EntityManagerFactory entityManagerFactory;
-  private final EntityManager entityManager;
   private final HotelJavaBatchConfigurationProperties properties;
 
   @Bean(name = "lastDayJob")
@@ -67,10 +65,9 @@ public class StockLastDayBatchConfig {
   public ItemProcessor<Room, Stock> processorLastDay(@Value("#{jobParameters[now]}") LocalDateTime now) {
     return room -> {
       room.changeStockBatchDateTime(now);
-      Room mergedRoom = entityManager.merge(room);
 
       return Stock.builder()
-          .room(mergedRoom)
+          .room(room)
           .date(LocalDate.now().plusDays(properties.getStock().getDay()))
           .quantity(properties.getStock().getQuantity())
           .build();

@@ -2,7 +2,6 @@ package com.hotelJava.common.batch;
 
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.stock.domain.Stock;
-import jakarta.persistence.EntityManager;
 import jakarta.persistence.EntityManagerFactory;
 import lombok.RequiredArgsConstructor;
 import org.springframework.batch.core.Job;
@@ -37,7 +36,6 @@ public class StockMaximumDayBatchConfig {
   private final JobRepository jobRepository;
   private final JpaTransactionManager jpaTransactionManager;
   private final EntityManagerFactory entityManagerFactory;
-  private final EntityManager entityManager;
   private final HotelJavaBatchConfigurationProperties properties;
 
   /*
@@ -116,13 +114,12 @@ public class StockMaximumDayBatchConfig {
       @Value("#{jobParameters[now]}") LocalDateTime now) {
     return room -> {
       room.changeStockBatchDateTime(now);
-      Room mergedRoom = entityManager.merge(room);
 
       return IntStream.range(0, properties.getStock().getDay())
           .mapToObj(
               i ->
                   Stock.builder()
-                      .room(mergedRoom)
+                      .room(room)
                       .date(LocalDate.now().plusDays(i))
                       .quantity(properties.getStock().getQuantity())
                       .build())
