@@ -27,16 +27,13 @@ public class PaymentByKakaoPay implements PaymentService {
 
   private final RoomRepository roomRepository;
   private final ReservationRepository reservationRepository;
-  private final String apiKey, apiSecret;
   private final IamportClient api;
 
   public PaymentByKakaoPay(
-      @Value("${iamport.apiKey}") String apiKey,
-      @Value("${iamport.apiSecret}") String apiSecret,
+      @Value("${hotel-java.iamport.apiKey}") String apiKey,
+      @Value("${hotel-java.iamport.apiSecret}") String apiSecret,
       ReservationRepository reservationRepository,
       RoomRepository roomRepository) {
-    this.apiKey = apiKey;
-    this.apiSecret = apiSecret;
     this.reservationRepository = reservationRepository;
     this.roomRepository = roomRepository;
     api = new IamportClient(apiKey, apiSecret);
