@@ -2,13 +2,13 @@ package com.hotelJava.accommodation.adapter.web;
 
 import com.hotelJava.accommodation.application.port.DeleteAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.FindAccommodationQuery;
-import com.hotelJava.accommodation.application.port.SaveAccommodationUseCase;
+import com.hotelJava.accommodation.application.port.CreateAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.UpdateAccommodationUseCase;
 import com.hotelJava.accommodation.domain.AccommodationType;
-import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
-import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
-import com.hotelJava.accommodation.dto.FindAccommodationResponseDto;
-import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationRequest;
+import com.hotelJava.accommodation.dto.CreateAccommodationResponse;
+import com.hotelJava.accommodation.dto.FindAccommodationResponse;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequest;
 import com.hotelJava.common.dto.DecodeId;
 import com.hotelJava.member.domain.Role;
 import jakarta.validation.Valid;
@@ -34,7 +34,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/accommodations")
 public class AccommodationController {
 
-  private final SaveAccommodationUseCase saveAccommodationUseCase;
+  private final CreateAccommodationUseCase createAccommodationUseCase;
 
   private final FindAccommodationQuery findAccommodationQuery;
 
@@ -43,7 +43,7 @@ public class AccommodationController {
   private final DeleteAccommodationUseCase deleteAccommodationUseCase;
 
   @GetMapping("/{type}/{firstLocation}/{secondLocation}")
-  public List<FindAccommodationResponseDto> findAccommodations(
+  public List<FindAccommodationResponse> findAccommodations(
       @PathVariable(name = "type", required = true) AccommodationType type,
       @PathVariable(name = "firstLocation", required = true) String firstLocation,
       @PathVariable(name = "secondLocation", required = true) String secondLocation,
@@ -66,17 +66,17 @@ public class AccommodationController {
   }
 
   @PostMapping
-  public CreateAccommodationResponseDto createAccommodation(
-      @Valid @RequestBody CreateAccommodationRequestDto createAccommodationRequestDto) {
-    return saveAccommodationUseCase.saveAccommodation(createAccommodationRequestDto);
+  public CreateAccommodationResponse createAccommodation(
+      @Valid @RequestBody CreateAccommodationRequest createAccommodationRequest) {
+    return createAccommodationUseCase.createAccommodation(createAccommodationRequest);
   }
 
   @PutMapping("/{encodedAccommodationId}")
   public HttpStatus updateAccommodation(
       @PathVariable("encodedAccommodationId") DecodeId accommodationId,
-      @Valid @RequestBody UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+      @Valid @RequestBody UpdateAccommodationRequest updateAccommodationRequest) {
     updateAccommodationUseCase.updateAccommodation(
-        accommodationId.getDecodeId(), updateAccommodationRequestDto);
+        accommodationId.getDecodeId(), updateAccommodationRequest);
 
     return HttpStatus.OK;
   }

@@ -8,13 +8,13 @@ import com.hotelJava.common.embeddable.CheckDate;
 import com.hotelJava.member.application.port.in.command.ChangeProfileCommand;
 import com.hotelJava.member.application.port.in.command.MemberSignUpCommand;
 import com.hotelJava.member.domain.Member;
-import com.hotelJava.payment.dto.CreatePaymentRequestDto;
+import com.hotelJava.payment.dto.CreatePaymentRequest;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.picture.domain.PictureInfo;
 import com.hotelJava.reservation.domain.Reservation;
 import com.hotelJava.reservation.domain.ReservationCommand;
 import com.hotelJava.reservation.domain.ReservationStatus;
-import com.hotelJava.reservation.dto.CreateReservationRequestDto;
+import com.hotelJava.reservation.dto.CreateReservationRequest;
 import com.hotelJava.room.domain.Room;
 import com.hotelJava.stock.domain.Stock;
 import java.time.LocalDate;
@@ -42,8 +42,8 @@ public class TestFixture {
         .build();
   }
 
-  public static CreateReservationRequestDto getCreateReservationRequestDto(CheckDate checkDate) {
-    return CreateReservationRequestDto.builder()
+  public static CreateReservationRequest getCreateReservationRequestDto(CheckDate checkDate) {
+    return CreateReservationRequest.builder()
         .reservationCommand(faker.options().option(ReservationCommand.values()))
         .guestName(faker.name().name())
         .guestPhone(faker.phoneNumber().phoneNumber())
@@ -52,8 +52,8 @@ public class TestFixture {
         .build();
   }
 
-  public static CreatePaymentRequestDto getCreatePaymentRequestDto() {
-    return CreatePaymentRequestDto.builder()
+  public static CreatePaymentRequest getCreatePaymentRequestDto() {
+    return CreatePaymentRequest.builder()
         .impUid(faker.random().toString())
         .amount(faker.number().numberBetween(50000, 100000))
         .reservationNo(faker.random().toString())

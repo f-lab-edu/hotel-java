@@ -1,29 +1,9 @@
 spring:
-  #  datasource:
-  #    url: jdbc:h2:tcp://localhost/~/hotel-java
-  #    username: sa
-  #    password:
-  #    driver-class-name: org.h2.Driver
-  #
-  security:
-    enabled: true
-  jpa:
-    hibernate:
-      ddl-auto: create
-    properties:
-      hibernate:
-        #        show_sql: true
-        format_sql: true
   batch:
     job:
-      enabled: false
-
-logging.level:
-  org.hibernate.SQL: debug
-  org.hibernate.type: debug
-  org.springframework:
-    security.web: trace
-    batch: debug
+      enabled: true
+  security:
+    enabled: true
 
 jwt:
   validity-time: 10m # minute

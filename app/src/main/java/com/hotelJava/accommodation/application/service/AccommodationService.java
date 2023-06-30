@@ -2,12 +2,12 @@ package com.hotelJava.accommodation.application.service;
 
 import com.hotelJava.accommodation.adapter.persistence.AccommodationRepository;
 import com.hotelJava.accommodation.application.port.DeleteAccommodationUseCase;
-import com.hotelJava.accommodation.application.port.SaveAccommodationUseCase;
+import com.hotelJava.accommodation.application.port.CreateAccommodationUseCase;
 import com.hotelJava.accommodation.application.port.UpdateAccommodationUseCase;
 import com.hotelJava.accommodation.domain.Accommodation;
-import com.hotelJava.accommodation.dto.CreateAccommodationRequestDto;
-import com.hotelJava.accommodation.dto.CreateAccommodationResponseDto;
-import com.hotelJava.accommodation.dto.UpdateAccommodationRequestDto;
+import com.hotelJava.accommodation.dto.CreateAccommodationRequest;
+import com.hotelJava.accommodation.dto.CreateAccommodationResponse;
+import com.hotelJava.accommodation.dto.UpdateAccommodationRequest;
 import com.hotelJava.accommodation.util.AccommodationMapper;
 import com.hotelJava.common.error.ErrorCode;
 import com.hotelJava.common.error.exception.BadRequestException;
@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @Transactional(readOnly = true)
 @RequiredArgsConstructor
-public class AccommodationService implements SaveAccommodationUseCase, UpdateAccommodationUseCase, DeleteAccommodationUseCase {
+public class AccommodationService implements CreateAccommodationUseCase, UpdateAccommodationUseCase, DeleteAccommodationUseCase {
 
   private final AccommodationRepository accommodationRepository;
 
@@ -35,16 +35,16 @@ public class AccommodationService implements SaveAccommodationUseCase, UpdateAcc
 
   @Transactional
   @Override
-  public CreateAccommodationResponseDto saveAccommodation(
-      CreateAccommodationRequestDto createAccommodationRequestDto) {
-    validateDuplicatedAccommodation(createAccommodationRequestDto);
+  public CreateAccommodationResponse createAccommodation(
+      CreateAccommodationRequest createAccommodationRequest) {
+    validateDuplicatedAccommodation(createAccommodationRequest);
 
-    Accommodation accommodation = accommodationMapper.toEntity(createAccommodationRequestDto);
+    Accommodation accommodation = accommodationMapper.toEntity(createAccommodationRequest);
     Picture accommodationPicture =
-        pictureMapper.toEntity(createAccommodationRequestDto.getPictureDto());
+        pictureMapper.toEntity(createAccommodationRequest.getPictureDto());
 
     List<Room> rooms =
-        createAccommodationRequestDto.getCreateRoomRequestDtos().stream()
+        createAccommodationRequest.getCreateRoomRequests().stream()
             .map(
                 createRoomRequestDto -> {
                   Room room = roomMapper.toEntity(createRoomRequestDto);
@@ -59,14 +59,14 @@ public class AccommodationService implements SaveAccommodationUseCase, UpdateAcc
 
     accommodation.createAccommodation(rooms, accommodationPicture);
 
-    return accommodationMapper.toCreateAccommodationResponseDto(
+    return accommodationMapper.toCreateAccommodationResponse(
         accommodationRepository.save(accommodation));
   }
 
   @Transactional
   @Override
   public void updateAccommodation(
-      Long accommodationId, UpdateAccommodationRequestDto updateAccommodationRequestDto) {
+      Long accommodationId, UpdateAccommodationRequest updateAccommodationRequest) {
 
     Accommodation accommodation =
         accommodationRepository
@@ -74,12 +74,12 @@ public class AccommodationService implements SaveAccommodationUseCase, UpdateAcc
             .orElseThrow(() -> new BadRequestException(ErrorCode.ACCOMMODATION_NOT_FOUND));
 
     accommodation.updateAccommodation(
-        updateAccommodationRequestDto.getName(),
-        updateAccommodationRequestDto.getType(),
-        updateAccommodationRequestDto.getPhoneNumber(),
-        updateAccommodationRequestDto.getAddress(),
-        pictureMapper.toEntity(updateAccommodationRequestDto.getPictureDto()),
-        updateAccommodationRequestDto.getDescription());
+        updateAccommodationRequest.getName(),
+        updateAccommodationRequest.getType(),
+        updateAccommodationRequest.getPhoneNumber(),
+        updateAccommodationRequest.getAddress(),
+        pictureMapper.toEntity(updateAccommodationRequest.getPictureDto()),
+        updateAccommodationRequest.getDescription());
   }
 
   @Transactional
@@ -95,8 +95,8 @@ public class AccommodationService implements SaveAccommodationUseCase, UpdateAcc
   }
   
   private void validateDuplicatedAccommodation(
-      CreateAccommodationRequestDto createAccommodationRequestDto) {
-    if (accommodationRepository.existsByName(createAccommodationRequestDto.getName())) {
+      CreateAccommodationRequest createAccommodationRequest) {
+    if (accommodationRepository.existsByName(createAccommodationRequest.getName())) {
       throw new BadRequestException(ErrorCode.DUPLICATED_NAME_FOUND);
     }
   }

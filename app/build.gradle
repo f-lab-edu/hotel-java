@@ -10,6 +10,7 @@ repositories {
 dependencies {
     annotationProcessor 'org.mapstruct:mapstruct-processor:1.5.3.Final'
     implementation 'com.auth0:java-jwt:4.4.0'
+    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.9.0'
     implementation 'com.github.iamport:iamport-rest-client-java:0.2.22'
     implementation 'com.github.javafaker:javafaker:1.0.2'
     implementation 'com.h2database:h2:2.1.214'
