@@ -43,6 +43,9 @@ public class StockLastDayBatchConfig {
   public Step lastDayStep() {
     return new StepBuilder("lastDayStep", jobRepository)
         .<Room, Stock>chunk(properties.getStock().getChunkSize(), jpaTransactionManager)
+        .faultTolerant()
+        .retryLimit(3)
+        .retry(Exception.class)
         .reader(readerLastDay())
         .processor(processorLastDay(null))
         .writer(writerLastDay())
