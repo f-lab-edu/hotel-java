@@ -7,5 +7,5 @@ import lombok.Getter;
 @Getter
 public enum ReservationCommand {
 
-    KYUNGTAK_RESERVATION, HOJUN_RESERVATION
+    EAGER_RESERVATION, LAZY_RESERVATION
 }

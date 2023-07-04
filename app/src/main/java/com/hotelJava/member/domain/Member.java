@@ -3,6 +3,7 @@ package com.hotelJava.member.domain;
 import static com.hotelJava.member.domain.Grade.NORMAL;
 import static com.hotelJava.member.domain.Role.USER;
 
+import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.member.domain.specification.Authority;
 import com.hotelJava.member.domain.specification.Credential;
 import com.hotelJava.member.domain.specification.Identifier;
@@ -29,7 +30,7 @@ import org.hibernate.annotations.Where;
 @Builder
 @Getter
 @Entity
-public class Member implements Authority, Credential, Identifier, Profile {
+public class Member extends BaseTimeEntity implements Authority, Credential, Identifier, Profile {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)

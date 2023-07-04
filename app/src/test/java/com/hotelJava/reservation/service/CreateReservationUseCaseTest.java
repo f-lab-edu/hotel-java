@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class CreateReservationUseCaseTest {
 
   @Autowired
-  @Qualifier("kyungtakReservationService")
+  @Qualifier("eagerReservationService")
   private CreateReservationUseCase sut;
 
   @SpyBean private FindMemberPort findMemberPort;

@@ -1,5 +1,6 @@
 package com.hotelJava.payment.domain;
 
+import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.reservation.domain.Reservation;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
@@ -17,7 +18,7 @@ import lombok.extern.slf4j.Slf4j;
 @Builder
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-public class Payment {
+public class Payment extends BaseTimeEntity {
   
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
