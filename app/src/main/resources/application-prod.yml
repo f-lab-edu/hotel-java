@@ -1,9 +1,6 @@
 spring:
-  batch:
-    job:
-      enabled: true
-    jdbc:
-      initialize-schema: always
+  jdbc:
+    initialize-schema: never
 #  datasource:
 #    url: jdbc:mariadb://127.0.0.1:3306/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
 #    username:
@@ -12,7 +9,7 @@ spring:
   security:
     enabled: true
   thymeleaf:
-    cache: false
+    cache: true
   jpa:
     hibernate:
       ddl-auto: none
