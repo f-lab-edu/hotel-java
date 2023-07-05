@@ -26,7 +26,7 @@ import org.hibernate.annotations.Where;
 @SQLDelete(sql = "UPDATE member SET deleted = true WHERE id = ?")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @AllArgsConstructor
-@EqualsAndHashCode
+@EqualsAndHashCode(callSuper = false)
 @Builder
 @Getter
 @Entity
