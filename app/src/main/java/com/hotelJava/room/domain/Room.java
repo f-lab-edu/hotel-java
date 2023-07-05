@@ -15,6 +15,8 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import lombok.AccessLevel;
@@ -41,6 +43,8 @@ public class Room extends BaseTimeEntity {
   private int price;
 
   private int maxOccupancy;
+
+  private LocalDateTime stockBatchDateTime;
 
   @ManyToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "accommodation_id") // accommodation_id 외래 키로 연관관계를 맺는다.
@@ -76,6 +80,10 @@ public class Room extends BaseTimeEntity {
 
   public int calcPrice() {
     return price;
+  }
+
+  public void changeStockBatchDateTime(LocalDateTime now) {
+    this.stockBatchDateTime = now;
   }
 
   //== 연관관계 편의 메소드 ==//

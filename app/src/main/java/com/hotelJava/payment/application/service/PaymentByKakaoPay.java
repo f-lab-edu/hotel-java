@@ -31,7 +31,6 @@ public class PaymentByKakaoPay implements CreatePaymentUseCase {
 
   private final RoomRepository roomRepository;
   private final ReservationRepository reservationRepository;
-
   private final IamportClient api;
 
   @Transactional(noRollbackFor = {BadRequestException.class})
