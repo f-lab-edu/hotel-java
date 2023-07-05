@@ -1,7 +1,7 @@
 spring:
   batch:
     job:
-      enabled: true
+      enabled: false
   security:
     enabled: true
 
