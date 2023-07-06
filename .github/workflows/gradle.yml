@@ -80,7 +80,7 @@ jobs:
     - name: DockerHub Login
       uses: docker/login-action@v2
       with:
-        username: ${{ $TEST }}
+        username: ${{ secrets.PROJECT_NAME }}
         password: ${{ secrets.PASSWORDTOKEN }}
 
       # Docker 이미지 빌드
