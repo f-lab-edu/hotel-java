@@ -52,8 +52,8 @@ public class StockLastDayBatchConfig {
         .build();
   }
 
-  @StepScope
   @Bean(destroyMethod = "")
+  @StepScope
   public JpaPagingItemReader<Room> readerLastDay() {
     return new JpaPagingItemReaderBuilder<Room>()
         .name("readerLastDay")

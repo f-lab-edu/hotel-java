@@ -2,6 +2,7 @@ package com.hotelJava.room.domain;
 
 import com.hotelJava.accommodation.domain.Accommodation;
 import com.hotelJava.common.embeddable.CheckDate;
+import com.hotelJava.common.embeddable.CheckTime;
 import com.hotelJava.common.util.BaseTimeEntity;
 import com.hotelJava.picture.domain.Picture;
 import com.hotelJava.reservation.domain.Reservation;
@@ -41,6 +42,8 @@ public class Room extends BaseTimeEntity {
   private String name;
 
   private int price;
+
+  private CheckTime checkTime;
 
   private int maxOccupancy;
 
