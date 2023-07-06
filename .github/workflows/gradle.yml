@@ -34,7 +34,7 @@ jobs:
     # - uses <action>: action 호출
     steps:
     - name: echo test
-        run: |
+        run:
           echo "::echo-test::${{ secrets.DB_URL }}"
           echo "::echo-test::${{ secrets.DOCKERHUB_TOKEN }}"
           echo "::echo-test::${{ secrets.DB_PASSWORD }}"
