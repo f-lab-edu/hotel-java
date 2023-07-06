@@ -59,4 +59,8 @@ public class Stock extends BaseTimeEntity {
   public void setRoom(Room room) {
     this.room = room;
   }
+
+  public void setQuantity(long quantity) {
+    this.quantity = quantity;
+  }
 }

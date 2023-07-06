@@ -14,27 +14,24 @@ import java.time.LocalDateTime;
 @RequiredArgsConstructor
 public class StockAddScheduler {
 
-    private final JobLauncher jobLauncher;
+  private final JobLauncher jobLauncher;
 
-    private final Job lastDayJob;
-    private final Job maximumDayJob;
+  private final Job lastDayJob;
+  private final Job maximumDayJob;
 
-    @Scheduled(cron = "0 0 0 * * *")
-    public void runAddLastDayStockJob() throws Exception {
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addLocalDateTime("now", LocalDateTime.now())
-                .toJobParameters();
+  @Scheduled(cron = "0 0 0 * * *")
+  public void runAddLastDayStockJob() throws Exception {
+    JobParameters jobParameters =
+        new JobParametersBuilder().addLocalDateTime("now", LocalDateTime.now()).toJobParameters();
 
-        jobLauncher.run(lastDayJob, jobParameters);
-    }
+    jobLauncher.run(lastDayJob, jobParameters);
+  }
 
-    @Scheduled(cron = "0 0 0 * * *") // 자정마다
-    public void runAddMaximumDayStockJob() throws Exception {
-        JobParameters jobParameters = new JobParametersBuilder()
-                .addLocalDateTime("now", LocalDateTime.now())
-                .toJobParameters();
+  @Scheduled(cron = "0 0 0 * * *") // 자정마다
+  public void runAddMaximumDayStockJob() throws Exception {
+    JobParameters jobParameters =
+        new JobParametersBuilder().addLocalDateTime("now", LocalDateTime.now()).toJobParameters();
 
-        jobLauncher.run(maximumDayJob, jobParameters);
-    }
-
+    jobLauncher.run(maximumDayJob, jobParameters);
+  }
 }

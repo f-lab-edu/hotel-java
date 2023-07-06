@@ -1,9 +1,6 @@
 spring:
-  batch:
-    job:
-      enabled: true
-    jdbc:
-      initialize-schema: always
+  jdbc:
+    initialize-schema: always
   datasource:
     url: jdbc:mariadb://127.0.0.1:3306/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: devktak
@@ -24,9 +21,9 @@ spring:
         highlight_sql: true
 
 logging.level:
-  p6spy: info
+  p6spy: debug
   org.hibernate.SQL: debug
   org.hibernate.type: debug
   org.springframework:
-    batch: DEBUG
-    security.web: trace
+    batch: debug
+    security.web: debug
