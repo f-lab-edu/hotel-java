@@ -33,18 +33,7 @@ jobs:
     # - run <script>: script 호출
     # - uses <action>: action 호출
     steps:
-    - name: echo test
-      run: |
-        echo "::echo-test::${{ secrets.DB_URL }}"
-        echo "::echo-test::${{ secrets.DOCKERHUB_TOKEN }}"
-        echo "::echo-test::${{ secrets.DB_PASSWORD }}"
-        echo "::echo-test::${{ secrets.DB_USERNAME }}"
-        echo "::echo-test::${{ secrets.EC2_HOST }}"
-        echo "::echo-test::${{ secrets.EC2_KEY }}"
-        echo "::echo-test::${{ secrets.EC2_USERNAME }}"
-        echo "::echo-test::${{ secrets.PORT }}"
-        echo "::echo-test::${{ secrets.PROJECT_NAME }}"
-        echo "::echo-test::${{ secrets.DB_PASSWORD }}"
+
     # 원격저장소의 코드를 CI 서버가 내려받는 step
     # GitHub이 제공하는 actions/checkout@v3 호출
     - name: Checkout
