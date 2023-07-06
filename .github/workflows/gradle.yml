@@ -79,7 +79,7 @@ jobs:
 
       # Docker 이미지 빌드
     - name: Docker Image Build
-      run: docker build --platform amd64 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
+      run: docker build --platform arm64/v8 -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
       # DockerHub Push
     - name: DockerHub Push
