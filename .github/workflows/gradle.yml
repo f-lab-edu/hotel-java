@@ -27,19 +27,24 @@ jobs:
     
     # VM의 실행 환경 지정 => GitHub에서 호스팅하는 최신버전의 ubuntu runner에서 실행
     runs-on: ubuntu-latest
-    env:
-      TEST: ${{ secrets.USERNAME }}
+
     # job을 구성하는 단계, 각 단계는 독립적인 action or shell script
     # 각 단계는 - 기호로 구분하고 리스트 형태로 나열함
     # - run <script>: script 호출
     # - uses <action>: action 호출
     steps:
-    - run: echo $TEST
-    - run: echo ${{ secrets.USERNAME }}
-    - run: echo ${{ secrets.PASSWORDTOKEN }}
-    - run: echo ${{secrets.DOCKERHUB_USERNAME}}
-    - run: echo ${{secrets.DOCKERHUB_TOKEN}}
-    - run: echo ${{secrets.DB_URL}}
+    - name: echo test
+        run: |
+          echo "::echo-test::${{ secrets.DB_URL }}"
+          echo "::echo-test::${{ secrets.DOCKERHUB_TOKEN }}"
+          echo "::echo-test::${{ secrets.DB_PASSWORD }}"
+          echo "::echo-test::${{ secrets.DB_USERNAME }}"
+          echo "::echo-test::${{ secrets.EC2_HOST }}"
+          echo "::echo-test::${{ secrets.EC2_KEY }}"
+          echo "::echo-test::${{ secrets.EC2_USERNAME }}"
+          echo "::echo-test::${{ secrets.PORT }}"
+          echo "::echo-test::${{ secrets.PROJECT_NAME }}"
+          echo "::echo-test::${{ secrets.DB_PASSWORD }}"
     # 원격저장소의 코드를 CI 서버가 내려받는 step
     # GitHub이 제공하는 actions/checkout@v3 호출
     - name: Checkout
@@ -80,12 +85,12 @@ jobs:
     - name: DockerHub Login
       uses: docker/login-action@v2
       with:
-        username: ${{ secrets.PROJECT_NAME }}
-        password: ${{ secrets.PASSWORDTOKEN }}
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_PASSWORD }}
 
       # Docker 이미지 빌드
     - name: Docker Image Build
-      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME}}/${{ secrets.PROJECT_NAME }} .
+      run: docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/${{ secrets.PROJECT_NAME }} .
 
       # DockerHub Push
     - name: DockerHub Push
