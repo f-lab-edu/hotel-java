@@ -1,4 +1,4 @@
-FROM adoptopenjdk/openjdk17
+FROM openjdk:17-jdk-slim
 
 MAINTAINER Kyungtak Park <qkrrudxkr77@naver.com>
 
