@@ -5,11 +5,11 @@ import com.hotelJava.reservation.domain.ReservationCommand;
 import com.hotelJava.reservation.dto.CreateReservationRequest;
 import com.hotelJava.reservation.dto.CreateReservationResponse;
 
-public class HojunReservationService implements CreateReservationUseCase {
+public class LazyReservationService implements CreateReservationUseCase {
 
   @Override
   public boolean supports(ReservationCommand reservationCommand) {
-    return reservationCommand.equals(ReservationCommand.HOJUN_RESERVATION);
+    return reservationCommand.equals(ReservationCommand.LAZY_RESERVATION);
   }
 
   @Override

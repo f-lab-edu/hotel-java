@@ -20,7 +20,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Transactional(readOnly = true)
 @Service
-public class KyungtakReservationService implements CreateReservationUseCase {
+public class EagerReservationService implements CreateReservationUseCase {
 
   private final RoomRepository roomRepository;
   private final FindMemberPort findMemberPort;
@@ -29,7 +29,7 @@ public class KyungtakReservationService implements CreateReservationUseCase {
 
   @Override
   public boolean supports(ReservationCommand reservationCommand) {
-    return reservationCommand.equals(ReservationCommand.KYUNGTAK_RESERVATION);
+    return reservationCommand.equals(ReservationCommand.EAGER_RESERVATION);
   }
 
   @Transactional
