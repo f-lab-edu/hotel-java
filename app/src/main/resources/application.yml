@@ -3,7 +3,7 @@ spring:
     job:
       enabled: false
   security:
-    enabled: true
+    enabled: false
 
 jwt:
   validity-time: 10m # minute
