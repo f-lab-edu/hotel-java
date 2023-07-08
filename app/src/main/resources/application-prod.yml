@@ -2,12 +2,12 @@ spring:
   jdbc:
     initialize-schema: never
   datasource:
-    url: jdbc:mariadb://${DB_URL}/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
+    url: jdbc:mariadb://${DB_URL}/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8&passwordCharacterEncoding=UTF-8
     username: ${DB_USERNAME}
     password: ${DB_PASSWORD}
     driver-class-name: org.mariadb.jdbc.Driver
   security:
-    enabled: false # 임시 테스트로 false
+    enabled: true
   thymeleaf:
     cache: true
   jpa:
