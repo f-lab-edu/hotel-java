@@ -11,8 +11,8 @@ jwt:
   secret: Object-oriented programming is a programming paradigm based on the concept of objects, which can contain data and code
 
 hotel-java.iamport:
-  apiKey: 6318782456272832
-  apiSecret: drziCrVVErSjpA7mal4EKUNrTuGa1Gf6oG0keXXRO6cs2AVo5YVZGeAuUZsry2YfKtTSVFZFnmcIlWIv
+  apiKey: ${IAMPORT_KEY}
+  apiSecret: ${IAMPORT_SECRET}
 
 hotel-java.batch:
   stock:
