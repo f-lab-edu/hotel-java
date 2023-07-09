@@ -7,12 +7,14 @@ spring:
     password: password
     driver-class-name: org.mariadb.jdbc.Driver
   security:
-    enabled: false
+    enabled: true
   thymeleaf:
     cache: false
+    enabled: true
+
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     properties:
       hibernate:
         use_sql_comment: true

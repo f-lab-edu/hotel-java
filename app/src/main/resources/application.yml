@@ -19,7 +19,3 @@ hotel-java.batch:
     chunkSize: 10
     day: 30
     quantity: 10
-
-
-
-

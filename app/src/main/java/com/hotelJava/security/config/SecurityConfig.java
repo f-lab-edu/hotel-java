@@ -79,7 +79,10 @@ public class SecurityConfig {
       throws Exception {
     // == URL 인가 설정 == //
     http.authorizeHttpRequests()
-        .requestMatchers(HttpMethod.POST, SIGNUP_URL, LOGIN_URL)
+            // TODO: 예약, 결제에 대해서 테스트로 URL 추가
+        .requestMatchers(HttpMethod.POST, SIGNUP_URL, LOGIN_URL, "/api/reservations/**", "/api/payments/**")
+        .anonymous()
+        .requestMatchers(HttpMethod.GET, "/reservations")
         .anonymous()
         .anyRequest()
         .authenticated();
