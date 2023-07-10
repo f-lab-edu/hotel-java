@@ -7,18 +7,13 @@
 
 ### **➲ 사용 기술 및 스택**
 ***
-Java 17, Spring Boot 3.0.3, Jpa(Hibernate 6.1.7), MariaDB 10.6.10, Spring Batch 5.0.1, Gradle, AWS, Github Action, Iamport
+Java 17, Spring Boot 3.0.3, Jpa(Hibernate 6.1.7), RDS(MariaDB 10.6.10), Spring Batch 5.0.1, Gradle, AWS, Github Action, Iamport
 
 <br>
 
 ### **➲ 배포 인프라 구조**
 ***
-<img width="1161" alt="image" src="https://github.com/f-lab-edu/hotel-java/assets/68748397/ec8e6f0d-bbf8-4bed-826d-52db9cf413ed">
-
-<br>
-
-### **➲ UML(시퀀스 다이어그램)**
-***
+<img width="1170" alt="image" src="https://github.com/f-lab-edu/hotel-java/assets/68748397/f66a0c40-e3f7-4ede-98ce-163f336692a7">
 
 <br>
 
