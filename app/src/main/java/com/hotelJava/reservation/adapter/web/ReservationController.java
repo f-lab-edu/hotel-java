@@ -1,7 +1,7 @@
 package com.hotelJava.reservation.adapter.web;
 
 import com.hotelJava.common.dto.DecodeId;
-import com.hotelJava.reservation.application.port.FindServiceUseCase;
+import com.hotelJava.reservation.application.port.FindReservationQuery;
 import com.hotelJava.reservation.dto.CreateReservationRequest;
 import com.hotelJava.reservation.dto.CreateReservationResponse;
 import com.hotelJava.reservation.application.port.CreateReservationUseCase;
@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/api/reservations")
 public class ReservationController {
 
-  private final FindServiceUseCase findServiceUseCase;
+  private final FindReservationQuery findReservationQuery;
 
   @PostMapping("/{encodedRoomId}")
   public CreateReservationResponse createReservation(
@@ -29,7 +29,7 @@ public class ReservationController {
       @AuthenticationPrincipal(expression = "email") String loginEmail,
       @Valid @RequestBody CreateReservationRequest dto) {
     CreateReservationUseCase createReservationUseCase =
-        findServiceUseCase.findService(dto.getReservationCommand());
+        findReservationQuery.findService(dto.getReservationCommand());
 
     return createReservationUseCase.createReservation(roomId.getDecodeId(), loginEmail, dto);
   }

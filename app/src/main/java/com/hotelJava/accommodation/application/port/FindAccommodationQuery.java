@@ -6,7 +6,7 @@ import com.hotelJava.member.domain.Role;
 import java.time.LocalDate;
 import java.util.List;
 
-public interface FindAccommodationQuery {
+public interface  FindAccommodationQuery {
 
   List<FindAccommodationResponse> findAccommodations(
       AccommodationType type,
