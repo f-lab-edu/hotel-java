@@ -28,6 +28,7 @@ public class StockAddScheduler {
   }
 
   @Scheduled(cron = "0 0 0 * * *") // 자정마다
+//      @Scheduled(cron = "*/10 * * * * *") // 10초
   public void runAddMaximumDayStockJob() throws Exception {
     JobParameters jobParameters =
         new JobParametersBuilder().addLocalDateTime("now", LocalDateTime.now()).toJobParameters();

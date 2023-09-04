@@ -29,74 +29,74 @@ import java.util.stream.IntStream;
 @RequiredArgsConstructor
 public class StockMaximumDayBatchConfig {
 
-  private final JobRepository jobRepository;
-  private final JpaTransactionManager jpaTransactionManager;
-  private final EntityManagerFactory entityManagerFactory;
-  private final HotelJavaBatchConfigurationProperties properties;
+    private final JobRepository jobRepository;
+    private final JpaTransactionManager jpaTransactionManager;
+    private final EntityManagerFactory entityManagerFactory;
+    private final HotelJavaBatchConfigurationProperties properties;
 
-  @Bean(name = "maximumDayJob")
-  public Job maximumDayJob() {
-    return new JobBuilder("maximumDayJob", jobRepository)
-        .preventRestart()
-        .start(maximumDayStep())
-        .build();
-  }
+    @Bean(name = "maximumDayJob")
+    public Job maximumDayJob() {
+        return new JobBuilder("maximumDayJob", jobRepository)
+                .preventRestart()
+                .start(maximumDayStep())
+                .build();
+    }
 
-  @Bean
-  public Step maximumDayStep() {
-    return new StepBuilder("maximumDayStep", jobRepository)
-        .<Room, List<Stock>>chunk(properties.getStock().getChunkSize(), jpaTransactionManager)
-        .faultTolerant()
-        .retryLimit(3)
-        .retry(Exception.class)
-        .reader(readerMaximumDay())
-        .processor(processorMaximumDay(null))
-        .writer(writerListMaximumDay())
-        .build();
-  }
+    @Bean
+    public Step maximumDayStep() {
+        return new StepBuilder("maximumDayStep", jobRepository)
+                .<Room, List<Stock>>chunk(properties.getStock().getChunkSize(), jpaTransactionManager)
+                .faultTolerant()
+                .retryLimit(3)
+                .retry(Exception.class)
+                .reader(readerMaximumDay())
+                .processor(processorMaximumDay(null))
+                .writer(writerListMaximumDay())
+                .build();
+    }
 
-  @StepScope
-  @Bean(destroyMethod = "")
-  public JpaPagingItemReader<Room> readerMaximumDay() {
-    return new JpaPagingItemReaderBuilder<Room>()
-        .name("jpaPagingItemReader")
-        .entityManagerFactory(entityManagerFactory)
-        .pageSize(properties.getStock().getChunkSize())
-        .queryString("SELECT r FROM Room r WHERE stockBatchDateTime IS NULL")
-        .build();
-  }
+    @StepScope
+    @Bean(destroyMethod = "")
+    public JpaPagingItemReader<Room> readerMaximumDay() {
+        return new JpaPagingItemReaderBuilder<Room>()
+                .name("jpaPagingItemReader")
+                .entityManagerFactory(entityManagerFactory)
+                .pageSize(properties.getStock().getChunkSize())
+                .queryString("SELECT r FROM Room r WHERE stockBatchDateTime IS NULL")
+                .build();
+    }
 
-  @Bean
-  @StepScope
-  public ItemProcessor<Room, List<Stock>> processorMaximumDay(
-      @Value("#{jobParameters[now]}") LocalDateTime now) {
-    return room -> {
-      room.changeStockBatchDateTime(now);
+    @Bean
+    @StepScope
+    public ItemProcessor<Room, List<Stock>> processorMaximumDay(
+            @Value("#{jobParameters[now]}") LocalDateTime now) {
+        return room -> {
+            room.changeStockBatchDateTime(now);
 
-      return IntStream.range(0, properties.getStock().getDay())
-          .mapToObj(
-              i ->
-                  Stock.builder()
-                      .room(room)
-                      .date(LocalDate.now().plusDays(i))
-                      .quantity(properties.getStock().getQuantity())
-                      .build())
-          .collect(Collectors.toList());
-    };
-  }
+            return IntStream.range(0, properties.getStock().getDay())
+                    .mapToObj(
+                            i ->
+                                    Stock.builder()
+                                            .room(room)
+                                            .date(LocalDate.now().plusDays(i))
+                                            .quantity(properties.getStock().getQuantity())
+                                            .build())
+                    .collect(Collectors.toList());
+        };
+    }
 
-  //    private ItemWriter<List<Stock>> writerListMaximumDay() { // ItemWriter 인터페이스를 구현한 Custom
-  //      return chunk -> {
-  //        for (List<Stock> stocks : chunk) {
-  //          stockRepository.saveAll(stocks);
-  //        }
-  //      };
-  //    }
+    //    private ItemWriter<List<Stock>> writerListMaximumDay() { // ItemWriter 인터페이스를 구현한 Custom
+    //      return chunk -> {
+    //        for (List<Stock> stocks : chunk) {
+    //          stockRepository.saveAll(stocks);
+    //        }
+    //      };
+    //    }
 
-  private JpaItemListWriter<Stock> writerListMaximumDay() {
-    JpaItemWriter<Stock> jpaItemWriter = new JpaItemWriter<>();
-    jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
+    private JpaItemListWriter<Stock> writerListMaximumDay() {
+        JpaItemWriter<Stock> jpaItemWriter = new JpaItemWriter<>();
+        jpaItemWriter.setEntityManagerFactory(entityManagerFactory);
 
-    return new JpaItemListWriter<>(jpaItemWriter);
-  }
+        return new JpaItemListWriter<>(jpaItemWriter);
+    }
 }

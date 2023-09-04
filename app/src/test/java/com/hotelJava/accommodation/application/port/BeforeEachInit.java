@@ -21,6 +21,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
+import static java.time.LocalDate.now;
+
 @SpringBootTest
 @ActiveProfiles("test")
 public class BeforeEachInit {
@@ -34,7 +36,7 @@ public class BeforeEachInit {
     // 재고 등록
     Stock stock = Stock.builder()
             .date(LocalDate.now())
-            .quantity(3)
+            .quantity(5)
             .build();
     Stock stock2 = Stock.builder()
             .date(LocalDate.now().plusDays(1))
@@ -67,11 +69,7 @@ public class BeforeEachInit {
         Picture.builder().pictureInfo(pictureInfo).pictureType(PictureType.ROOM).build();
 
     // 예약 시 사용자의 원하는 숙박일
-    CheckDate checkDate =
-        CheckDate.builder()
-            .checkInDate(LocalDate.of(2023, 4, 10))
-            .checkOutDate(LocalDate.of(2023, 4, 12))
-            .build();
+    CheckDate checkDate = new CheckDate(now(), 2);
 
     // 룸의 체크인, 체크아웃 시간
     CheckTime checkTime =
@@ -134,6 +132,9 @@ public class BeforeEachInit {
     room1.addReservation(reservation1);
     room1.addPicture(roomPicture1);
     room1.addPicture(roomPicture2);
+    room1.addStock(stock);
+    room1.addStock(stock2);
+    room1.addStock(stock3);
 
     room3.addReservation(reservation2);
     room3.addStock(stock);

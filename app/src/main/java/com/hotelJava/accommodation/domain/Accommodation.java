@@ -26,6 +26,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.Fetch;
 
 @Entity
 @Getter
@@ -49,6 +51,7 @@ public class Accommodation extends BaseTimeEntity {
 
   @Embedded private Address address;
 
+  @BatchSize(size = 1000)
   @OneToMany(mappedBy = "accommodation", cascade = CascadeType.ALL) // 연관관계의 주인인 Room.accommodation
   @Builder.Default
   private List<Room> rooms = new ArrayList<>();

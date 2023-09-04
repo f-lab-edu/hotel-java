@@ -4,6 +4,10 @@ spring:
       enabled: false
   security:
     enabled: false
+#  jpa:
+#    properties:
+#      hibernate:
+#        default_batch_fetch_size: 1000
 
 jwt:
   validity-time: 10m # minute

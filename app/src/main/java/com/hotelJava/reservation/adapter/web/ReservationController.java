@@ -27,7 +27,7 @@ public class ReservationController {
   public CreateReservationResponse createReservation(
       @PathVariable("encodedRoomId") DecodeId roomId,
       @AuthenticationPrincipal(expression = "email") String loginEmail,
-      @Valid @RequestBody CreateReservationRequest dto) {
+      @Valid @RequestBody CreateReservationRequest dto) throws InterruptedException {
     CreateReservationUseCase createReservationUseCase =
         findReservationQuery.findService(dto.getReservationCommand());
 
