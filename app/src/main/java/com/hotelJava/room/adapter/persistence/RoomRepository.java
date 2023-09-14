@@ -2,7 +2,6 @@ package com.hotelJava.room.adapter.persistence;
 
 import com.hotelJava.room.domain.Room;
 import jakarta.persistence.LockModeType;
-import jakarta.persistence.NamedQuery;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Query;
@@ -14,7 +13,7 @@ import java.util.Optional;
 @Repository
 public interface RoomRepository extends JpaRepository<Room, Long> {
 
-    @Lock(LockModeType.OPTIMISTIC)
-    @Query("")
-    Optional<Room> findByIdWithOptimisticLock(@Param("id") Long id);
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("select r from Room r where r.id=:id")
+    Optional<Room> findByIdWithPessimisticLock(@Param("id") Long id);
 }

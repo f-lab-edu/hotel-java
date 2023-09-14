@@ -13,14 +13,9 @@ import com.hotelJava.reservation.dto.CreateReservationResponse;
 import com.hotelJava.reservation.util.RandomReservationNumberGenerator;
 import com.hotelJava.room.adapter.persistence.RoomRepository;
 import com.hotelJava.room.domain.Room;
-import jakarta.persistence.EntityManager;
-import jakarta.persistence.LockModeType;
-import jakarta.persistence.Query;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import java.util.List;
 
 /**
  * 결제보다 예약을 먼저 처리하고 재고를 선점하는 방식의 예약 클래스
@@ -33,7 +28,6 @@ public class EagerReservationService implements CreateReservationUseCase {
     private final RoomRepository roomRepository;
     private final FindMemberPort findMemberPort;
     private final ReservationRepository reservationRepository;
-    private final EntityManager entityManager;
     private final RandomReservationNumberGenerator randomReservationNumberGenerator;
 
     @Override
@@ -47,10 +41,8 @@ public class EagerReservationService implements CreateReservationUseCase {
             Long roomId, String email, CreateReservationRequest dto) {
         Room room =
                 roomRepository
-                        .findByIdWithOptimisticLock(roomId)
+                        .findByIdWithPessimisticLock(roomId)
                         .orElseThrow(() -> new BadRequestException(ErrorCode.ROOM_NOT_FOUND));
-
-
 
         Member member = findMemberPort.findByEmail(email);
 
@@ -67,6 +59,7 @@ public class EagerReservationService implements CreateReservationUseCase {
         // 재고 -1
         room.calcStock(dto.getCheckDate(), -1);
         roomRepository.save(room);
+        System.out.println("room.getStocks().get(0).getQuantity() = " + room.getStocks().get(0).getQuantity());
 
         // 예약
         String reservationNo = randomReservationNumberGenerator.generateReservationNumber();

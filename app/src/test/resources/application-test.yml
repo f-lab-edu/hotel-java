@@ -1,0 +1,22 @@
+spring:
+  sql:
+    init:
+      # 스프링부트 2.5.x 이후 버전의 경우 내장 데이터베이스에 대해서 스크립트 기반의 초기화를 기본적으로 실행하지만,
+      # 내장 DB가 아닌 경우 always 활성화 해야함
+      mode: always # SQL Init
+      platform: h2
+  jpa:
+    hibernate:
+      ddl-auto: create # JPA Setting
+    # ddl-auto 실행 이후 data.sql 이 실행되면서 데이터가 적용되게 됨
+    defer-datasource-initialization: true
+
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=MYSQL;
+    driver-class-name: org.h2.Driver
+    username: sa
+    password:
+  h2:
+    console:
+      path: /h2-console
+      enabled: true
