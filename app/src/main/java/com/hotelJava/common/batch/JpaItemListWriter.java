@@ -7,6 +7,9 @@ import org.springframework.batch.item.database.JpaItemWriter;
 import java.util.List;
 
 @Builder
+/**
+ * JpaItemWriter를 리스트로 리턴하기 위한 클래스
+ */
 public class JpaItemListWriter<T> extends JpaItemWriter<List<T>> {
 
     private JpaItemWriter<T> jpaItemWriter;

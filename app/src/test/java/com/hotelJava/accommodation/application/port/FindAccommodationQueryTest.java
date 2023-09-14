@@ -19,7 +19,7 @@ import org.springframework.transaction.annotation.Transactional;
 @SpringBootTest
 @ActiveProfiles("test")
 @Transactional
-public class FindAccommodationQueryTest extends BeforeEachInit {
+public class FindAccommodationQueryTest {
 
   @Autowired FindAccommodationQuery sut;
 
@@ -45,7 +45,7 @@ public class FindAccommodationQueryTest extends BeforeEachInit {
 
     // then
     assertThat(accommodations.size()).isEqualTo(1);
-    assertThat(accommodations.get(0).getName()).isEqualTo("숙소 이름이 숙소 이름입니다");
-    assertThat(accommodations.get(0).getMinimumRoomPrice()).isEqualTo(30000);
+    assertThat(accommodations.get(0).getName()).isEqualTo("data.sql 호텔");
+    assertThat(accommodations.get(0).getMinimumRoomPrice()).isEqualTo(10000);
   }
 }

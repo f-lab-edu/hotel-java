@@ -5,6 +5,10 @@ spring:
     url: jdbc:mariadb://127.0.0.1:3306/hotel-java?createDatabaseIfNotExist=true&serverTimezone=Asia/Seoul&characterEncoding=UTF-8
     username: devktak
     password: password
+#    username: root
+#    password: 1234
+    hikari:
+      maximum-pool-size: 20
     driver-class-name: org.mariadb.jdbc.Driver
   security:
     enabled: true
@@ -14,18 +18,18 @@ spring:
 
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
     properties:
       hibernate:
-        use_sql_comment: true
-        show_sql: true
-        format_sql: true
+#        use_sql_comment: true
+#        show_sql: true
+#        format_sql: true
         highlight_sql: true
 
 logging.level:
   p6spy: debug
   org.hibernate.SQL: debug
-  org.hibernate.type: debug
+#  org.hibernate.type: debug
   org.springframework:
     batch: debug
     security.web: debug

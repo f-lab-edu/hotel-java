@@ -16,7 +16,8 @@ public class ReservationCancelScheduler {
 
   private final ReservationRepository reservationRepository;
 
-  @Scheduled(cron = "0 */1 * * * *") // 1분
+  // TODO: 주석 풀 것!
+//  @Scheduled(cron = "0 */1 * * * *") // 1분
   @Transactional
   public void cancelExpiredReservations() {
     LocalDateTime threeHoursAgo = LocalDateTime.now().minusHours(3); // 3시간 전

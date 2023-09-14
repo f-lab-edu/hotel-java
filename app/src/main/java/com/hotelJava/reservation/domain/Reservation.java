@@ -61,7 +61,7 @@ public class Reservation extends BaseTimeEntity implements GuestInfo {
   @JoinColumn(name = "payment_id")
   private Payment payment;
 
-  @ManyToOne(fetch = FetchType.LAZY)
+  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "member_id")
   private Member member;
 
