@@ -2,7 +2,6 @@ package com.hotelJava.reservation.service;
 
 import com.hotelJava.TestFixture;
 import com.hotelJava.common.embeddable.CheckDate;
-import com.hotelJava.member.application.port.out.persistence.FindMemberPort;
 import com.hotelJava.reservation.application.port.CreateReservationUseCase;
 import com.hotelJava.reservation.dto.CreateReservationRequest;
 import com.hotelJava.room.adapter.persistence.RoomRepository;
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.boot.test.mock.mockito.SpyBean;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -30,9 +28,6 @@ public class CreateReservationUseCaseTest {
     @Autowired
     @Qualifier("eagerReservationService")
     private CreateReservationUseCase sut;
-
-    @SpyBean
-    private FindMemberPort findMemberPort;
 
     @Autowired
     private RoomRepository roomRepository;
@@ -52,9 +47,6 @@ public class CreateReservationUseCaseTest {
                 TestFixture.getCreateReservationRequestDto(checkDate);
         Room room = roomRepository.findById(1L).orElseThrow();
 
-//        Member member = TestFixture.getMember();
-//        doReturn(member).when(findMemberPort).findByEmail(member.getEmail());
-
         // when
         for (int i = 0; i < threadCount; i++) {
             executorService.submit(() -> {
@@ -66,10 +58,6 @@ public class CreateReservationUseCaseTest {
             });
         }
         latch.await();
-//        for (int i = 0; i < threadCount; i++) {
-////            sut.createReservation(1L, "test@test.com", createReservationRequest);
-//            sut.createReservation(1L, member.getEmail(), createReservationRequest);
-//        }
 
         // then
         // 해당일 재고 개수만큼 예약 테스트 => 남은 재고가 없어야함(0 개)
